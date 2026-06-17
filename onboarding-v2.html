@@ -201,8 +201,8 @@ const STEPS = [
    {title:"Contact preferences", fields:[
      {l:"Preferred communication channel",t:"combo",r:1,tag:"NEW",full:1,ph:"Select channels",o:["Email","SMS / Phone Call","WhatsApp","Discord","Telegram"]} ]},
    {title:"Availability", fields:[
-     {l:"Days available",t:"combo",r:0,tag:"PARITY",full:1,ph:"Select days",o:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]},
-     {l:"Time-of-day availability (local time)",t:"combo",r:1,tag:"NEW",full:1,ph:"Select time blocks",o:["Early Morning (12am–6am)","Morning (6am–12pm)","Afternoon (12pm–6pm)","Evening (6pm–12am)","Flexible / Any time"]},
+     {l:"Days available",t:"combo",r:0,tag:"PARITY",full:1,nosort:1,ph:"Select days",o:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]},
+     {l:"Time-of-day availability (local time)",t:"combo",r:1,tag:"NEW",full:1,nosort:1,ph:"Select time blocks",o:["Early Morning (12am–6am)","Morning (6am–12pm)","Afternoon (12pm–6pm)","Evening (6pm–12am)","Flexible / Any time"]},
      {l:"Hours per week available",t:"number",r:1,tag:"RENAME",full:1,iw:"320px",ph:"e.g. 20"} ]},
    {title:"Eligibility & background", fields:[
      {l:"Are you an employee of Teleperformance?",t:"radios",r:1,full:1,o:["Currently an employee","Former employee","Never employed by Teleperformance"]},
@@ -303,8 +303,8 @@ let cur = 0;
 function optRow(x,tg){return `<div class="combo-opt" data-l="${x.toLowerCase().replace(/"/g,'')}" onclick="toggleOpt(this)"><span class="ol">${x}</span>${T(tg)}<i class="ck">✓</i></div>`;}
 function comboHTML(f){
   let list="";
-  if(f.tasks){ list = TASKS.map(([g,items])=>`<div class="cg">${g}</div>`+items.map(([x,tg])=>optRow(x,tg)).join("")).join("") + optRow("Other (Please specify)",""); }
-  else { list = f.o.map(x=>optRow(x,"")).join(""); }
+  if(f.tasks){ const col=(a,b)=>a[0].localeCompare(b[0],undefined,{sensitivity:'base'}); list = [...TASKS].sort(col).map(([g,items])=>`<div class="cg">${g}</div>`+[...items].sort(col).map(([x,tg])=>optRow(x,tg)).join("")).join("") + optRow("Other (Please specify)",""); }
+  else { let opts=f.o.slice(); if(!f.nosort){ const pin=x=>/^other/i.test(x)||/^none$/i.test(x); opts.sort((a,b)=>{const pa=pin(a),pb=pin(b); if(pa!==pb)return pa?1:-1; return a.localeCompare(b,undefined,{sensitivity:'base'});}); } list = opts.map(x=>optRow(x,"")).join(""); }
   const ph = f.ph||"Select…";
   return `<div class="combo" data-ph="${ph}"${f.excl?` data-excl="${f.excl.toLowerCase()}"`:''}>
     <div class="combo-ctl" onclick="toggleCombo(this)"><span class="combo-sum ph">${ph}</span><i class="cvch">▾</i></div>
