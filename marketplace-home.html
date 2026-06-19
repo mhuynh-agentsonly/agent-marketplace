@@ -225,6 +225,9 @@
   .st-page button.active{border-color:#007460;color:#007460;background:#e9fef9;font-weight:600}
   .st-page span{color:#9ca3af;padding:0 2px}
   .st-page select{border:1px solid #e5e7eb;border-radius:7px;padding:6px 10px;font-family:inherit;font-size:13px}
+  .cefr-row .combo{width:100%}
+  .charcount{font-size:12px;color:#ef4444;margin-top:4px}
+  .f input.over,.f textarea.over,input.over,textarea.over{border-color:#e54041!important}
 </style>
 
 <div class="topnav">
@@ -284,14 +287,16 @@
         <div class="ro-grid">
           <div class="ro"><div class="k">First name</div><div class="v">Olivia</div></div>
           <div class="ro"><div class="k">Last name</div><div class="v">Rhye</div></div>
+          <div class="ro"><div class="k">Date of birth <span class="tag NEW">NEW</span></div><div class="v">12/03/1996</div></div>
+          <div class="ro"></div>
           <div class="ro"><div class="k">Email</div><div class="v"><a class="lnk">example@gmail.com</a> ⧉</div></div>
           <div class="ro"><div class="k">Mobile phone</div><div class="v">+16043333333</div></div>
           <div class="ro"><div class="k">Country</div><div class="v">🇨🇦 Canada</div></div>
           <div class="ro"><div class="k">Province/State/Region</div><div class="v">British Columbia</div></div>
           <div class="ro"><div class="k">City</div><div class="v">Vancouver</div></div>
-          <div class="ro"><div class="k">Postal code <span class="tag NEW">NEW</span></div><div class="v">V6Z 1L2</div></div>
-          <div class="ro"><div class="k">Street <span class="tag NEW">NEW</span></div><div class="v">1234 Howe Street</div></div>
-          <div class="ro"><div class="k">Date of birth <span class="tag NEW">NEW</span></div><div class="v">12 Mar 1996</div></div>
+          <div class="ro"><div class="k">Street <span class="tag NEW">NEW</span></div><div class="v">17th Avenue SW</div></div>
+          <div class="ro"><div class="k">Postal code <span class="tag NEW">NEW</span></div><div class="v">A1A 1A1</div></div>
+          <div class="ro"></div>
           <div class="ro"><div class="k">Availability (Hours/Week)</div><div class="v">10–20 hours/week</div></div>
           <div class="ro"><div class="k">Teleperformance employment</div><div class="v"><span style="color:#d6418a">◆</span> Current employee</div></div>
           <div class="ro"><div class="k">Agents Only Portal access</div><div class="v"><span class="xred">✗</span> No access</div></div>
@@ -348,6 +353,7 @@ const T = (s)=> s? `<span class="tag ${s.split(' ')[0]}">${s}</span>` : "";
 const reqMark = (r)=> ``;
 const EXP = ["None — new","<6 months","6 months – 1 year","1–2 years","2–4 years","4–6 years","6+ years"];
 const CEFR_LVLS = ["A1 - Beginner","A2 - Elementary","B1 - Intermediate","B2 - Upper-Intermediate","C1 - Advanced","C2 - Mastery","Native"];
+const LANGS = ["English","Spanish","French","Arabic","Hindi","Swahili","Yoruba","Hausa","Igbo","Indonesian/Malay","Tagalog/Filipino","Cebuano/Bisaya","Vietnamese","Thai","Tamil","Telugu","Urdu","Bengali","Marathi","Punjabi","Mandarin Chinese","Cantonese","Japanese","Korean","Portuguese","German","Italian","Dutch","Russian","Afrikaans","Zulu","Amharic","Burmese","Turkish","Persian/Farsi"];
 const ICONS = {
  cs:`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.4" d="M21 18V12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12V18" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 16.5C3 15.1193 4.11929 14 5.5 14C6.88071 14 8 15.1193 8 16.5V18.5C8 19.8807 6.88071 21 5.5 21C4.11929 21 3 19.8807 3 18.5V16.5Z" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 16.5C16 15.1193 17.1193 14 18.5 14C19.8807 14 21 15.1193 21 16.5V18.5C21 19.8807 19.8807 21 18.5 21C17.1193 21 16 19.8807 16 18.5V16.5Z" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
  tech:`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.4" d="M14 2.26953V6.40007C14 6.96012 14 7.24015 14.109 7.45406C14.2049 7.64222 14.3578 7.7952 14.546 7.89108C14.7599 8.00007 15.0399 8.00007 15.6 8.00007H19.7305M20 9.98822V17.2C20 18.8802 20 19.7202 19.673 20.362C19.3854 20.9265 18.9265 21.3854 18.362 21.673C17.7202 22 16.8802 22 15.2 22H8.8C7.11984 22 6.27976 22 5.63803 21.673C5.07354 21.3854 4.6146 20.9265 4.32698 20.362C4 19.7202 4 18.8802 4 17.2V6.8C4 5.11984 4 4.27976 4.32698 3.63803C4.6146 3.07354 5.07354 2.6146 5.63803 2.32698C6.27976 2 7.11984 2 8.8 2H12.0118C12.7455 2 13.1124 2 13.4577 2.08289C13.7638 2.15638 14.0564 2.27759 14.3249 2.44208C14.6276 2.6276 14.887 2.88703 15.4059 3.40589L18.5941 6.59411C19.113 7.11297 19.3724 7.3724 19.5579 7.67515C19.7224 7.94356 19.8436 8.2362 19.9171 8.5423C20 8.88757 20 9.25445 20 9.98822Z" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 17.5L16.5 15L14 12.5M10 12.5L7.5 15L10 17.5" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
@@ -355,7 +361,7 @@ const ICONS = {
  dl:`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.4"><path d="M10 6.8C10 6.51997 10 6.37996 10.0545 6.273C10.1024 6.17892 10.1789 6.10243 10.273 6.0545C10.38 6 10.52 6 10.8 6H13.2C13.48 6 13.62 6 13.727 6.0545C13.8211 6.10243 13.8976 6.17892 13.9455 6.273C14 6.37996 14 6.51997 14 6.8V9.2C14 9.48003 14 9.62004 13.9455 9.727C13.8976 9.82108 13.8211 9.89757 13.727 9.9455C13.62 10 13.48 10 13.2 10H10.8C10.52 10 10.38 10 10.273 9.9455C10.1789 9.89757 10.1024 9.82108 10.0545 9.727C10 9.62004 10 9.48003 10 9.2V6.8Z" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12.8C3 12.52 3 12.38 3.0545 12.273C3.10243 12.1789 3.17892 12.1024 3.273 12.0545C3.37996 12 3.51997 12 3.8 12H6.2C6.48003 12 6.62004 12 6.727 12.0545C6.82108 12.1024 6.89757 12.1789 6.9455 12.273C7 12.38 7 12.52 7 12.8V15.2C7 15.48 7 15.62 6.9455 15.727C6.89757 15.8211 6.82108 15.8976 6.727 15.9455C6.62004 16 6.48003 16 6.2 16H3.8C3.51997 16 3.37996 16 3.273 15.9455C3.17892 15.8976 3.10243 15.8211 3.0545 15.727C3 15.62 3 15.48 3 15.2V12.8Z" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 2.8C2 2.51997 2 2.37996 2.0545 2.273C2.10243 2.17892 2.17892 2.10243 2.273 2.0545C2.37996 2 2.51997 2 2.8 2H5.2C5.48003 2 5.62004 2 5.727 2.0545C5.82108 2.10243 5.89757 2.17892 5.9455 2.273C6 2.37996 6 2.51997 6 2.8V5.2C6 5.48003 6 5.62004 5.9455 5.727C5.89757 5.82108 5.82108 5.89757 5.727 5.9455C5.62004 6 5.48003 6 5.2 6H2.8C2.51997 6 2.37996 6 2.273 5.9455C2.17892 5.89757 2.10243 5.82108 2.0545 5.727C2 5.62004 2 5.48003 2 5.2V2.8Z" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g><path d="M21.2 22C21.48 22 21.62 22 21.727 21.9455C21.8211 21.8976 21.8976 21.8211 21.9455 21.727C22 21.62 22 21.48 22 21.2V10.8C22 10.52 22 10.38 21.9455 10.273C21.8976 10.1789 21.8211 10.1024 21.727 10.0545C21.62 10 21.48 10 21.2 10L18.8 10C18.52 10 18.38 10 18.273 10.0545C18.1789 10.1024 18.1024 10.1789 18.0545 10.273C18 10.38 18 10.52 18 10.8V13.2C18 13.48 18 13.62 17.9455 13.727C17.8976 13.8211 17.8211 13.8976 17.727 13.9455C17.62 14 17.48 14 17.2 14H14.8C14.52 14 14.38 14 14.273 14.0545C14.1789 14.1024 14.1024 14.1789 14.0545 14.273C14 14.38 14 14.52 14 14.8V17.2C14 17.48 14 17.62 13.9455 17.727C13.8976 17.8211 13.8211 17.8976 13.727 17.9455C13.62 18 13.48 18 13.2 18H10.8C10.52 18 10.38 18 10.273 18.0545C10.1789 18.1024 10.1024 18.1789 10.0545 18.273C10 18.38 10 18.52 10 18.8V21.2C10 21.48 10 21.62 10.0545 21.727C10.1024 21.8211 10.1789 21.8976 10.273 21.9455C10.38 22 10.52 22 10.8 22L21.2 22Z" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
 };
 const UPLOAD_SVG = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>`;
-function cefrRowHTML(withDel){ return `<div class="cefr-row"><input type="text" placeholder="Language, e.g. English"><select><option disabled selected>Proficiency level</option>${CEFR_LVLS.map(x=>`<option>${x}</option>`).join("")}</select>${withDel?'<button type="button" class="cefr-del" onclick="delCefr(this)" aria-label="Remove language">&times;</button>':'<span class="cefr-pad"></span>'}</div>`; }
+function cefrRowHTML(withDel){ return `<div class="cefr-row"><div class="combo single" data-ph="Select language"><div class="combo-ctl" onclick="toggleCombo(this)"><span class="combo-sum ph">Select language</span><i class="cvch">▾</i></div><div class="combo-pan"><input class="combo-srch" placeholder="Search…" oninput="filterCombo(this)"><div class="combo-list">${LANGS.map(x=>`<div class="combo-opt" data-l="${x.toLowerCase()}" onclick="pickOne(this)"><span class="ol">${x}</span></div>`).join("")}</div></div></div><select><option value="" disabled selected>Proficiency level</option>${CEFR_LVLS.map(x=>`<option>${x}</option>`).join("")}</select>${withDel?'<button type="button" class="cefr-del" onclick="delCefr(this)" aria-label="Remove language">&times;</button>':'<span class="cefr-pad"></span>'}</div>`; }
 function addCefr(btn){ btn.previousElementSibling.insertAdjacentHTML('beforeend', cefrRowHTML(true)); }
 function delCefr(btn){ btn.closest('.cefr-row').remove(); }
 
@@ -370,19 +376,20 @@ const TASKS = [
 
 const STEPS = [
  { name:"", groups:[
-   {title:"Profile basics", sec:1, fields:[
+   {title:"Availability", sec:1, fields:[
      {l:"Current work status",t:"select",r:1,tag:"PARITY",otherspec:"work",full:1,iw:"360px",ph:"Select status",o:["Employed full-time","Employed part-time","Self-employed / Freelance","Student","Unemployed / Seeking work","Retired","Other (Please specify)"]},
      {l:"Specify other work status",t:"specify",specid:"work",full:1},
      {l:"Days available",t:"combo",r:0,tag:"PARITY",full:1,nosort:1,ph:"Select days",o:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]},
+     {l:"Time-of-day availability (local time)",t:"combo",r:1,tag:"NEW",full:1,nosort:1,ph:"Select time blocks",o:["Early Morning (12am-6am)","Morning (6am-12pm)","Afternoon (12pm-6pm)","Evening (6pm-12am)","Flexible / Any time"]} ]},
+   {title:"Contact preferences", sec:1, fields:[
      {l:"Preferred communication channel",t:"combo",r:1,tag:"NEW",full:1,ph:"Select channels",o:["Email","SMS / Phone Call","WhatsApp","Discord","Telegram"]} ]},
    {title:"Languages & education", sec:1, fields:[
-     {l:"Native language(s)",t:"text",r:1,tag:"NEW",full:1,ph:"Your mother tongue(s)"},
+     {l:"Native language(s)",t:"combo",r:1,tag:"NEW",full:1,ph:"Select language(s)",o:LANGS.concat(["Other (Please specify)"])},
+     {l:"Specify other native language",t:"specify",full:1},
      {l:"Language proficiency (CEFR levels)",t:"cefr",r:1,tag:"NEW",full:1},
      {l:"School / university name(s)",t:"text",r:0,tag:"NEW",full:1,ph:"Separate with commas"},
      {l:"Field of study / major",t:"text",r:0,tag:"NEW"} ]},
-   {title:"Availability", sec:1, fields:[
-     {l:"Time-of-day availability (local time)",t:"combo",r:1,tag:"NEW",full:1,nosort:1,ph:"Select time blocks",o:["Early Morning (12am-6am)","Morning (6am-12pm)","Afternoon (12pm-6pm)","Evening (6pm-12am)","Flexible / Any time"]} ]},
-   {title:"Data labeling profile", sec:1, fields:[
+{title:"Data labeling profile", sec:1, fields:[
      {l:"Text & NLP tasks",t:"combo",r:0,tag:"NEW",full:1,ph:"Select tasks",o:["Text classification","Sentiment analysis","NER (Named Entity Recognition)","POS tagging","Intent classification","Entity linking","Relation extraction","Summarization labeling","Translation alignment","Translation QA (LQA/MQM)","Transcription","Rewriting/paraphrasing","OCR correction","Search query intent","Search relevance rating","Ad/content moderation","None","Other (Please specify)"]},
      {l:"Specify other Text & NLP tasks",t:"specify",full:1},
      {l:"Image & computer vision tasks",t:"combo",r:0,tag:"NEW",full:1,ph:"Select tasks",o:["Image classification","Bounding boxes","Polygons","Semantic segmentation","Instance segmentation","Keypoint/landmark","Pose annotation","Facial attribute/emotion","Medical imaging","Satellite/aerial","Agricultural","Document/form/receipt","OCR","None","Other (Please specify)"]},
@@ -399,7 +406,7 @@ const STEPS = [
      {l:"Specify other AI models",t:"specify",full:1},
      {l:"Domain / subject-matter expertise",t:"combo",r:0,tag:"NEW",full:1,ph:"Select domains",o:["Medicine / Healthcare","Law / Legal","Finance / Accounting","Engineering / Technology","Science / Research","Education","Marketing / Advertising","E-commerce / Retail","Agriculture","Government / Policy","Arts / Creative","Sports","Gaming","Translation & Localization","UX / UI Design","Data Analysis","General / No specific domain","Other (Please specify)"]},
      {l:"Specify other domain",t:"specify",full:1},
-     {l:"Describe your data labeling experience",t:"textarea",r:0,tag:"NEW",full:1,ph:"Tell us about your experience"},
+     {l:"Describe your data labeling experience",t:"textarea",r:0,tag:"NEW",full:1},
      {l:"Preferred project types",t:"textarea",r:0,tag:"NEW",full:1},
      {l:"Task types you prefer not to work on",t:"combo",r:0,tag:"NEW",full:1,ph:"Select task types",o:["Adult / NSFW content","Graphic violence","Political content","Religious content","Medical imagery","None"]} ]},
    {title:"Quality", sec:1, rate:["Poor","Fair","Good","Very Good","Excellent"], items:["Written English","Reading comprehension","Following guidelines","Attention to detail","Handling ambiguity"]},
@@ -424,15 +431,15 @@ function comboHTML(f){
 function fieldHTML(f){
   const lab = `<label>${f.l} ${f.nb?'':reqMark(f.r)} ${T(f.tag)}</label>`;
   let body="";
-  if(["text","email","tel","number","date"].includes(f.t)){ body = `<input type="${f.t}" placeholder="${f.ph||''}"${f.iw?` style="max-width:${f.iw}"`:''}>`; }
+  if(["text","email","tel","number","date"].includes(f.t)){ body = `<input type="${f.t}" data-max="100" oninput="charCount(this)" placeholder="${f.ph||''}"${f.iw?` style="max-width:${f.iw}"`:''}>`; }
   else if(f.t==="select"){ const hs=[]; if(f.gate) hs.push(`toggleGate('${f.gate}',this.value)`); if(f.otherspec) hs.push(`selOther(this,'spec-${f.otherspec}')`); const on=hs.length?` onchange="${hs.join(';')}"`:""; body = `<select${on}${f.iw?` style="max-width:${f.iw}"`:''}><option value="" disabled selected>${f.ph||'Select…'}</option>${f.o.map(x=>`<option>${x}</option>`).join("")}</select>`; }
-  else if(f.t==="textarea"){ body = `<textarea placeholder="${f.ph||''}"></textarea>`; }
+  else if(f.t==="textarea"){ body = `<textarea data-max="500" oninput="charCount(this)" placeholder="${f.ph||''}"></textarea>`; }
   else if(f.t==="file"){ body = `<input type="text" placeholder="Click to upload (PDF, PNG, JPG)" readonly style="cursor:pointer;background:#fafbfc">`; }
   else if(f.t==="upload"){ return `<div class="f full"><label>${f.l} ${reqMark(f.r)} ${T(f.tag)}</label><div class="dropzone"><span class="ic">${UPLOAD_SVG}</span><div class="up"><b>Click to upload</b> or drag and drop</div><div class="sz">${f.note||''}</div></div></div>`; }
   else if(f.t==="checks"){ body = `<div class="checks">${f.o.map(x=>`<label class="chk"><input type="checkbox"> ${x}</label>`).join("")}</div>`; }
   else if(f.t==="radios"){ const nm="r"+Math.random().toString(36).slice(2,7); body = `<div class="checks one">${f.o.map(x=>`<label class="rad"><input type="radio" name="${nm}"> ${x}</label>`).join("")}</div>`; }
   else if(f.t==="single"){ return `<div class="f full"><label class="chk" style="font-size:16px;font-weight:400"><input type="checkbox"> ${f.l} ${T(f.tag)}</label></div>`; }
-  else if(f.t==="specify"){ return `<div class="f full other-spec" data-ft="specify" data-fl="${f.l}"${f.specid?` id="spec-${f.specid}"`:''} style="display:none"><label>${f.l}</label><input type="text" placeholder="${f.ph||'Please specify'}"></div>`; }
+  else if(f.t==="specify"){ return `<div class="f full other-spec" data-ft="specify" data-fl="${f.l}"${f.specid?` id="spec-${f.specid}"`:''} style="display:none"><label>${f.l}</label><input type="text" data-max="100" oninput="charCount(this)" placeholder="${f.ph||'Please specify'}"></div>`; }
   else if(f.t==="combo"){ body = comboHTML(f); }
   else if(f.t==="cefr"){
     body = `<div class="cefr"><div class="cefr-rows">${cefrRowHTML(false)}</div><button type="button" class="cefr-add" onclick="addCefr(this)">+ Add another language</button></div>`;
@@ -475,6 +482,7 @@ function render(){
 function go(d){ cur = Math.max(0, Math.min(STEPS.length-1, cur+d)); render(); }
 function switchTab(t){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.t===t));document.querySelectorAll(".tabpanel").forEach(p=>p.hidden=p.id!=="tp-"+t);if(t!=="jmp")jmpEdit(false);}
 function jmpEdit(on){var v=document.getElementById("jmp-view"),e=document.getElementById("jmp-edit");if(v)v.hidden=on;if(e)e.hidden=!on;}
+function charCount(el){ var max=+(el.getAttribute("data-max")||0); if(!max) return; var n=el.value.length; var over=n>max; var cc=el.parentNode.querySelector(".charcount"); el.classList.toggle("over",over); if(over){ if(!cc){cc=document.createElement("div");cc.className="charcount";el.parentNode.appendChild(cc);} cc.textContent=n+"/"+max+" characters \u2014 over the limit"; cc.style.display=""; } else if(cc){ cc.style.display="none"; } }
 function jmpCollect(){
   var card=document.getElementById("card"); var v={};
   card.querySelectorAll(".f[data-fl]").forEach(function(fd){
@@ -483,7 +491,7 @@ function jmpCollect(){
     else if(t==="select"){var s=fd.querySelector("select");val=(s&&s.selectedIndex>0)?s.value:"";}
     else if(t==="textarea"){var ta=fd.querySelector("textarea");val=ta?ta.value.trim():"";}
     else if(t==="combo"){val=[].map.call(fd.querySelectorAll(".combo-opt.sel .ol"),function(x){return x.textContent.trim();}).join(", ");}
-    else if(t==="cefr"){val=[].map.call(fd.querySelectorAll(".cefr-row"),function(r){var lg=r.querySelector("input"),lv=r.querySelector("select");var L=lg?lg.value.trim():"",V=(lv&&lv.selectedIndex>0)?lv.value:"";if(!L&&!V)return "";return (L||"?")+(V?" "+V:"");}).filter(Boolean).join(" \u00b7 ");}
+    else if(t==="cefr"){val=[].map.call(fd.querySelectorAll(".cefr-row"),function(r){var lo=r.querySelector(".combo-opt.sel .ol"),lv=r.querySelector("select");var L=lo?lo.textContent.trim():"",V=(lv&&lv.selectedIndex>0)?lv.value:"";if(!L&&!V)return "";return (L||"?")+(V?" "+V:"");}).filter(Boolean).join("<br>");}
     else if(t==="specify"){if(fd.style.display!=="none"){var si=fd.querySelector("input");val=si?si.value.trim():"";}}
     if(val)v[lbl]=val;
   });
@@ -528,6 +536,7 @@ function jump(i){ cur=i; render(); }
 function pick(el){ el.parentNode.querySelectorAll('.pill').forEach(p=>p.classList.remove('sel')); el.classList.add('sel'); }
 function toggleGate(name,val){ const hide = !val || /^none/i.test(val) || /^no experience/i.test(val); document.querySelectorAll('.g-'+name).forEach(b=>b.style.display=hide?'none':''); }
 function toggleCombo(ctl){ const c=ctl.closest('.combo'); document.querySelectorAll('.combo.open').forEach(x=>{if(x!==c)x.classList.remove('open');}); c.classList.toggle('open'); }
+function pickOne(o){ var c=o.closest('.combo'); c.querySelectorAll('.combo-opt.sel').forEach(function(x){x.classList.remove('sel');}); o.classList.add('sel'); var sum=c.querySelector('.combo-sum'); sum.textContent=o.querySelector('.ol').textContent.trim(); sum.classList.remove('ph'); c.classList.remove('open'); }
 function toggleOpt(o){ const c=o.closest('.combo'); const grouped=!!c.querySelector('.cg'); const label=o.querySelector('.ol').textContent.trim(); const isExcl=!grouped&&(/^none$/i.test(label)||/no specific/i.test(label)); if(o.classList.contains('dis')&&!isExcl) return; if(isExcl){ o.classList.toggle('sel'); const on=o.classList.contains('sel'); c.querySelectorAll('.combo-opt').forEach(x=>{ if(x!==o){ if(on){x.classList.remove('sel');x.classList.add('dis');} else {x.classList.remove('dis');} } }); } else { o.classList.toggle('sel'); } syncCombo(c); updateOther(c); }
 function syncCombo(c){ const sels=[...c.querySelectorAll('.combo-opt.sel .ol')].map(s=>s.textContent.trim()); const sum=c.querySelector('.combo-sum'); if(sels.length){ sum.textContent=sels.join(', '); sum.classList.remove('ph'); } else { sum.textContent=c.dataset.ph; sum.classList.add('ph'); } c.classList.toggle('has-sel', sels.length>0); }
 function clearCombo(btn){ const c=btn.closest('.combo'); c.querySelectorAll('.combo-opt').forEach(o=>o.classList.remove('sel','dis')); syncCombo(c); updateOther(c); }
