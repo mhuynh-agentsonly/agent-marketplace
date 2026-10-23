@@ -3802,7 +3802,7 @@ const RV = {
       const segs=[]; (sc.ex||[]).forEach(function(x,k){ if(x.c) segs.push({src:SIM_AUDIO[RV_CUST[x.c]], dur:RV_DUR[RV_CUST[x.c]], row:'rv-x-'+si+'-'+k+'-c'}); if(x.rec) segs.push({blob:x.rec, dur:x.dur, row:'rv-x-'+si+'-'+k+'-a'}); else if(x.a) segs.push({src:RV_AUDIO[x.a], dur:RV_DUR[x.a], row:'rv-x-'+si+'-'+k+'-a'}); });
       const tr='<div class="rv-thread rv-mini">'+(sc.ex||[]).map(function(x,k){
         return (x.c?'<div class="rv-row c" id="rv-x-'+si+'-'+k+'-c"><span class="sm-av">'+lc('user',14)+'</span><div class="rv-bub">'+esc(x.c)+'</div></div>':'')+
-          (x.script?'<div class="rv-row a" id="rv-x-'+si+'-'+k+'-a"><div class="rv-acol"><div class="rv-script"><small>Script</small><div>'+esc(x.script)+'</div></div><div class="rv-said'+(x.said?'':' none')+'">'+(x.said?esc(x.said):'—')+'</div></div></div>':'');
+          (x.script?'<div class="rv-row a" id="rv-x-'+si+'-'+k+'-a"><div class="rv-acol"><div class="rv-script"><small>Script</small><div>'+esc(x.script)+'</div></div><div class="rv-said'+(x.said?'':' none')+'">'+(x.said?esc(x.said):lc('circle-alert',14)+' No speech detected in this response')+'</div></div></div>':'');
       }).join('')+'</div>';
       h+='<div class="rv-scr ai'+(term?' term':'')+'" id="rv-s-'+si+'"><div class="rv-scr-h">'+thumb+name+'</div>'+RV.player('s'+si, segs, false)+
         '<div class="rv-tabs" role="tablist"><button type="button" role="tab" class="on" aria-selected="true" onclick="RV.tab('+si+',0)">Hotspot results</button><button type="button" role="tab" aria-selected="false" onclick="RV.tab('+si+',1)">Transcript</button></div>'+
@@ -4364,7 +4364,7 @@ RV.flowHTML = function(rv, center){
     const segs=[]; (sc.ex||[]).forEach(function(x,k){ if(x.c) segs.push({src:SIM_AUDIO[RV_CUST[x.c]], dur:RV_DUR[RV_CUST[x.c]], row:'rv-x-'+si+'-'+k+'-c'}); if(x.rec) segs.push({blob:x.rec, dur:x.dur, row:'rv-x-'+si+'-'+k+'-a'}); else if(x.a) segs.push({src:RV_AUDIO[x.a], dur:RV_DUR[x.a], row:'rv-x-'+si+'-'+k+'-a'}); });
     const tr='<div class="rv-thread rv-mini">'+(sc.ex||[]).map(function(x,k){
       return (x.c?'<div class="rv-row c" id="rv-x-'+si+'-'+k+'-c"><span class="sm-av">'+lc('user',14)+'</span><div class="rv-bub">'+esc(x.c)+'</div></div>':'')+
-        (x.script?'<div class="rv-row a" id="rv-x-'+si+'-'+k+'-a"><div class="rv-acol"><div class="rv-script"><small>Script</small><div>'+esc(x.script)+'</div></div><div class="rv-said'+(x.said?'':' none')+'">'+(x.said?esc(x.said):'--')+'</div></div></div>':'');
+        (x.script?'<div class="rv-row a" id="rv-x-'+si+'-'+k+'-a"><div class="rv-acol"><div class="rv-script"><small>Script</small><div>'+esc(x.script)+'</div></div><div class="rv-said'+(x.said?'':' none')+'">'+(x.said?esc(x.said):lc('circle-alert',14)+' No speech detected in this response')+'</div></div></div>':'');
     }).join('')+'</div>';
     h+='<div class="rv-scr ai'+(term?' term':'')+'" id="rv-s-'+si+'"><div class="rv-scr-h">'+thumb+name+'</div>'+RV.player('s'+si, segs, false)+
       '<div class="rv-tabs" role="tablist"><button type="button" role="tab" class="on" aria-selected="true" onclick="RV.tab('+si+',0)">Hotspot Results</button><button type="button" role="tab" aria-selected="false" onclick="RV.tab('+si+',1)">Transcript</button></div>'+
@@ -4930,3 +4930,52 @@ function MICFILL(btnId, lv){ const b=document.getElementById(btnId); if(!b) retu
   };
 })();
 </script>
+<script>/* ===================== Round 26: Screen Flow Review shows only what the agent did (Mai) =====================
+   - Fields the agent never touched (left empty) are not shown and don't cost points.
+   - A terminal hotspot scores 0 pt (the whole attempt is 0% anyway).
+   - Every terminal hotspot gets a grey dashed box with the correct answer / correct path. */
+(function(){
+  const isField = function(h){ return h.type==='text' || h.type==='dropdown'; };
+  const keep = function(h){ return !(isField(h) && !h.agent); };
+  const baseEval = ISIM.evalScreen;
+  ISIM.evalScreen = function(clicked){
+    const end = baseEval.apply(this, arguments);
+    const st = ISIM.st, last = st && st.log[st.log.length-1];
+    if (last){
+      const scr = st.t.screens[last.img] || {hs:[]};
+      last.hotspots = last.hotspots.filter(keep);
+      last.hotspots.forEach(function(h){ if(h.r==='terminal'){ const src=scr.hs.find(function(z){ return z.name===h.name; }); if(src && isField(h)) h.okPts=src.points; h.pts=0; } });
+    }
+    return end;
+  };
+  RV.hotspotHTML = function(x){
+    if (!keep(x)) return '';
+    const ic = x.r==='ok' ? lc('check',11) : x.r==='terminal' ? '<i class="sq"></i>' : lc('x',11);
+    const verb = x.type==='dropdown' ? 'Selected' : 'Entered';
+    let d, box='';
+    if (x.type==='click'){
+      if (x.r==='ok') d='Clicked — correct — '+(x.end?'simulation completed':'navigated to Screen '+x.to);
+      else if (x.r==='terminal') d='Clicked — wrong — simulation terminated';
+      else d=x.note||'Clicked — wrong — simulation continued';
+      if (x.r==='terminal' && x.correctPath) box='Correct path was “'+esc(x.correctPath)+'”'+(x.correctTo?' — would have navigated to <span class="rv-chip">Screen '+x.correctTo+'</span>':'');
+    } else if (x.type==='checkbox'){
+      d = x.agent+' — '+(x.r==='ok'?'correct':'answer key is “'+x.correct+'”');
+    } else if (x.r==='terminal'){
+      d = verb+' “'+x.agent+'” — wrong — simulation terminated';
+      box = 'Correct answer was “'+esc(x.correct)+'”';
+    } else {
+      d = verb+' “'+x.agent+'” — '+(x.r==='ok'?'correct':'answer key is “'+x.correct+'”');
+    }
+    const pts = x.r==='terminal' ? '0 pt' : x.pts>0 ? '+'+x.pts+' pt' : x.pts<0 ? x.pts+' pt' : '0 pt';
+    return '<div class="rv-h '+x.r+'"><span class="ic">'+ic+'</span><div><b>'+esc(x.name)+'</b><small>'+esc(d)+'</small></div><span class="pts">'+pts+'</span></div>'+
+      (box ? '<div class="rv-path">'+lc('corner-down-right',14)+' '+box+'</div>' : '');
+  };
+  /* screens where the agent did nothing (e.g. time ran out) */
+  const baseFlow = RV.flowHTML;
+  RV.flowHTML = function(rv, center){
+    rv.screens.forEach(function(sc){ sc.hotspots = sc.hotspots.filter(keep); sc.hotspots.forEach(function(h){ if(h.r==='terminal') h.pts=0; }); });
+    return baseFlow.call(this, rv, center).replace(/<div class="rv-hs"><\/div>/g, '<div class="rv-hs"><p class="rv-none">No actions on this screen.</p></div>');
+  };
+})();
+</script>
+<style id="r26-css">.rv-none{margin:0;padding:10px 12px;font-size:13px;color:#667085;background:#f9fafb;border-radius:8px}</style>
