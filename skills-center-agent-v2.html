@@ -3000,7 +3000,7 @@ const SIM = {
   /* ---------- intro ---------- */
   header: function(call){
     const t=SIM.st.t;
-    return '<div class="qz-hd sm-hd"><div><div class="sm-kicker">'+lc('headphones',14)+' Audio simulation</div><h1>'+esc(t.name)+'</h1>'+(call?'':'<p>'+esc(t.desc)+'</p>')+'</div>'+
+    return '<div class="qz-hd sm-hd"><div><div class="sm-kicker">'+'Audio simulation</div><h1>'+esc(t.name)+'</h1>'+(call?'':'<p>'+esc(t.desc)+'</p>')+'</div>'+
       '<div class="qz-hr">'+(call?'<span class="qz-timer" title="Time remaining">'+lc('timer',14)+'<span class="sm-tt">'+QZ.fmt(t.duration*60000)+' left</span></span>':'')+'</div></div>';
   },
   renderIntro: function(){
@@ -3242,7 +3242,7 @@ const SIM = {
   complete: function(){
     const st=SIM.st; st.phase='done';
     SIM.setStatus(lc('circle-check',16)+' All responses recorded');
-    $('sm-thread').insertAdjacentHTML('beforeend','<div class="sm-end"><span class="sm-end-chip">'+lc('circle-check',14)+' Call ended</span><p>That’s the end of the call. Your responses are being submitted.</p></div>');
+    $('sm-thread').insertAdjacentHTML('beforeend','<div class="sm-end"><span class="sm-end-chip">'+lc('circle-check',14)+' Conversation ended</span><p>That’s the end of the conversation. Your responses are being submitted.</p></div>');
     SIM.scroll(); SIM.sync();
     setTimeout(SIM.submit, 900);   // auto-submit, like the agent portal coaching sims
   },
@@ -3770,7 +3770,7 @@ const RV = {
       if (x.r==='c') segs.push({src:SIM_AUDIO[x.a], dur:RV_DUR[x.a], row:'rv-r-'+x.i});
       else segs.push(x.rec ? {blob:x.rec, dur:x.dur, row:'rv-r-'+x.i} : {src:RV_AUDIO[x.tts], dur:RV_DUR[x.tts], row:'rv-r-'+x.i});
     });
-    let h='<div class="rv-sec-h c"><h2>Call Review</h2><p>Listen to the whole call and compare what you said with the script. The line that’s playing is highlighted.</p></div>'+RV.player('call', segs, true);
+    let h='<div class="rv-sec-h c"><h2>Audio Playback</h2><p>Listen to the whole conversation and compare what you said with the script. The line that’s playing is highlighted.</p></div>'+RV.player('call', segs, true);
     h+='<div class="rv-conv"><div class="sm-conv-h"><span class="sm-who"><span class="sm-av">'+lc('user',16)+'</span>Customer</span><span class="sm-who">You<span class="sm-av agent">'+lc('headphones',16)+'</span></span></div><div class="rv-thread">';
     rv.rows.forEach(function(x){
       if (x.r==='c'){ h+='<div class="rv-row c" id="rv-r-'+x.i+'"><span class="sm-av">'+lc('user',16)+'</span><div class="rv-bub">'+esc(x.t)+'</div></div>'; return; }
@@ -4035,7 +4035,7 @@ const ISIM = {
 
   header: function(run){
     const t=ISIM.st.t;
-    return '<div class="qz-hd sm-hd"><div><div class="sm-kicker">'+lc('image',14)+' Image simulation</div><h1>'+esc(t.name)+(run?'<span class="im-scr" id="im-scr"></span>':'')+'</h1></div>'+
+    return '<div class="qz-hd sm-hd"><div><div class="sm-kicker">'+'Image simulation</div><h1>'+esc(t.name)+(run?'<span class="im-scr" id="im-scr"></span>':'')+'</h1></div>'+
       '<div class="qz-hr">'+(run?'<span class="qz-timer" title="Time remaining">'+lc('timer',14)+'<span class="im-tt">'+QZ.fmt(t.duration*60000)+' left</span></span>':'')+'</div></div>';
   },
   briefHTML: function(){ return '<dl class="im-brief-l">'+ISIM.st.t.brief.map(function(b){ return '<dt>'+esc(b[0])+'</dt><dd>'+esc(b[1])+'</dd>'; }).join('')+'</dl>'; },
@@ -4448,7 +4448,7 @@ RV.open = function(id){
 /* ---------- audio sim intro = image sim structure + instructional video; no chip on the call screen ---------- */
 SIM.header = function(call){
   const t=SIM.st.t;
-  return '<div class="qz-hd sm-hd"><div>'+(call?'':'<div class="sm-kicker">'+lc('headphones',14)+' Audio simulation</div>')+'<h1>'+esc(t.name)+'</h1></div>'+
+  return '<div class="qz-hd sm-hd"><div>'+(call?'':'<div class="sm-kicker">'+'Audio simulation</div>')+'<h1>'+esc(t.name)+'</h1></div>'+
     '<div class="qz-hr">'+(call?'<span class="qz-timer" title="Time remaining">'+lc('timer',14)+'<span class="sm-tt">'+QZ.fmt(t.duration*60000)+' left</span></span>':'')+'</div></div>';
 };
 SIM.renderIntro = function(){
@@ -4473,7 +4473,7 @@ SIM.renderIntro = function(){
 (function(){ const begin=SIM.begin; SIM.begin=function(){ const v=document.querySelector('#sm-intro video'); if(v){ try{ v.pause(); }catch(e){} } begin(); }; })();
 ISIM.header = function(run){
   const t=ISIM.st.t;
-  return '<div class="qz-hd sm-hd"><div>'+(run?'':'<div class="sm-kicker">'+lc('image',14)+' Image simulation</div>')+'<h1>'+esc(t.name)+(run?'<span class="im-scr" id="im-scr"></span>':'')+'</h1></div>'+
+  return '<div class="qz-hd sm-hd"><div>'+(run?'':'<div class="sm-kicker">'+'Image simulation</div>')+'<h1>'+esc(t.name)+(run?'<span class="im-scr" id="im-scr"></span>':'')+'</h1></div>'+
     '<div class="qz-hr">'+(run?'<span class="qz-timer" title="Time remaining">'+lc('timer',14)+'<span class="im-tt">'+QZ.fmt(t.duration*60000)+' left</span></span>':'')+'</div></div>';
 };
 </script>
@@ -4806,7 +4806,7 @@ const AV = {
   };
   ISIM.header=function(run){
     const t=ISIM.st.t; if(!AV.on(t)) return header(run);
-    return '<div class="qz-hd sm-hd"><div>'+(run?'':'<div class="sm-kicker">'+lc('layers',16)+' Audio & Image simulation</div>')+'<h1>'+esc(t.name)+(run?'<span class="im-scr" id="im-scr"></span>':'')+'</h1></div>'+
+    return '<div class="qz-hd sm-hd"><div>'+(run?'':'<div class="sm-kicker">'+'Audio & Image simulation</div>')+'<h1>'+esc(t.name)+(run?'<span class="im-scr" id="im-scr"></span>':'')+'</h1></div>'+
       '<div class="qz-hr">'+(run?'<span class="qz-timer" title="Time remaining">'+lc('timer',14)+'<span class="im-tt">'+QZ.fmt(t.duration*60000)+' left</span></span>':'')+'</div></div>';
   };
   ISIM.renderIntro=function(){
@@ -4979,3 +4979,123 @@ function MICFILL(btnId, lv){ const b=document.getElementById(btnId); if(!b) retu
 })();
 </script>
 <style id="r26-css">.rv-none{margin:0;padding:10px 12px;font-size:13px;color:#667085;background:#f9fafb;border-radius:8px}</style>
+<script>/* ===================== Round 29: match Figma image sim page (Mai, 2026-10-25) =====================
+   - Hotspots use the Coaching agent-portal styling (hard-light outlines). Fields = blue.
+     Click areas show the result like Coaching: correct = green, wrong = orange, terminal = red → then the sim ends.
+   - Toasts: sim complete = light Success, terminal = light Error "Simulation ended", time's up = dark (inverted).
+   - Screen Flow Review: terminal field → answer key inline, no box; end bar copy; no "not reached" note.
+   - Screen load error: timer pauses + Try again (Prototype › Fail to load this screen).
+   - Exit dialog copy for the non-proctored image sim. */
+LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/><line x1="13.5" x2="6" y1="13.5" y2="21"/><line x1="18" x2="21" y1="12" y2="15"/><path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"/><path d="M21 15V5a2 2 0 0 0-2-2H9"/>';
+(function(){
+  /* toast kinds: 'ok' (light success), 'error' (light error), true (dark/inverted, e.g. time's up) */
+  const baseToast = App.toast;
+  App.toast = function(msg, icon, warn){
+    baseToast.call(App, msg, icon, warn===true);
+    const t=$('toast'); t.classList.toggle('ok', warn==='ok'); t.classList.toggle('err', warn==='error');
+  };
+  /* click areas: show result colour (Coaching) — terminal stays red a moment, then the sim ends */
+  const baseHit = ISIM.hit;
+  ISIM.hit = function(h, z){
+    const st=ISIM.st; if(!st || st.phase!=='run' || PQ.paused || st.loadErr) return;
+    if (h.type!=='click-area') return baseHit.apply(this, arguments);
+    const res = h.interaction==='end-simulation' ? 'c-term' : (h.interaction==='navigate' || typeof h.dest==='number' || h.dest==='result') ? 'c-ok' : 'c-wrong';
+    z.classList.add('open','clicked',res); z.innerHTML='<span class="im-chip">'+esc(h.name)+'</span>';
+    if (res==='c-wrong'){ setTimeout(function(){ z.classList.remove('open','clicked',res); z.innerHTML=''; }, 900); return; }  /* wrong click: flashes orange, sim continues (no wrong clicks in the demo data yet) */
+    setTimeout(function(){ ISIM.click(h); }, res==='c-term' ? 1100 : 500);
+  };
+  const baseEnd = ISIM.end;
+  ISIM.end = function(why){
+    const r = baseEnd.apply(this, arguments);
+    if (why==='terminal') App.toast('Simulation ended — let’s get your result','circle-x','error');
+    else if (why==='time') App.toast('Time’s up — your simulation was submitted automatically','timer',true);
+    else App.toast('Simulation complete — let’s get your result','circle-check','ok');
+    return r;
+  };
+  /* screen load error → timer paused */
+  const baseTick = ISIM.tick;
+  ISIM.tick = function(){
+    const st=ISIM.st;
+    if (st && st.phase==='run' && st.loadErr){
+      document.querySelectorAll('.im-tt').forEach(function(e){ e.textContent=QZ.fmt(st.pausedLeft)+' · Paused'; });
+      document.querySelectorAll('#im-run .qz-timer').forEach(function(e){ e.classList.add('paused'); e.classList.remove('low'); });
+      return;
+    }
+    document.querySelectorAll('#im-run .qz-timer').forEach(function(e){ e.classList.remove('paused'); });
+    return baseTick.apply(this, arguments);
+  };
+  ISIM.protoFail = function(){
+    ISIM.protoClose(); const st=ISIM.st; if(!st || st.phase!=='run' || st.loadErr) return;
+    st.loadErr=true; st.pausedLeft=Math.max(0, st.endAt-Date.now()); ISIM.closeDD();
+    const w=$('im-wrap'); w.classList.add('err'); w.classList.remove('fading');
+    const e=document.createElement('div'); e.id='im-err'; e.className='im-err';
+    e.innerHTML='<span class="fi">'+lc('image-off',22)+'</span><b>This screen didn’t load</b><p>Check your connection and try again. Your timer is paused until the screen loads.</p><button class="obtn" type="button" onclick="ISIM.retryLoad()">'+lc('rotate-ccw',14)+' Try again</button>';
+    w.appendChild(e); ISIM.tick();
+  };
+  ISIM.retryLoad = function(){
+    const st=ISIM.st; if(!st || !st.loadErr) return;
+    st.loadErr=false; st.endAt=Date.now()+st.pausedLeft;
+    const w=$('im-wrap'); w.classList.remove('err'); const e=$('im-err'); if(e) e.remove();
+    ISIM.load(st.screen); ISIM.tick();
+  };
+  const menu=document.querySelector('#im-proto .sm-proto-menu');
+  if (menu) menu.insertAdjacentHTML('beforeend','<button type="button" role="menuitem" onclick="ISIM.protoFail()">'+lc('image-off',15)+' Fail to load this screen</button>');
+  /* exit dialog copy — non-proctored image sim */
+  const baseAsk = App.askExit;
+  App.askExit = function(){
+    baseAsk.apply(this, arguments);
+    if (S.screen==='img' && ISIM.st && !ISIM.st.proctored && ISIM.st.t.simMode==='image')
+      $('exit-p').textContent='Your progress won’t be saved. If you leave now, you’ll start the simulation again from the first screen.';
+  };
+  /* Screen Flow Review */
+  const isField=function(h){ return h.type==='text' || h.type==='dropdown'; };
+  const baseHs = RV.hotspotHTML;
+  RV.hotspotHTML = function(x){
+    if (isField(x) && x.r==='terminal'){
+      if (!x.agent) return '';
+      const verb = x.type==='dropdown' ? 'Selected' : 'Entered';
+      const d = verb+' “'+x.agent+'” — answer key is “'+x.correct+'” — simulation terminated';
+      return '<div class="rv-h terminal"><span class="ic"><i class="sq"></i></span><div><b>'+esc(x.name)+'</b><small>'+esc(d)+'</small></div><span class="pts">0 pt</span></div>';
+    }
+    return baseHs.apply(this, arguments);
+  };
+  const baseFlow = RV.flowHTML;
+  RV.flowHTML = function(rv, center){
+    return baseFlow.apply(this, arguments)
+      .replace(/<div class="rv-end">[\s\S]*?<\/div>/, '<div class="rv-end">'+lc('circle-check',20)+'<span>Simulation completed — you reached the final screen</span></div>');
+  };
+})();
+</script>
+<style id="r29-css">
+  /* hotspots — Coaching agent-portal styling (free-floating colours, hard light) */
+  #im-layer .im-zone.open{background:none;outline:none}
+  #im-layer .im-zone.open::before{content:"";position:absolute;inset:0;border-radius:2px;pointer-events:none;mix-blend-mode:hard-light;
+    --hc:0,86,255;background:rgba(var(--hc),.05);box-shadow:0 0 0 1.5px rgba(var(--hc),.9),0 0 0 3.5px rgba(255,255,255,.08),0 0 0 6.5px rgba(var(--hc),.15)}
+  #im-layer .im-zone.c-ok::before{--hc:0,255,0}
+  #im-layer .im-zone.c-wrong::before{--hc:220,104,3}
+  #im-layer .im-zone.c-term::before{--hc:255,17,0}
+  #im-layer .im-zone.clicked{background:none}
+  .im-zone.open .im-chip{left:-1.5px;bottom:calc(100% + 1.5px);background:#1570ef;border-radius:4px 4px 0 0;font-weight:500;font-size:11px;line-height:15px;padding:0 6px}
+  .im-zone.c-ok .im-chip{background:#009170}
+  .im-zone.c-wrong .im-chip{background:#dc6803}
+  .im-zone.c-term .im-chip{background:#d92d20}
+  .im-in{inset:3px;width:auto;height:auto;border:1px solid #e5e7eb;border-radius:6px;box-shadow:none;z-index:1}
+  .im-in:focus{border-color:#5fceb1;box-shadow:0 0 0 1px #5fceb1}
+  .im-dd{left:3px;right:3px;bottom:3px;border:1px solid #e5e7eb;border-radius:6px;box-shadow:none;z-index:1}
+  .im-dd:focus-visible{border-color:#5fceb1;box-shadow:0 0 0 1px #5fceb1}
+  /* load error */
+  .im-wrap.err .im-stage{visibility:hidden}
+  .im-err{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;background:#f3f4f6}
+  .im-err .fi{width:48px;height:48px;border-radius:999px;background:#e5e7eb;color:#4b5563;display:flex;align-items:center;justify-content:center}
+  .im-err b{font-size:16px;color:#111827}
+  .im-err p{margin:0;max-width:360px;font-size:14px;color:#6b7280;line-height:1.5}
+  .im-err .obtn{display:inline-flex;align-items:center;gap:6px;margin-top:4px}
+  .qz-timer.paused{background:#fef3c7;color:#d97706}
+  /* toasts (DS Sonner): ok = Success, err = Error, warn = Inverted */
+  .toast.ok{background:#e9fef9;color:#007460;border:1px solid #5fceb1;box-shadow:0 10px 15px -3px rgba(16,24,40,.1),0 4px 6px -4px rgba(16,24,40,.1)}
+  .toast.ok .lci{color:#00b081}
+  .toast.err{background:#fef2f2;color:#dc2626;border:1px solid #ef4444;box-shadow:0 10px 15px -3px rgba(16,24,40,.1),0 4px 6px -4px rgba(16,24,40,.1)}
+  .toast.err .lci{color:#ef4444}
+  /* review end bar — completed */
+  .rv-end:not(.term) .lci{color:#00b081}
+</style>
