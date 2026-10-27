@@ -5139,3 +5139,13 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
 (function(){ const f=RV.flowHTML; RV.flowHTML=function(rv,center){ let h=f.apply(this,arguments); let i=0;
   return h.replace(/<div class="rv-scr( ai)?( term)?"/g,function(m,ai,term){ const sc=rv.screens[i++]; if(!sc||term) return m; const wrong=sc.hotspots.some(function(x){return x.r!=='ok'&&x.r!=='terminal';}); return wrong?m.replace('rv-scr','rv-scr warn'):m; }); }; })();
 </script>
+<style id="r35-css">
+  /* colour rule (Mai, 2026-10-27): yellow/warning = not passed + mistakes, red = terminal only */
+  .res-main h1.fail{color:#d97706}
+  .rd-score .ic.fail{background:#fffbeb;color:#d97706}
+  .rd-score .v.fail{color:#d97706}
+  .rd-score .bdg.fail{background:#fffbeb;color:#d97706}
+  .rv-tile.fail{background:#fffbeb;border-color:#fde68a}.rv-tile.fail b{color:#d97706}
+  .badge-fail,.rv-bdg.fail,.rd-status.fail{background:#fffbeb;color:#d97706}
+  .res-h.fail{color:#d97706}
+</style>
