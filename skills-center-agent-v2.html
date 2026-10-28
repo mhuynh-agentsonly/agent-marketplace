@@ -3014,7 +3014,7 @@ const SIM = {
         '<li><b>Stop recording.</b> Press the <span class="sm-inline-mic">'+lc('mic',12)+'</span> button when you finish. The customer replies right away.</li>'+
         '<li><b>Finish.</b> After your last response, the call ends and your responses are submitted automatically.</li></ol>'+
       '<ul><li>You need <b>'+t.threshold+'%</b> to pass</li><li>You can’t replay the customer or re-record a response, so listen carefully</li>'+
-        (st.proctored?'<li>Your camera, microphone, and entire screen are recorded until you submit</li><li>Stay on this tab — leaving it is noted for the reviewer</li>':'<li>Only your voice responses are recorded — this test isn’t proctored</li>')+'</ul>'+
+        (st.proctored?'<li>Your camera, microphone, and entire screen are recorded until you submit</li><li>Stay on this tab — leaving it is noted for the reviewer</li>':'<li>Your spoken responses are recorded so they can be scored</li>')+'</ul>'+
       (st.proctored ? '' : '<div id="sm-check">'+SIM.checkHTML()+'</div>')+
       '<div class="qz-alert" role="alert">'+lc('circle-alert',20)+'<span>The use of AI is prohibited and will result in automatic disqualification.</span></div></div>'+
       '<div class="qz-next sm-start-row"><button class="gbtn" id="sm-begin" type="button" '+(SIM.ready()?'':'disabled')+' onclick="SIM.begin()">Start simulation '+lc('arrow-right',16)+'</button>'+
@@ -4050,7 +4050,7 @@ const ISIM = {
         '<li><b>Move through the booking.</b> Clicking the right place on the screen (like a search or booking button in the image) takes you to the next screen. You can’t go back.</li>'+
         '<li><b>Finish.</b> The simulation ends when the booking is complete.</li></ol>'+
       '<ul><li>You need <b>'+t.threshold+'%</b> to pass</li><li>Wrong entries cost points, and some actions end the simulation straight away</li>'+
-        (st.proctored?'<li>Your camera, microphone, and entire screen are recorded until you submit</li>':'<li>This test isn’t proctored</li>')+'</ul>'+
+        (st.proctored?'<li>Your camera, microphone, and entire screen are recorded until you submit</li>':'')+'</ul>'+
       '<div class="qz-alert" role="alert">'+lc('circle-alert',20)+'<span>The use of AI is prohibited and will result in automatic disqualification.</span></div></div>'+
       '<div class="qz-next sm-start-row"><button class="gbtn" id="im-begin" type="button" onclick="ISIM.begin()">Start simulation '+lc('arrow-right',16)+'</button></div>';
   },
@@ -4463,7 +4463,7 @@ SIM.renderIntro = function(){
       '<li><b>Stop recording.</b> Press the <span class="sm-inline-mic">'+lc('mic',12)+'</span> button when you finish. The customer replies right away.</li>'+
       '<li><b>Finish.</b> After your last response, the call ends and your responses are submitted automatically.</li></ol>'+
     '<ul><li>You need <b>'+t.threshold+'%</b> to pass</li><li>You can’t replay the customer or re-record a response, so listen carefully</li>'+
-      (st.proctored?'<li>Your camera, microphone, and entire screen are recorded until you submit</li><li>Stay on this tab — leaving it is noted for the reviewer</li>':'<li>Only your voice responses are recorded — this test isn’t proctored</li>')+'</ul>'+
+      (st.proctored?'<li>Your camera, microphone, and entire screen are recorded until you submit</li><li>Stay on this tab — leaving it is noted for the reviewer</li>':'<li>Your spoken responses are recorded so they can be scored</li>')+'</ul>'+
     (st.proctored ? '' : '<div id="sm-check">'+SIM.checkHTML()+'</div>')+
     '<div class="qz-alert" role="alert">'+lc('circle-alert',20)+'<span>The use of AI is prohibited and will result in automatic disqualification.</span></div></div>'+
     '<div class="qz-next sm-start-row"><button class="gbtn" id="sm-begin" type="button" '+(SIM.ready()?'':'disabled')+' onclick="SIM.begin()">Start simulation '+lc('arrow-right',16)+'</button>'+
@@ -4820,7 +4820,7 @@ const AV = {
         '<li><b>Move through the booking.</b> Clicking the right place on the screen takes you to the next screen. You can’t go back, and the rest of that screen’s conversation is skipped.</li>'+
         '<li><b>Finish.</b> The simulation ends when the booking is complete and is submitted automatically.</li></ol>'+
       '<ul><li>You need <b>'+t.threshold+'%</b> to pass</li><li>Wrong entries cost points, and some actions end the simulation straight away</li><li>You can’t replay the customer or re-record a response</li>'+
-        (st.proctored?'<li>Your camera, microphone, and entire screen are recorded until you submit</li>':'<li>Only your voice responses are recorded — this test isn’t proctored</li>')+'</ul>'+
+        (st.proctored?'<li>Your camera, microphone, and entire screen are recorded until you submit</li>':'<li>Your spoken responses are recorded so they can be scored</li>')+'</ul>'+
       '<div class="qz-alert" role="alert">'+lc('circle-alert',20)+'<span>The use of AI is prohibited and will result in automatic disqualification.</span></div></div>'+
       '<div class="qz-next sm-start-row"><button class="gbtn" id="im-begin" type="button" onclick="ISIM.begin()">Start simulation '+lc('arrow-right',16)+'</button></div>';
   };
@@ -5149,3 +5149,45 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
   .badge-fail,.rv-bdg.fail,.rd-status.fail{background:#fffbeb;color:#d97706}
   .res-h.fail{color:#d97706}
 </style>
+<script id="r36-js">/* PO (Pia, 2026-10-28): AAS ships in Marketplace first WITHOUT proctoring. "Proctoring" will later become identity
+   verification before every test (TestGorilla / HackerRank style) — not cheating detection. Until then every test runs
+   the non-proctored flow, the "(No proctoring)" duplicates are hidden and the Proctored badge is gone (it would apply to
+   every test once ID verification ships, so it no longer distinguishes anything). Proctoring code is kept, just unreachable. */
+(function(){
+  for (let i=TESTS.length-1;i>=0;i--){ if(/\(No proctoring\)/.test(TESTS[i].name)) TESTS.splice(i,1); }
+  TESTS.forEach(function(t){ t.proctored=false; });
+  Object.keys(S.results||{}).forEach(function(k){ if(S.results[k]) S.results[k].proctored=false; });
+  App.procBadge=function(){ return ''; };
+  if (App.renderSkills) try{ App.renderSkills(); }catch(e){}
+})();
+</script>
+<script id="r37-js">/* Mai, 28 Oct: AAS ships without proctoring, so BOTH Audio and Audio & Image intros need the "Check your audio"
+   card (speakers + mic). Audio already has it; this adds the same card + gating to the Audio & Image intro by reusing
+   SIM's check UI (SIM.checkHTML / playCheck / testMic) with a temporary SIM.st for the intro only. */
+(function(){
+  const rIntro=ISIM.renderIntro, iBegin=ISIM.begin, refresh=SIM.refreshCheck;
+  const avReady=function(){ const st=ISIM.st; return !!(st && (st.proctored || (st.chk && st.chk.checked && st.chk.micState==='pass'))); };
+  const syncIm=function(){
+    const b=$('im-begin'); if(!b) return; const ok=avReady(); b.disabled=!ok;
+    const h=b.parentNode.querySelector('.sm-start-hint'); if(h) h.style.display=ok?'none':'';
+  };
+  ISIM.renderIntro=function(){
+    rIntro();
+    const st=ISIM.st, t=st && st.t; if(!t || !AV.on(t) || st.proctored) return;
+    st.chk = st.chk || { t:t, proctored:false, checkState:null, micState:'idle', checked:false, turns:[], _avchk:true };
+    SIM.st = st.chk;
+    const old=$('sm-intro'); if(old) old.innerHTML='';           // avoid duplicate #sm-check / #sm-begin ids
+    const box=$('im-intro'); if(!box) return;
+    const alert=box.querySelector('.qz-alert');
+    if (alert && !box.querySelector('#sm-check')) alert.insertAdjacentHTML('beforebegin','<div id="sm-check">'+SIM.checkHTML()+'</div>');
+    const b=$('im-begin'); if(b && !b.parentNode.querySelector('.sm-start-hint')) b.insertAdjacentHTML('afterend','<span class="sm-start-hint">Check your speakers and microphone to start</span>');
+    syncIm();
+  };
+  SIM.refreshCheck=function(){ refresh(); syncIm(); };
+  ISIM.begin=function(){ const st=ISIM.st; if(st && st.chk && !avReady()) return; if(st && st.chk && SIM.st===st.chk) SIM.st=null; iBegin(); };
+  const drop=function(){ if(SIM.st && SIM.st._avchk){ try{ SIM.stopAudio(); }catch(e){} cancelAnimationFrame(SIM._micRaf); clearTimeout(SIM._micTO); SIM.st=null; } };
+  const iStop=ISIM.stop; ISIM.stop=function(){ drop(); return iStop.apply(this, arguments); };
+  const sStop=SIM.stop; SIM.stop=function(){ drop(); return sStop.apply(this, arguments); };
+  const nav=App.nav; App.nav=function(n){ if(n!=='img') drop(); return nav.apply(this, arguments); };
+})();
+</script>
