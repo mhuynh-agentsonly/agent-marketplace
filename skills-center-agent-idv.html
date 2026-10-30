@@ -5196,6 +5196,13 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
 <style id="idv-css">
   /* returning agents: identity check inside camera setup */
   body.idv-camid .idv-proto{display:block}
+  #scr-setup .ps-badge{display:none!important}
+  /* Marketplace DS Button · Secondary: white, light-teal border, teal text */
+  .pck-actions .sbtn.sec,.pck-actions .sbtn.sec:hover{background:#fff;color:#007460;border:1px solid #5fceb1;filter:none}
+  .pck-actions .sbtn.sec:hover{background:#E9FEF9}
+  /* setup: keep the camera preview in view while scrolling the checks */
+  #scr-setup .ps-grid > div:first-child{position:sticky;top:96px;z-index:2}
+  @media (max-width:980px){ #scr-setup .ps-grid{display:block} #scr-setup .ps-grid > div:first-child{position:static;display:contents} #scr-setup .ps-grid > div:last-child{margin-top:28px} #scr-setup .ps-video{position:sticky;top:88px;z-index:5;aspect-ratio:auto;height:min(40vh, calc((100vw - 48px) * .59));box-shadow:0 8px 20px rgba(16,24,40,.12)} }
   .ps-video.idm-active{box-shadow:0 0 0 3px #00D0A3;transition:box-shadow .3s}
   .idm-why{font-size:12.5px;color:#6b7280;align-self:center}
   .idm-follow{display:flex;align-items:center;gap:6px;color:#007460;font-weight:500}
@@ -6177,14 +6184,18 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
 
   // No demo mode in this prototype — always real devices (Mai's local camera works)
   try{ PQ.demo=false; document.body.classList.remove('demo'); PQ.setDemo=function(){}; }catch(e){}
-  try{ const vs=PQ.vstate; PQ.vstate=function(k){ vs.apply(PQ, arguments); if(k==='insecure') document.querySelectorAll('#scr-setup p').forEach(function(p){ if(/demo mode/.test(p.textContent)) p.textContent='Your browser didn’t allow camera access on this page. Open the prototype in Chrome, then click Reconnect camera & mic.'; }); }; }catch(e){}
+  try{ const vs=PQ.vstate; PQ.vstate=function(k){ vs.apply(PQ, arguments); if(k==='unsupported') document.querySelectorAll('#scr-setup h4, #scr-setup p').forEach(function(p){ p.innerHTML=p.innerHTML.replace('can’t run a proctored test','can’t run the identity check').replace('Proctored tests need','The identity check needs'); }); if(k==='insecure') document.querySelectorAll('#scr-setup p').forEach(function(p){ if(/demo mode/.test(p.textContent)) p.textContent='Your browser didn’t allow camera access on this page. Open the prototype in Chrome, then click Reconnect camera & mic.'; }); }; }catch(e){}
 
   // One policy for all tests (Mai, 28 Oct): ID check, then proctoring setup (camera, mic, screenshare). AI reviews flagged sessions.
   TESTS.forEach(function(t){ t.proctored=true; });
+  // UI naming (Mai, 30 Oct): "Proctoring" is internal (Jira/product/dev); agents see "Identity check"
+  (function(){ const g=TESTS.find(function(t){ return t.id==='marketplace-gating-quiz'; }); if(!g) return;
+    g.desc=g.desc.replace('how proctored tests are reviewed','how tests are checked');
+    (g.qs||[]).forEach(function(q){ q.q=q.q.replace(/during a proctored test/g,'during a test'); }); })();
   const prevSetup = App.openSetup;
   App.openSetup = function(t){
     prevSetup(t);
-    const ab=$('ps-about'); if(ab) ab.innerHTML=ab.innerHTML.replace('Only Agents Only reviewers can access your session recording.','Your session is checked automatically for anything unusual. Only Agents Only can access the recording.');
+    const ab=$('ps-about'); if(ab) ab.innerHTML=ab.innerHTML.replace('How proctoring works','How the identity check works').replace('Only Agents Only reviewers can access your session recording.','Your session is checked automatically for anything unusual. Only Agents Only can access the recording.');
     const hd=document.querySelector('#scr-setup .ps-head'); if(hd && !hd.querySelector('.idv-prog')) hd.insertAdjacentHTML('beforeend','<div class="idv-prog"><div class="l">Step 2 of 2 · <b>Device setup</b></div><div class="bar"><i style="width:100%"></i></div></div>');
   };
 
@@ -6241,7 +6252,7 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
     const i=pqChecks().findIndex(function(x){return x.k==='id';}); const tile=document.querySelectorAll('#ps-checks .pck')[i]; if(!tile) return;
     tile.classList.add('pck-id'); const body=tile.querySelector('.pck-body'), o=PQ.st.id;
     const faceOk=PQ.st.face && PQ.st.face.s==='pass';
-    if(o.s==='fail') body.insertAdjacentHTML('beforeend','<div class="pck-hint">Face the light and remove hats or sunglasses.'+(IDM.fails>=2?' Or confirm with a quick selfie instead.':'')+'</div><div class="pck-actions"><button class="sbtn" type="button" '+(faceOk?'':'disabled')+' onclick="IDV.idm.run()">'+lc('rotate-ccw',14)+' Try again</button>'+(IDM.fails>=2?'<button class="sbtn" type="button" onclick="IDV.selfieFallback()">'+lc('scan-face',14)+' Use a selfie instead</button>':'')+'</div>');
+    if(o.s==='fail') body.insertAdjacentHTML('beforeend','<div class="pck-hint">Face the light and remove hats or sunglasses.'+(IDM.fails>=2?' Or confirm with a quick selfie instead.':'')+'</div><div class="pck-actions"><button class="sbtn" type="button" '+(faceOk?'':'disabled')+' onclick="IDV.idm.run()">'+lc('rotate-ccw',14)+' Try again</button>'+(IDM.fails>=2?'<button class="sbtn sec" type="button" onclick="IDV.selfieFallback()">'+lc('scan-face',14)+' Use a selfie instead</button>':'')+'</div>');
     else if(o.s==='idle') body.insertAdjacentHTML('beforeend','<div class="pck-hint">We’ll ask you to look straight, then turn your head left and right. We compare it with the ID you verified on '+ACCOUNT.verifiedOn+'.</div><div class="pck-actions"><button class="sbtn" type="button" '+(faceOk?'':'disabled')+' onclick="IDV.idm.run()">'+lc('scan-face',14)+' Start face check</button>'+(faceOk?'':'<span class="idm-why">Get your whole face in the camera first</span>')+'</div>');
     else if(o.s==='busy' && IDM.stage && IDM.stage!=='match') body.insertAdjacentHTML('beforeend','<div class="pck-hint idm-follow">'+lc('arrow-left',14)+' Follow the prompts on your camera preview</div>');
   };
