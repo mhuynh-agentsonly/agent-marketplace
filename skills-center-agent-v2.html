@@ -1459,16 +1459,7 @@ document.addEventListener('DOMContentLoaded', function(){ lcHydrate(document); }
   <div class="pip-st" id="pip-st" title="Camera + screen recording"><i class="lc" data-lc="monitor" data-s="12"></i> Recording</div>
 </div>
 
-<div class="mdl-back" id="mdl-feedback">
-  <div class="mdl" role="dialog" aria-modal="true" aria-labelledby="fb-h">
-    <h3 id="fb-h">How was your experience with this test?</h3>
-    <div class="nps" id="fb-nps"></div>
-    <div class="nps-l"><span>Poor</span><span>Great</span></div>
-    <label for="fb-tips">Any tips on how we can improve this test? <span>(optional)</span></label>
-    <textarea id="fb-tips" placeholder="Your thoughts help us improve future assessments."></textarea>
-    <div class="mdl-foot"><button class="obtn" type="button" onclick="App.fbFinish(true)">Skip</button><button class="gbtn" id="fb-submit" type="button" disabled onclick="App.fbFinish(false)">Submit</button></div>
-  </div>
-</div>
+<!-- Post-test rating dialog (mdl-feedback) removed — PO Pia, 11 Nov -->
 
 <div class="mdl-back" id="mdl-exit">
   <div class="mdl" role="dialog" aria-modal="true">
@@ -1923,7 +1914,7 @@ const App = {
     clearTimeout(App._tt); App._tt=setTimeout(function(){ t.classList.remove('show'); }, 3600);
   },
   openMdl: function(id){ $(id).classList.add('show'); },
-  closeMdl: function(id){ $(id).classList.remove('show'); },
+  closeMdl: function(id){ const m=$(id); if(m) m.classList.remove('show'); },
   fbFinish: function(skip){ if (SIM.st) SIM.finish(skip); else if (TF.st) TF.finish(skip); else if (ISIM.st) ISIM.finish(skip); else QZ.finish(skip); },
 
   /* ---------- Skills Center ---------- */
@@ -2308,10 +2299,7 @@ const QZ = {
   submit: function(){
     const st=QZ.st;
     if (QZ.missing(0, st.pages.length).length){ QZ.tryPage(st.pages.length-1); return; }
-    const nps=$('fb-nps'); nps.innerHTML='';
-    for(let i=0;i<=10;i++){ nps.insertAdjacentHTML('beforeend','<button type="button" data-v="'+i+'" onclick="QZ.rate('+i+')">'+i+'</button>'); }
-    $('fb-tips').value=''; $('fb-submit').disabled=true; st.fb=null;
-    App.openMdl('mdl-feedback');
+    QZ.finish(true); /* post-test rating dialog removed — doesn't exist in the platform (PO Pia, 11 Nov) */
   },
   rate: function(v){ QZ.st.fb=v; document.querySelectorAll('#fb-nps button').forEach(function(b){ b.classList.toggle('on', +b.getAttribute('data-v')===v); }); $('fb-submit').disabled=false; },
   finish: function(skipped){
@@ -3313,10 +3301,7 @@ const SIM = {
     }, 1000);
   },
   openFeedback: function(){
-    const nps=$('fb-nps'); nps.innerHTML='';
-    for(let i=0;i<=10;i++) nps.insertAdjacentHTML('beforeend','<button type="button" data-v="'+i+'" onclick="SIM.rate('+i+')">'+i+'</button>');
-    $('fb-tips').value=''; $('fb-submit').disabled=true; SIM.st.fb=null;
-    App.openMdl('mdl-feedback');
+    SIM.finish(true); /* post-test rating dialog removed — doesn't exist in the platform (PO Pia, 11 Nov) */
   },
   rate: function(v){ SIM.st.fb=v; document.querySelectorAll('#fb-nps button').forEach(function(b){ b.classList.toggle('on', +b.getAttribute('data-v')===v); }); $('fb-submit').disabled=false; },
   score: function(){
@@ -3439,10 +3424,7 @@ const TF = {
   },
   openFeedback: function(){
     if(!TF.st) return;
-    const nps=$('fb-nps'); nps.innerHTML='';
-    for(let i=0;i<=10;i++) nps.insertAdjacentHTML('beforeend','<button type="button" data-v="'+i+'" onclick="TF.rate('+i+')">'+i+'</button>');
-    $('fb-tips').value=''; $('fb-submit').disabled=true; TF.st.fb=null;
-    App.openMdl('mdl-feedback');
+    TF.finish(true); /* post-test rating dialog removed — doesn't exist in the platform (PO Pia, 11 Nov) */
   },
   rate: function(v){ TF.st.fb=v; document.querySelectorAll('#fb-nps button').forEach(function(b){ b.classList.toggle('on', +b.getAttribute('data-v')===v); }); $('fb-submit').disabled=false; },
   finish: function(skipped){
@@ -4194,10 +4176,7 @@ const ISIM = {
   },
   openFeedback: function(){
     if(!ISIM.st) return;
-    const nps=$('fb-nps'); nps.innerHTML='';
-    for(let i=0;i<=10;i++) nps.insertAdjacentHTML('beforeend','<button type="button" data-v="'+i+'" onclick="ISIM.rate('+i+')">'+i+'</button>');
-    $('fb-tips').value=''; $('fb-submit').disabled=true; ISIM.st.fb=null;
-    App.openMdl('mdl-feedback');
+    ISIM.finish(true); /* post-test rating dialog removed — doesn't exist in the platform (PO Pia, 11 Nov) */
   },
   rate: function(v){ ISIM.st.fb=v; document.querySelectorAll('#fb-nps button').forEach(function(b){ b.classList.toggle('on', +b.getAttribute('data-v')===v); }); $('fb-submit').disabled=false; },
   finish: function(skipped){
@@ -5190,4 +5169,7 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
   const sStop=SIM.stop; SIM.stop=function(){ drop(); return sStop.apply(this, arguments); };
   const nav=App.nav; App.nav=function(n){ if(n!=='img') drop(); return nav.apply(this, arguments); };
 })();
+</script>
+<script>/* deep link from the AI interview top nav: #skills opens Skills Center, #settings opens Account settings */
+(function(){ const go=function(){ const h=(location.hash||'').slice(1); if(h==='skills'||h==='settings'){ try{ App.nav(h); }catch(e){} } }; if(document.readyState==='complete') go(); else addEventListener('load', go); addEventListener('hashchange', go); })();
 </script>

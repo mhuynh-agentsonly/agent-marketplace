@@ -374,10 +374,22 @@ function render(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 // Where Submit goes after the last step. Flow: Onboarding -> AI interview (skippable) -> Skills Center.
-// When the AI interview prototype exists, change this to 'ai-interview.html'.
-const NEXT_URL = 'skills-center-agent-v2.html';
-function go(d){ if(d>0 && cur===STEPS.length-1){ window.location.href = NEXT_URL; return; } cur = Math.max(0, Math.min(STEPS.length-1, cur+d)); render(); }
-function jump(i){ cur=i; render(); }
+// Answers are kept for this browser tab (sessionStorage 'aoOnboarding') so the interview can ask about them.
+const NEXT_URL = 'ai-interview.html';
+function captureStep(){ try{
+  const store=JSON.parse(sessionStorage.getItem('aoOnboarding')||'{}');
+  document.querySelectorAll('#card .f').forEach(f=>{ const lab=f.querySelector('label'); if(!lab) return;
+    const key=(lab.childNodes[0]&&lab.childNodes[0].textContent||lab.textContent).replace(/\s+/g,' ').replace(/[*]/g,'').trim(); if(!key) return;
+    let v='';
+    const inp=f.querySelector('input[type=text],input[type=email],input[type=tel],input[type=number],input[type=date],input[type=url],textarea');
+    const sel=f.querySelector('select'); const pills=[...f.querySelectorAll('.pill.sel')].map(p=>p.textContent.trim());
+    const combo=f.querySelector('.combo'); const opts=combo?[...combo.querySelectorAll('.combo-opt.sel .ol')].map(o=>o.textContent.trim()):[];
+    const checks=[...f.querySelectorAll('input[type=checkbox]:checked,input[type=radio]:checked')].map(c=>(c.closest('label')||c).textContent.trim()||c.value);
+    if(opts.length) v=opts.join(', '); else if(pills.length) v=pills.join(', '); else if(sel&&sel.value&&!/^select/i.test(sel.value)) v=sel.value; else if(inp&&inp.value) v=inp.value.trim(); else if(checks.length) v=checks.join(', ');
+    if(v) store[key]=v; });
+  sessionStorage.setItem('aoOnboarding',JSON.stringify(store)); }catch(e){} }
+function go(d){ captureStep(); if(d>0 && cur===STEPS.length-1){ window.location.href = NEXT_URL; return; } cur = Math.max(0, Math.min(STEPS.length-1, cur+d)); render(); }
+function jump(i){ captureStep(); cur=i; render(); }
 function pick(el){ el.parentNode.querySelectorAll('.pill').forEach(p=>p.classList.remove('sel')); el.classList.add('sel'); }
 function toggleGate(name,val){ const hide = !val || /^none/i.test(val) || /^no experience/i.test(val); document.querySelectorAll('.g-'+name).forEach(b=>b.style.display=hide?'none':''); }
 function toggleCombo(ctl){ const c=ctl.closest('.combo'); document.querySelectorAll('.combo.open').forEach(x=>{if(x!==c)x.classList.remove('open');}); c.classList.toggle('open'); }
