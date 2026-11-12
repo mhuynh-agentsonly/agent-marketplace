@@ -224,6 +224,11 @@
   .ns-label{font-size:15px;font-weight:500;color:#111}
   .ns-arrow{color:#111;font-size:15px}
   .ns-row:hover{background:rgba(255,255,255,.5)}
+.ns-row.done{cursor:default}
+.ns-row.done:hover{background:none}
+.ns-row.done .ns-dot{border:none;background:#009170;display:inline-flex;align-items:center;justify-content:center;color:#fff}
+.ns-row.done .ns-dot svg{width:11px;height:11px;stroke-width:3}
+.ns-row.done .ns-text{color:#4b5563}
   .ns-body{position:relative;z-index:1;max-width:calc(100% - 380px)}
   .ns-text{font-size:15px;color:#111;line-height:1.5}
   .ns-arrow{white-space:nowrap}
@@ -890,6 +895,7 @@ document.addEventListener('DOMContentLoaded', function(){ lcHydrate(document); }
     <div class="ns-body">
       <div class="ns-title">Prove you&rsquo;re ready to join Agent Portal</div>
       <div class="ns-sub">Your next steps:</div>
+      <a class="ns-row" id="ns-aii" onclick="AII.fromHome()"><span class="ns-dot"></span><span class="ns-text" id="ns-aii-t"><b>Complete your AI interview</b> to tell us about your experience and the work you&rsquo;re looking for <span class="ns-arrow"><i class="lc" data-lc="arrow-right" data-s="16"></i></span></span></a>
       <a class="ns-row" onclick="App.nav('skills')"><span class="ns-dot"></span><span class="ns-text"><b>Pass the readiness tests in Skills Center</b> to demonstrate your skills and capabilities <span class="ns-arrow"><i class="lc" data-lc="arrow-right" data-s="16"></i></span></span></a>
       <a class="ns-row" onclick="goJMP()"><span class="ns-dot"></span><span class="ns-text"><b>Complete your Job Matching Profile</b> to increase your chances of being matched with available work <span class="ns-arrow"><i class="lc" data-lc="arrow-right" data-s="16"></i></span></span></a>
     </div>
@@ -5172,4 +5178,46 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
 </script>
 <script>/* deep link from the AI interview top nav: #skills opens Skills Center, #settings opens Account settings */
 (function(){ const go=function(){ const h=(location.hash||'').slice(1); if(h==='skills'||h==='settings'){ try{ App.nav(h); }catch(e){} } }; if(document.readyState==='complete') go(); else addEventListener('load', go); addEventListener('hashchange', go); })();
+</script>
+<script id="aii-gate">
+/* AI interview re-entry (12 Nov): Home next-steps item + mandatory before the first skills test.
+   State lives in localStorage 'aoAiInterview' (set by ai-interview.html when the interview finishes). */
+(function(){
+  const KEY='aoAiInterview';
+  const isDone=function(){ try{ return localStorage.getItem(KEY)==='done'; }catch(e){ return false; } };
+  const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+  const PEND=function(){ return '<b>Complete your AI interview</b> to tell us about your experience and the work you&rsquo;re looking for <span class="ns-arrow">'+lc('arrow-right',16)+'</span>'; };
+  window.AII={
+    done: isDone,
+    fromHome: function(){ if(!isDone()) location.href='ai-interview.html'; },
+    forTest: function(t){ location.href='ai-interview.html?from=test&test='+encodeURIComponent(t.id)+'&tn='+encodeURIComponent(t.name); },
+    render: function(){
+      const r=document.getElementById('ns-aii'), tx=document.getElementById('ns-aii-t'); if(!r||!tx) return;
+      const d=isDone(); r.classList.toggle('done', d);
+      r.querySelector('.ns-dot').innerHTML = d ? CHECK : '';
+      tx.innerHTML = d ? '<b>AI interview completed.</b> Thanks for telling us about your experience' : PEND();
+      if(d) r.setAttribute('aria-disabled','true'); else r.removeAttribute('aria-disabled');
+    }
+  };
+  const take=App.takeTest;
+  App.takeTest=function(id){
+    const t=testById(id); if(!t) return;
+    if (t.seeded && !S.results[id]) return take(id);   // not takeable in this prototype → existing toast
+    if (!isDone()) { AII.forTest(t); return; }
+    take(id);
+  };
+  const reset=App.resetDemo;
+  App.resetDemo=function(){ try{ localStorage.removeItem(KEY); }catch(e){} reset(); AII.render(); };
+  // back from the interview: #test=ID → Skills Center, then start that test
+  const go=function(){
+    const h=(location.hash||'').slice(1); if(h.indexOf('test=')!==0) return;
+    const id=decodeURIComponent(h.slice(5));
+    try{ history.replaceState(null,'',location.pathname+location.search+'#skills'); }catch(e){}
+    App.nav('skills');
+    if(testById(id)) App.takeTest(id);
+  };
+  AII.render(); addEventListener('pageshow', AII.render);
+  if(document.readyState==='complete') go(); else addEventListener('load', go);
+  addEventListener('hashchange', go);
+})();
 </script>
