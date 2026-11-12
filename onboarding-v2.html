@@ -403,3 +403,107 @@ document.addEventListener('click',e=>{ if(!e.target.closest('.combo')) document.
 document.getElementById('tagToggle').addEventListener('change',function(){ document.body.classList.toggle('tags',this.checked); });
 render();
 </script>
+<!-- ===================== Prototype controls (not part of the design) ===================== -->
+<style>
+.sm-proto{position:fixed;right:16px;bottom:16px;z-index:300;font-family:inherit}
+.sm-proto-btn{display:inline-flex;align-items:center;gap:6px;background:#111827;color:#fff;border:none;border-radius:999px;padding:7px 12px;font-family:inherit;font-size:12.5px;cursor:pointer;box-shadow:0 6px 16px rgba(16,24,40,.2)}
+.sm-proto-menu{display:none;position:absolute;right:0;bottom:calc(100% + 8px);width:288px;max-height:72vh;overflow:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 12px 32px rgba(16,24,40,.16);padding:6px}
+.sm-proto.open .sm-proto-menu{display:block}
+.sm-proto-menu .h{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#9ca3af;padding:8px 10px 4px;margin-top:4px}
+.sm-proto-menu hr{border:none;border-top:1px solid #F3F4F6;margin:6px 4px}
+.sm-proto-menu button{display:flex;width:100%;align-items:center;gap:8px;background:none;border:none;border-radius:8px;padding:8px 10px;font-family:inherit;font-size:13.5px;color:#111827;cursor:pointer;text-align:left}
+.sm-proto-menu button:hover{background:#f3f4f6}
+.sm-proto-menu button.sel{background:#E9FEF9;color:#007460}
+.sm-proto-menu button .tg{margin-left:auto;width:28px;height:16px;border-radius:99px;background:#d1d5db;position:relative;flex:none;transition:background .15s}
+.sm-proto-menu button .tg::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:99px;background:#fff;transition:left .15s}
+.sm-proto-menu button.on .tg{background:#007460}
+.sm-proto-menu button.on .tg::after{left:14px}
+.sm-proto-menu button .k{margin-left:auto;font-size:11px;color:#9CA3AF}
+.sm-proto-menu svg{flex:none}
+.dropzone.proto-done{border-color:#5fceb1;background:#f3fdfa}
+.dropzone.proto-done .up b{color:#007460}
+</style>
+<div class="sm-proto" id="ob-proto">
+  <div class="sm-proto-menu" role="menu">
+    <div class="h">Sample answers</div>
+    <button type="button" role="menuitem" id="pp-fillall"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></svg> Fill all steps<span class="tg"></span></button>
+    <button type="button" role="menuitem" id="pp-fill"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg> Fill this step</button>
+    <button type="button" role="menuitem" id="pp-clear"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></svg> Clear this step</button>
+    <hr>
+    <div class="h">Go to step</div>
+    <div id="pp-steps"></div>
+    <hr>
+    <button type="button" role="menuitem" id="pp-submit"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg> Fill all &amp; submit<span class="k">→ AI interview</span></button>
+  </div>
+  <button class="sm-proto-btn" type="button" id="pp-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg> Prototype</button>
+</div>
+<script>
+/* Prototype › Fill all steps: fills every step with one sample agent's answers. The answers are also saved for the
+   AI interview (sessionStorage 'aoOnboarding'), so its questions follow them. Steps re-render when you move between
+   them, so while "Fill all steps" is on, each step is filled again as it opens. */
+(function(){
+  const $=id=>document.getElementById(id);
+  const SAMPLE={
+    'First name':'Olivia','Last name':'Rhye','Email address':'olivia.rhye@example.com','Phone':'+1 604 333 3333','Date of birth':'1996-03-12',
+    'Country of residence':'Canada','Province / state / region':'British Columbia','City':'Vancouver','Street':'17th Avenue SW','Postal code':'V5Y 1A1',
+    'Preferred communication channel':['Email','WhatsApp'],'Days available':['Monday','Tuesday','Wednesday','Thursday','Friday'],
+    'Time-of-day availability (local time)':['Morning (6am–12pm)','Afternoon (12pm–6pm)'],'Hours per week available':'20',
+    'Are you an employee of Teleperformance?':'Never employed by Teleperformance','Approved for Agents Only Portal?':'No',
+    'LinkedIn profile URL':'linkedin.com/in/olivia-rhye',
+    'Highest education level completed':"Bachelor's Degree",'Field of study / major':'Communications','School / university name(s)':'University of British Columbia',
+    "List any previous companies/organizations you've worked for (separate each entry with a comma)":'Telus, Concentrix, Shopify',
+    'Current work status':'Employed part-time','Description of current job / studies':'Customer support specialist handling chat and phone support for an online retailer.',
+    'Customer service experience':'2–4 years','Which positions were you working as?':['Agent','Supervisor / Team Leader / Mentor'],
+    'Technical support experience':'1–2 years','Sales experience':'<6 months','Data labeling experience':'6 months – 1 year',
+    'Languages you are fluent in speaking':['English','Spanish'],'Languages you are fluent in writing':['English','Spanish'],'Native language(s)':['English'],
+    'Industry experience':['Retail / E-commerce','Travel & Hospitality'],
+    'Describe your data labeling experience':'Labeled customer support tickets for intent and sentiment on a 3-month project.',
+    'Additional certifications / licenses / training':'Zendesk Support Administrator'};
+  const UPLOADS={'Profile picture':'olivia-rhye.jpg','Resume/CV':'Resume-olivia.pdf'};
+  const isFiller=s=>/^(other|none|no specific)/i.test(s)||/^select/i.test(s);
+  const keyOf=f=>{const lab=f.querySelector(':scope > label');if(!lab)return'';return(lab.childNodes[0]&&lab.childNodes[0].textContent||lab.textContent).replace(/\s+/g,' ').replace(/[*]/g,'').trim()};
+  const fire=(el,t)=>el.dispatchEvent(new Event(t,{bubbles:true}));
+  function fillField(f){
+    if(f.classList.contains('other-spec'))return;            // "Specify other…" only shows when Other is picked
+    const key=keyOf(f),want=SAMPLE[key];
+    const single=f.querySelector(':scope > label.chk input[type=checkbox]');if(single){single.checked=true;fire(single,'change');return}
+    const dz=f.querySelector('.dropzone');if(dz){const n=UPLOADS[key]||'file.pdf';dz.classList.add('proto-done');dz.querySelector('.up').innerHTML='<b>'+n+'</b> uploaded';return}
+    const cefr=f.querySelector('.cefr');if(cefr){const rows=cefr.querySelectorAll('.cefr-row');const r=rows[0];if(r){r.querySelector('input').value='English';const s=r.querySelector('select');s.selectedIndex=s.options.length-1;fire(s,'change')}
+      if(rows.length<2){const add=cefr.querySelector('.cefr-add');if(add)add.click();const r2=cefr.querySelectorAll('.cefr-row')[1];if(r2){r2.querySelector('input').value='Spanish';const s2=r2.querySelector('select');s2.selectedIndex=Math.max(1,s2.options.length-3);fire(s2,'change')}}return}
+    const radios=[...f.querySelectorAll('input[type=radio]')];if(radios.length){const lab=r=>(r.closest('label')||r).textContent.trim();const r=radios.find(x=>want&&lab(x)===want)||radios[0];r.checked=true;fire(r,'change');return}
+    const combo=f.querySelector('.combo');if(combo){
+      combo.querySelectorAll('.combo-opt.sel').forEach(o=>toggleOpt(o));
+      const opts=[...combo.querySelectorAll('.combo-opt')].filter(o=>!isFiller(o.querySelector('.ol').textContent.trim()));
+      let pick=[];if(Array.isArray(want))pick=opts.filter(o=>want.includes(o.querySelector('.ol').textContent.trim()));
+      else if(typeof want==='number')pick=opts.slice(0,want);
+      if(!pick.length)pick=opts.slice(0,2);
+      pick.forEach(o=>toggleOpt(o));return}
+    const sel=f.querySelector(':scope > select');if(sel){const ok=[...sel.options].filter(o=>!o.disabled&&!isFiller(o.textContent.trim()));
+      const o=ok.find(x=>x.textContent.trim()===want)||ok[Math.min(1,ok.length-1)];if(o){sel.value=o.value||o.textContent;fire(sel,'change')}return}
+    const ta=f.querySelector(':scope > textarea');if(ta){ta.value=typeof want==='string'?want:'Sample answer for the prototype.';fire(ta,'input');return}
+    const inp=f.querySelector(':scope > input');if(inp&&!inp.readOnly){const t=inp.type;inp.value=typeof want==='string'?want:t==='email'?'olivia.rhye@example.com':t==='tel'?'+1 604 333 3333':t==='date'?'1996-03-12':t==='number'?'20':'Sample';fire(inp,'input')}
+  }
+  function fillCard(){
+    document.querySelectorAll('#card .f').forEach(fillField);
+    document.querySelectorAll('#card .rrow').forEach((r,i)=>{const p=r.querySelectorAll('.pill');const k=[3,4,2,3,4][i%5];if(p[k])pick(p[k])});
+    document.querySelectorAll('#card .combo.open').forEach(c=>c.classList.remove('open'));
+  }
+  function clearCard(){render();}
+  let FILL=false;
+  const _render=window.render;window.render=function(){_render.apply(this,arguments);if(FILL)fillCard();markStep()};
+  function fillAll(){const back=cur;FILL=true;for(let i=0;i<STEPS.length;i++){cur=i;_render();fillCard();captureStep()}cur=back;render()}
+  function markStep(){document.querySelectorAll('#pp-steps button').forEach(b=>b.classList.toggle('sel',+b.dataset.i===cur))}
+  const P=$('ob-proto');
+  $('pp-steps').innerHTML=STEPS.map((s,i)=>`<button type="button" role="menuitem" data-i="${i}">${s.name}<span class="k">${i+1}</span></button>`).join('');
+  $('pp-steps').querySelectorAll('button').forEach(b=>b.onclick=()=>{jump(+b.dataset.i)});
+  $('pp-btn').onclick=e=>{e.stopPropagation();P.classList.toggle('open')};
+  document.addEventListener('click',e=>{if(!P.contains(e.target))P.classList.remove('open')});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')P.classList.remove('open')});
+  $('pp-fillall').onclick=()=>{const on=!FILL;$('pp-fillall').classList.toggle('on',on);
+    if(on)fillAll();else{FILL=false;try{sessionStorage.removeItem('aoOnboarding')}catch(e){}render()}};
+  $('pp-fill').onclick=()=>{fillCard();captureStep()};
+  $('pp-clear').onclick=()=>{if(FILL){FILL=false;$('pp-fillall').classList.remove('on')}clearCard()};
+  $('pp-submit').onclick=()=>{fillAll();$('pp-fillall').classList.add('on');cur=STEPS.length-1;render();go(1)};
+  markStep();
+})();
+</script>
