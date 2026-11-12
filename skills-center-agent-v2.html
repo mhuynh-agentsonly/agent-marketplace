@@ -224,11 +224,6 @@
   .ns-label{font-size:15px;font-weight:500;color:#111}
   .ns-arrow{color:#111;font-size:15px}
   .ns-row:hover{background:rgba(255,255,255,.5)}
-.ns-row.done{cursor:default}
-.ns-row.done:hover{background:none}
-.ns-row.done .ns-dot{border:none;background:#009170;display:inline-flex;align-items:center;justify-content:center;color:#fff}
-.ns-row.done .ns-dot svg{width:11px;height:11px;stroke-width:3}
-.ns-row.done .ns-text{color:#4b5563}
   .ns-body{position:relative;z-index:1;max-width:calc(100% - 380px)}
   .ns-text{font-size:15px;color:#111;line-height:1.5}
   .ns-arrow{white-space:nowrap}
@@ -5185,7 +5180,6 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
 (function(){
   const KEY='aoAiInterview';
   const isDone=function(){ try{ return localStorage.getItem(KEY)==='done'; }catch(e){ return false; } };
-  const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
   const PEND=function(){ return '<b>Complete your AI interview</b> to tell us about your experience and the work you&rsquo;re looking for <span class="ns-arrow">'+lc('arrow-right',16)+'</span>'; };
   window.AII={
     done: isDone,
@@ -5193,10 +5187,8 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
     forTest: function(t){ location.href='ai-interview.html?from=test&test='+encodeURIComponent(t.id)+'&tn='+encodeURIComponent(t.name); },
     render: function(){
       const r=document.getElementById('ns-aii'), tx=document.getElementById('ns-aii-t'); if(!r||!tx) return;
-      const d=isDone(); r.classList.toggle('done', d);
-      r.querySelector('.ns-dot').innerHTML = d ? CHECK : '';
-      tx.innerHTML = d ? '<b>AI interview completed.</b> Thanks for telling us about your experience' : PEND();
-      if(d) r.setAttribute('aria-disabled','true'); else r.removeAttribute('aria-disabled');
+      r.style.display = isDone() ? 'none' : '';   // completed → item disappears from next steps
+      tx.innerHTML = PEND();
     }
   };
   const take=App.takeTest;
