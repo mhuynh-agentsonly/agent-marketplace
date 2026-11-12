@@ -1238,6 +1238,10 @@ function markInterviewDone(){try{localStorage.setItem('aoAiInterview','done')}ca
  $('btn-skills').onclick=()=>{location.href=SKILLS_URL};
  if(!GATE)return;
  document.body.classList.add('gate');
+ /* started from a skills test card → full Marketplace top nav (like the skills test flow), Skills Center current */
+ document.body.classList.remove('nav-min');
+ const _show=show;show=function(id){_show(id);document.body.classList.remove('nav-min')};
+ document.querySelectorAll('.topnav .nl').forEach(a=>a.classList.toggle('active',/#skills$/.test(a.getAttribute('href')||'')));
  $('gate-note-t').innerHTML=`Before you start <b>${esc(GATE.name)}</b>, complete this short AI interview. You only need to do it once.`;
  $('btn-exit').textContent='Skip and go back to Skills Center';
  $('dlg-skip-h').textContent='Skip the interview for now?';
