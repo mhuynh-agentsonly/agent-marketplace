@@ -227,6 +227,16 @@ body.in-room{overflow:hidden}
 .ov-row{display:flex;justify-content:space-between;gap:16px;padding:10px 0;font-size:15px;color:#374151}
 .ov-row b{font-weight:600;color:#111827;white-space:nowrap}
 .ov-row.tot{border-top:1px solid #e5e7eb;font-weight:600;color:#111827}
+.hl-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:4px 0 0}
+@media(max-width:760px){.hl-grid{grid-template-columns:1fr}}
+.hl-card{border:1px solid #E5E7EB;border-radius:12px;padding:20px;background:#fff}
+.hl-card h3{display:flex;align-items:center;gap:8px;margin:0 0 14px;font-size:16px;font-weight:600;color:#111827}
+.hl-card h3 svg{color:#007460;flex:none}
+.hl-row{display:flex;justify-content:space-between;gap:16px;padding:6px 0;font-size:15px;line-height:22px;color:#374151}
+.hl-row .t{color:#6B7280;white-space:nowrap}
+.hl-row.tot{border-top:1px solid #E5E7EB;margin-top:10px;padding-top:14px;font-weight:600;color:#111827}
+.hl-list{margin:0;padding-left:20px;list-style:disc;font-size:15px;line-height:22px;color:#374151}
+.hl-list li{margin:0 0 6px}.hl-list b{font-weight:600;color:#111827}
 .consent a{color:#007460;font-weight:500;text-decoration:underline;text-underline-offset:2px}
 .desk-only{display:none;gap:12px;align-items:flex-start;background:#e9fef9;border:1px solid #c5fbed;color:#030712;border-radius:8px;padding:14px 16px;margin:22px 0 0;font-size:15px;line-height:22px}
 .desk-only svg{color:#007460;flex:none;margin-top:1px}
@@ -324,27 +334,18 @@ body.gate .gate-note{display:flex}
     <div class="qz-hd sm-hd"><div><h1>AI interview</h1></div></div>
     <div class="qz-intro">
       <div class="gate-note" id="gate-note"><svg class="lci" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span id="gate-note-t"></span></div>
-      <h3 class="qz-sub" style="margin-top:0">Overview</h3>
-      <p>Our AI interviewer checks your English (US). It’s the same interview for every agent, not for a specific project, and the follow-up questions depend on your answers.</p>
-      <div class="ov-box"><div class="ov-row"><span>Part I: English (US) language assessment</span><b>~38 min</b></div><div class="ov-row"><span>Part II: Typing</span><b>~1 min</b></div><div class="ov-row tot"><span>Estimated time</span><b>30 min</b></div></div>
-      <h3 class="qz-sub">Requirements</h3>
-      <ul>
-        <li>A quiet room</li>
-        <li>A stable internet connection</li>
-        <li><b>A keyboard set to English (US) language</b></li>
-        <li>A camera (non-virtual) &amp; microphone</li>
-        <li>No AI, translators, other tools, or recording</li>
-      </ul>
-      <h3 class="qz-sub">During the interview</h3>
-      <ul>
-        <li>The interview runs in full screen. Your camera and microphone stay on and are recorded the whole time</li>
-        <li>Don’t switch tabs, leave full screen or take screenshots. Each time is reported, and repeated attempts end the interview and notify our team</li>
-        <li>Keep this tab open. Refreshing or closing it ends the interview</li>
-      </ul>
+      <div class="hl-grid">
+        <section class="hl-card" aria-labelledby="hl-ov"><h3 id="hl-ov"><svg class="lci" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 22h2a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><circle cx="8" cy="16" r="6"/><path d="M9.5 17.5 8 16.25V14"/></svg>Overview</h3>
+          <div class="hl-row"><span>Part I: English (US) language assessment</span><span class="t">~38 min</span></div>
+          <div class="hl-row"><span>Part II: Typing</span><span class="t">~1 min</span></div>
+          <div class="hl-row tot"><span>Estimated time</span><span>30 min</span></div></section>
+        <section class="hl-card" aria-labelledby="hl-rq"><h3 id="hl-rq"><svg class="lci" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Requirements</h3>
+          <ul class="hl-list"><li>A quiet room</li><li>A stable internet connection</li><li><b>A keyboard set to English (US) language</b></li><li>A camera (non-virtual) &amp; microphone</li><li>No AI, translators, other tools, or recording</li></ul></section>
+      </div>
       <div class="desk-only" role="note"><svg class="lci" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span><b>Use a computer for this interview.</b> It runs in full screen, and Part II is a typing test that needs a keyboard. Open Marketplace on a computer to start.</span></div>
-      <label class="consent"><input type="checkbox" id="consent" autocomplete="off"><span>I agree to the <a href="#" id="tos-link">Terms of Service</a> and Requirements.</span></label>
+      <label class="consent"><input type="checkbox" id="consent" autocomplete="off"><span>By checking this box, I agree to the <a href="#" id="tos-link">Terms of Service</a> and Requirements.</span></label>
     </div>
-    <div class="qz-next sm-start-row"><button class="gbtn" id="btn-start" type="button" disabled>Check camera &amp; mic <svg class="lci" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button><span class="later">Not ready yet? <button class="tbtn" type="button" id="btn-exit">Skip the interview for now</button></span></div>
+    <div class="qz-next sm-start-row"><button class="gbtn" id="btn-start" type="button" disabled>Begin assessment <svg class="lci" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button><span class="later">Not ready yet? <button class="tbtn" type="button" id="btn-exit">Skip the interview for now</button></span></div>
   </div></div>
 </div></div>
 
@@ -537,7 +538,7 @@ function glProgram(c,frag){const gl=c.getContext('webgl',{premultipliedAlpha:tru
 /* ---------------- colours: whatever was last set on the orb / 2D pages, else AO Mint ---------------- */
 const toArr=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
 function readLS(k){try{return JSON.parse(localStorage.getItem(k))||null}catch(e){return null}}
-const MARBLE_DEFAULT={LITE:'#6B75FF',CORE:'#7591FF',FADE:'#B3BDFF',VIO:'#1EE6BE',RIM:'#5CD6B6',BACK:'#C7F5E6',LAV:'#A8FFE6',SPGL:'#9EADFF',ARC:'#6C85EB'}; /* = orbs page AO Mint */
+const MARBLE_DEFAULT={LITE:'#00D0A3',CORE:'#009170',FADE:'#A6F0DC',VIO:'#F79009',RIM:'#FDB022',BACK:'#FEF0C7',LAV:'#C7F7EA',SPGL:'#FFD08A',ARC:'#009170'}; /* = orbs page Marketplace */
 let CUST=Object.assign({},MARBLE_DEFAULT);
 (function(){const st=readLS('aoOrbColours.v1');const c=st&&st.last&&st.last.a&&st.last.a.c;if(c)Object.assign(CUST,c)})();
 function palVec(){const o={};for(const k in CUST)o[k]=toArr(CUST[k]);return o}
@@ -680,7 +681,7 @@ function states(){const E=Math.min(1,SP.env.x*S.react);return{E,ke:ez(SP.speak.x
 
 /* ---------- Pond: calm water in a round window (one window, four wave styles) ---------- */
 /* live colours, edited by the colour panel */
-const PAL_POND={BG:'#E9F7F8',W1:'#FFD98B',W2:'#C7FFF1',W3:'#00FFC8',RIM:'#9AAEFB',RIP:'#DCEAFF',ARC:'#8C9FF7'};
+const PAL_POND={BG:'#F0FDF9',W1:'#FEDF89',W2:'#A6F0DC',W3:'#00D0A3',RIM:'#FEDF89',RIP:'#FEDF89',ARC:'#F79009'};
 function Pond(c,style){const C=PAL_POND;const G=C2(c),rip=Ripples();let t=0,lv=Spring(2),am=Spring(3),fl=0;const bub=[];let bg=0;
  return function(dt){const{ctx}=G;G.begin();const sp=S.speed,{E,ke,lk,tk}=states();t+=dt*sp;rip.update(dt,ke,lk,E);
   const R=.27,th=S.thick;
@@ -739,7 +740,7 @@ function Pond(c,style){const C=PAL_POND;const G=C2(c),rip=Ripples();let t=0,lv=S
    like stickers on the ball. No gradient, no blur, no shadow.
    Speaking: the ribbons' waves grow and roll faster with the voice, ripples leave it.
    Listening: the waves calm, it turns slower and draws in a little, rings travel in.
-   Thinking: it turns a little faster while the arc orbits. */const PAL_RIB={BG:'#E9F7F8',R1:'#00FFC8',R2:'#B9DDFF',R3:'#FFE0A7',RIM:'#9AAEFB',RIP:'#DCEAFF',ARC:'#8C9FF7'};
+   Thinking: it turns a little faster while the arc orbits. */const PAL_RIB={BG:'#F0FDF9',R1:'#00D0A3',R2:'#FEC84B',R3:'#FEDF89',RIM:'#FEDF89',RIP:'#FEDF89',ARC:'#F79009'};
 function RibbonBall(c){const C=PAL_RIB;const G=C2(c),rip=Ripples();let t=0,rot=0,ph=0;
  const norm=v=>{const l=Math.hypot(...v);return v.map(x=>x/l)},cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
  const mk=(n,w,amp,f,p,col)=>{n=norm(n);let e1=norm(cross(n,[0,1,0.01]));const e2=cross(n,e1);return{n,e1,e2,w,amp,f,p,col}};
@@ -982,7 +983,7 @@ function Ring(c){const P=glProgram(c,RING_FS);if(!P)return null;const g=P.gl,D=r
 
 /* B and C use the colours last set on the orbs page (else their first preset) */
 (function(){const st=readLS('aoOrbColours.v1'),L=st&&st.last||{};
- BCUST=Object.assign({},BPAL.agi,(L.b&&L.b.c)||{});CCUST=Object.assign({},CPAL.aomint,(L.c&&L.c.c)||{})})();
+ BCUST=Object.assign({},{WARM:'#F79009',CORAL:'#FDB022',YEL:'#FEC84B',GRN:'#52E5B9',MINT:'#7FE8C9',CYAN:'#A6F0DC',BLUE:'#00C79A',VIOL:'#FDB022',ARC:'#009170'},(L.b&&L.b.c)||{});CCUST=Object.assign({},{MINT:'#2EE6B5',IND:'#F79009',ARC:'#009170'},(L.c&&L.c.c)||{}) /* Marketplace by default */})();
 
 (function(){const st=readLS('aoFlat2dColours.v1');if(!st||!st.last)return;
  if(st.last.pond&&st.last.pond.c)Object.assign(PAL_POND,st.last.pond.c);if(st.last.globe&&st.last.globe.c)Object.assign(PAL_RIB,st.last.globe.c)})();
@@ -1025,7 +1026,7 @@ const GENERIC_QS=[
 const QS=GENERIC_QS;
 
 /* ---------------- visuals: one per stage, switchable in the prototype panel ---------------- */
-let VIS_KIND=(()=>{try{return localStorage.getItem('aoInterviewVisual')||'marble'}catch(e){return'marble'}})();
+let VIS_KIND=(()=>{try{return localStorage.getItem('aoInterviewVisual')||'pond'}catch(e){return'marble'}})();
 const VIS={};
 function mountVisual(where){const stage=$(where==='intro'?'in-stage':'rm-stage');if(!stage)return;stage.innerHTML='';const c=document.createElement('canvas');stage.appendChild(c);
  let f=null;try{f=({marble:Marble,bubble:Bubble,ring:Ring,ribbon:RibbonBall})[VIS_KIND];f=f?f(c):Pond(c,'layers')}catch(e){console.warn(e)}
