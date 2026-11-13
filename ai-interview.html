@@ -222,6 +222,26 @@ body.in-room{overflow:hidden}
 @media(max-width:760px){.self{width:120px;right:12px;bottom:84px}.caption{font-size:18px}.rm-top{padding:12px 14px}.rm-prog{display:none}}
 .overlay{position:absolute;inset:0;background:rgba(255,255,255,.9);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;z-index:5}
 .overlay.on{display:flex}
+/* ---- Hallo alignment (13 Nov) ---- */
+.ov-box{background:#f9fafb;border:1px solid #eef0f3;border-radius:12px;padding:6px 16px;margin:18px 0 4px}
+.ov-row{display:flex;justify-content:space-between;gap:16px;padding:10px 0;font-size:15px;color:#374151}
+.ov-row b{font-weight:600;color:#111827;white-space:nowrap}
+.ov-row.tot{border-top:1px solid #e5e7eb;font-weight:600;color:#111827}
+.consent a{color:#007460;font-weight:500;text-decoration:underline;text-underline-offset:2px}
+.desk-only{display:none;gap:12px;align-items:flex-start;background:#e9fef9;border:1px solid #c5fbed;color:#030712;border-radius:8px;padding:14px 16px;margin:22px 0 0;font-size:15px;line-height:22px}
+.desk-only svg{color:#007460;flex:none;margin-top:1px}
+.desk-only b{font-weight:600}
+body.mobile .desk-only{display:flex}
+body.mobile #scr-intro .consent,body.mobile #btn-start{display:none}
+.rm-prog .bar{display:none}
+.overlay .ov-img{width:72px;height:auto;margin-bottom:4px}
+.overlay .gbtn{margin-top:8px}
+.overlay.solid{background:#fff}
+#ov-warn,#ov-cam{z-index:6}
+/* camera required: the prototype's demo camera shows a stand-in person, not a "camera off" initial */
+.ps-demo span{display:none}
+.ps-demo{background:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 120'%3E%3Ccircle cx='80' cy='50' r='22' fill='%2394a3b8'/%3E%3Cpath d='M34 120c0-28 20-44 46-44s46 16 46 44z' fill='%2394a3b8'/%3E%3C/svg%3E") center bottom/auto 88% no-repeat,linear-gradient(135deg,#e5e7eb,#cbd5e1)}
+
 .overlay h3{margin:0;font-size:18px;font-weight:500;color:#111827}
 .overlay p{margin:0;color:#6b7280;font-size:14px;max-width:360px}
 
@@ -305,22 +325,24 @@ body.gate .gate-note{display:flex}
     <div class="qz-intro">
       <div class="gate-note" id="gate-note"><svg class="lci" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span id="gate-note-t"></span></div>
       <h3 class="qz-sub" style="margin-top:0">Overview</h3>
-      <p>Our AI interviewer will ask you a few questions about your work experience, how you help customers, and the kind of projects you’d like to work on. There are no right or wrong answers. It’s a chance for us to get to know you.</p>
-      <div class="sm-facts"><div>Length<b id="f-len">About 12 mins</b></div><div>Questions<b id="f-q">6</b></div><div>Format<b>Voice + camera</b></div></div>
-      <h3 class="qz-sub">Instructions</h3>
-      <p>The interview works like a video call. Find a quiet place, and check that your camera, microphone and speakers work before you start.</p>
-      <ol>
-        <li><b>Listen.</b> The interviewer asks one question at a time. The question also appears on screen.</li>
-        <li><b>Answer out loud.</b> Speak naturally, the way you would with a person. You can take a moment to think first.</li>
-        <li><b>Finish.</b> After the last question, your interview is submitted automatically.</li>
-      </ol>
+      <p>Our AI interviewer checks your English (US). It’s the same interview for every agent, not for a specific project, and the follow-up questions depend on your answers.</p>
+      <div class="ov-box"><div class="ov-row"><span>Part I: English (US) language assessment</span><b>~38 min</b></div><div class="ov-row"><span>Part II: Typing</span><b>~1 min</b></div><div class="ov-row tot"><span>Estimated time</span><b>30 min</b></div></div>
+      <h3 class="qz-sub">Requirements</h3>
       <ul>
-        <li>Your camera and microphone are recorded for the whole interview</li>
-        <li>You can’t go back to a question once you’ve answered it</li>
+        <li>A quiet room</li>
+        <li>A stable internet connection</li>
+        <li><b>A keyboard set to English (US) language</b></li>
+        <li>A camera (non-virtual) &amp; microphone</li>
+        <li>No AI, translators, other tools, or recording</li>
+      </ul>
+      <h3 class="qz-sub">During the interview</h3>
+      <ul>
+        <li>The interview runs in full screen. Your camera and microphone stay on and are recorded the whole time</li>
+        <li>Don’t switch tabs, leave full screen or take screenshots. Each time is reported, and repeated attempts end the interview and notify our team</li>
         <li>Keep this tab open. Refreshing or closing it ends the interview</li>
       </ul>
-      <div class="qz-alert" role="alert"><svg class="lci" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg><span>Answer in your own words. The use of AI is prohibited and will result in automatic disqualification.</span></div>
-      <label class="consent"><input type="checkbox" id="consent" autocomplete="off"><span>I agree that this interview is recorded and reviewed, with the help of AI, as part of my application.</span></label>
+      <div class="desk-only" role="note"><svg class="lci" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span><b>Use a computer for this interview.</b> It runs in full screen, and Part II is a typing test that needs a keyboard. Open Marketplace on a computer to start.</span></div>
+      <label class="consent"><input type="checkbox" id="consent" autocomplete="off"><span>I agree to the <a href="#" id="tos-link">Terms of Service</a> and Requirements.</span></label>
     </div>
     <div class="qz-next sm-start-row"><button class="gbtn" id="btn-start" type="button" disabled>Check camera &amp; mic <svg class="lci" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button><span class="later">Not ready yet? <button class="tbtn" type="button" id="btn-exit">Skip the interview for now</button></span></div>
   </div></div>
@@ -395,7 +417,7 @@ body.gate .gate-note{display:flex}
     <div class="rm-bottom" id="rm-bottom"></div>
     <div class="self" id="self"><video id="self-vid" autoplay muted playsinline></video><div class="ps-demo"><span id="self-initials">O</span></div>
       <span class="self-tag"><span class="mini-meter" id="mini-meter"><i></i><i></i><i></i><i></i></span>You</span></div>
-    <div class="overlay" id="ov-reconnect"><span class="spin" style="color:#007460"><svg class="lci" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></span><h3>Reconnecting…</h3><p>Your connection dropped. Your answers so far are saved, and the interview will pick up where it stopped.</p></div>
+    <div class="overlay solid" id="ov-warn" role="alertdialog" aria-modal="true"></div><div class="overlay solid" id="ov-cam" role="alertdialog" aria-modal="true"><span style="color:#6b7280"><svg class="lci" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.248-3.062A.5.5 0 0 1 22 7.87v8.196"/><path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m2 2 20 20"/></svg></span><h3>Your camera is off</h3><p>The interview needs your camera the whole time. Turn it back on to continue. The interview is paused.</p><button class="gbtn" type="button" id="cam-retry"><svg class="lci" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Turn camera back on</button></div><div class="overlay" id="ov-reconnect"><span class="spin" style="color:#007460"><svg class="lci" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></span><h3>Reconnecting…</h3><p>Your connection dropped. Your answers so far are saved, and the interview will pick up where it stopped.</p></div>
   </div>
 </div>
 
@@ -410,7 +432,27 @@ body.gate .gate-note{display:flex}
   </div>
 </div></div></div>
 
+<div class="screen" id="scr-ended"><div class="sm"><div class="sm-wrap">
+  <div class="sm-card done-card">
+    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYwIiBoZWlnaHQ9IjI2MCIgdmlld0JveD0iMCAwIDI2MCAyNjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNzcuMiA1OC4zNDIyTDIwNi45MTQgMjA2LjkxNUgxODMuODRMMTY0LjMwNCA2MC40OTU4QzE2NC4yNzggNjAuMjEzNyAxNjQuMjUyIDU5LjkwNjEgMTY0LjI1MiA1OS42MjQxQzE2NC4yNTIgNTYuMTM3MyAxNjcuMDQ3IDUzLjE2MzMgMTcwLjYzNiA1My4wODY0SDE3MC43OUMxNzMuOTE4IDUzLjA4NjQgMTc2LjU4NCA1NS4yOTEyIDE3Ny4yIDU4LjM0MjJaIiBmaWxsPSIjRkRCMDIyIi8+CjxwYXRoIGQ9Ik0xNjQuMzA0IDYwLjQ5NThMMTgzLjg0IDIwNi45MTVIMTgzLjQ1NUgxNTIuODk1TDE0NS4zODMgMTczLjU4NUg5MS41NDI4TDg0LjAzMDggMjA2LjkxNUg1My4wODU3TDgwLjEzMzggNTkuMzkzM0M4MC44MDA0IDU1LjcyNzEgODMuOTc5NiA1My4wODY0IDg3LjY5NzEgNTMuMDg2NEgxNzAuNjM2QzE2Ny4wNDcgNTMuMTYzMyAxNjQuMjUyIDU2LjEzNzMgMTY0LjI1MiA1OS42MjQxQzE2NC4yNTIgNTkuOTA2MSAxNjQuMjc4IDYwLjIxMzcgMTY0LjMwNCA2MC40OTU4Wk0xNDcuOTQ2IDcxLjAzM0MxNDcuOTQ2IDY4LjIxMjggMTQ1LjYzOSA2NS45MDU0IDE0Mi44MTkgNjUuOTA1NEgxMDEuNzk4QzEwMC4zODggNjUuOTA1NCA5OS4xMDYgNjYuNDY5NCA5OC4xODMgNjcuNDE4Qzk3LjIzNDQgNjguMzQxIDk2LjY3MDQgNjkuNjIyOSA5Ni42NzA0IDcxLjAzM0M5Ni42NzA0IDczLjg1MzIgOTguOTc3OCA3Ni4xNjA2IDEwMS43OTggNzYuMTYwNkgxNDIuODE5QzE0NC4yMjkgNzYuMTYwNiAxNDUuNTExIDc1LjU5NjYgMTQ2LjQzNCA3NC42NDhDMTQ3LjM4MiA3My43MjUgMTQ3Ljk0NiA3Mi40NDMxIDE0Ny45NDYgNzEuMDMzWiIgZmlsbD0iI0ZFREY4OSIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE3MC42MzcgNTIuMDAwMUgxNzAuNzlDMTc0LjQzOSA1Mi4wMDAxIDE3Ny41NDggNTQuNTczMyAxNzguMjY0IDU4LjEyN0wyMDcuOTc5IDIwNi43MDFDMjA4LjA0MyAyMDcuMDIgMjA3Ljk2IDIwNy4zNTEgMjA3Ljc1NCAyMDcuNjAzQzIwNy41NDggMjA3Ljg1NCAyMDcuMjQgMjA4IDIwNi45MTQgMjA4SDE4My44NEMxODMuMjk2IDIwOCAxODIuODM2IDIwNy41OTcgMTgyLjc2NCAyMDcuMDU4TDE2My4yMjggNjAuNjM4OUMxNjMuMjI2IDYwLjYyMzkgMTYzLjIyNCA2MC42MDg3IDE2My4yMjMgNjAuNTkzNkMxNjMuMTk3IDYwLjMxMzcgMTYzLjE2NyA1OS45NjA5IDE2My4xNjcgNTkuNjIzNkMxNjMuMTY3IDU1LjU2MDcgMTY2LjQxOSA1Mi4wOTAyIDE3MC42MTMgNTIuMDAwM0wxNzAuNjM3IDUyLjAwMDFaTTE3MC42NDkgNTQuMTcxOEMxNjcuNjcgNTQuMjQxNiAxNjUuMzM4IDU2LjcxNjYgMTY1LjMzOCA1OS42MjM2QzE2NS4zMzggNTkuODQ0NCAxNjUuMzU4IDYwLjA5OSAxNjUuMzgzIDYwLjM3NDRMMTg0Ljc5MSAyMDUuODI4SDIwNS41OUwxNzYuMTM1IDU4LjU1NjRDMTc2LjEzNSA1OC41NTU5IDE3Ni4xMzYgNTguNTU2OCAxNzYuMTM1IDU4LjU1NjRDMTc1LjYyMSA1Ni4wMDkgMTczLjM5NyA1NC4xNzE4IDE3MC43OSA1NC4xNzE4SDE3MC42NDlaIiBmaWxsPSIjMDAzNzQyIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNODcuNjk3MiA1NC4xNzE4Qzg0LjUwMjcgNTQuMTcxOCA4MS43NzQ3IDU2LjQzOSA4MS4yMDIzIDU5LjU4NzFMNTQuMzg4OSAyMDUuODI4SDgzLjE2MjZMOTAuNDgzNyAxNzMuMzQ2QzkwLjU5NTMgMTcyLjg1MSA5MS4wMzUyIDE3Mi40OTkgOTEuNTQyOSAxNzIuNDk5SDE0NS4zODNDMTQ1Ljg5MSAxNzIuNDk5IDE0Ni4zMzEgMTcyLjg1MSAxNDYuNDQyIDE3My4zNDZMMTUzLjc2MyAyMDUuODI4SDE4Mi42TDE2My4yMjggNjAuNjM4OUMxNjMuMjI2IDYwLjYyMzkgMTYzLjIyNCA2MC42MDg3IDE2My4yMjMgNjAuNTkzNkMxNjMuMTk3IDYwLjMxMzcgMTYzLjE2NyA1OS45NjA5IDE2My4xNjcgNTkuNjIzNkMxNjMuMTY3IDU3LjUxNzggMTY0LjA0IDU1LjU3MTEgMTY1LjQ2NiA1NC4xNzE4SDg3LjY5NzJaTTc5LjA2NiA1OS4xOTdDNzkuODI3NCA1NS4wMTM1IDgzLjQ1NzMgNTIuMDAwMSA4Ny42OTcyIDUyLjAwMDFMMTcwLjYzNyA1Mi4wMDAxQzE3MS4yMzIgNTIuMDAwMSAxNzEuNzE2IDUyLjQ3OTIgMTcxLjcyMiA1My4wNzQzQzE3MS43MjkgNTMuNjY5NCAxNzEuMjU1IDU0LjE1ODggMTcwLjY2IDU0LjE3MTVDMTY3LjY3NSA1NC4yMzU1IDE2NS4zMzggNTYuNzEzIDE2NS4zMzggNTkuNjIzNkMxNjUuMzM4IDU5Ljg0NDQgMTY1LjM1OCA2MC4wOTkgMTY1LjM4MyA2MC4zNzQ0TDE4NC45MTYgMjA2Ljc3MUMxODQuOTU4IDIwNy4wODEgMTg0Ljg2MyAyMDcuMzk0IDE4NC42NTcgMjA3LjYyOUMxODQuNDUxIDIwNy44NjUgMTg0LjE1MyAyMDggMTgzLjg0IDIwOEgxNTIuODk1QzE1Mi4zODcgMjA4IDE1MS45NDcgMjA3LjY0OCAxNTEuODM2IDIwNy4xNTNMMTQ0LjUxNSAxNzQuNjcxSDkyLjQxMTNMODUuMDkwMyAyMDcuMTUzQzg0Ljk3ODYgMjA3LjY0OCA4NC41Mzg3IDIwOCA4NC4wMzEgMjA4SDUzLjA4NTlDNTIuNzYzNiAyMDggNTIuNDU4IDIwNy44NTcgNTIuMjUxNyAyMDcuNjA5QzUyLjA0NTQgMjA3LjM2MiA1MS45NTk3IDIwNy4wMzUgNTIuMDE3OCAyMDYuNzE4TDc5LjA2NiA1OS4xOTdaTTk3LjQxNTQgNjYuNjQ5N0M5OC41NDAzIDY1LjQ5OTIgMTAwLjA5OCA2NC44MTkxIDEwMS43OTggNjQuODE5MUgxNDIuODE5QzE0Ni4yMzkgNjQuODE5MSAxNDkuMDMzIDY3LjYxMjcgMTQ5LjAzMyA3MS4wMzI1QzE0OS4wMzMgNzIuNzMzIDE0OC4zNTIgNzQuMjkwNSAxNDcuMjAyIDc1LjQxNTRDMTQ2LjA3NyA3Ni41NjU5IDE0NC41MTkgNzcuMjQ2IDE0Mi44MTkgNzcuMjQ2SDEwMS43OThDOTguMzc4MyA3Ny4yNDYgOTUuNTg0NyA3NC40NTI0IDk1LjU4NDcgNzEuMDMyNUM5NS41ODQ3IDY5LjMzMjEgOTYuMjY0OCA2Ny43NzQ2IDk3LjQxNTQgNjYuNjQ5N1pNMTAxLjc5OCA2Ni45OTA4QzEwMC42ODQgNjYuOTkwOCA5OS42ODE3IDY3LjQzNDUgOTguOTYxNSA2OC4xNzQ4TDk4Ljk0MDcgNjguMTk2MUM5OC4yMDA1IDY4LjkxNjQgOTcuNzU2NCA2OS45MTggOTcuNzU2NCA3MS4wMzI1Qzk3Ljc1NjQgNzMuMjUzIDk5LjU3NzcgNzUuMDc0MyAxMDEuNzk4IDc1LjA3NDNIMTQyLjgxOUMxNDMuOTM0IDc1LjA3NDMgMTQ0LjkzNiA3NC42MzA1IDE0NS42NTYgNzMuODkwM0wxNDUuNjc3IDczLjg2OUMxNDYuNDE3IDczLjE0ODcgMTQ2Ljg2MSA3Mi4xNDcxIDE0Ni44NjEgNzEuMDMyNUMxNDYuODYxIDY4LjgxMjEgMTQ1LjA0IDY2Ljk5MDggMTQyLjgxOSA2Ni45OTA4SDEwMS43OThaIiBmaWxsPSIjMDAzNzQyIi8+CjxwYXRoIGQ9Ik0xNDcuMTAxIDE1MC41MTFIOTIuMzg5Qzg5LjA4MTYgMTUwLjUxMSA4Ni40MTUzIDE0Ny44NDUgODYuNDE1MyAxNDQuNTM3Qzg2LjQxNTMgMTQzLjQwOSA4Ni43MjI5IDE0Mi4zMDcgODcuMzM4MyAxNDEuMzU4TDExNS44MjIgOTYuMjg2NEMxMTYuNjY4IDk0LjkyNzYgMTE4LjE1NSA5NC4xMDcyIDExOS43NDUgOTQuMTA3MkMxMjEuMzM0IDk0LjEwNzIgMTIyLjgyMSA5NC45Mjc2IDEyMy42NjcgOTYuMjg2NEwxNTIuMTUxIDE0MS4zNThDMTUyLjc2NyAxNDIuMzA3IDE1My4wNzQgMTQzLjQwOSAxNTMuMDc0IDE0NC41MzdDMTUzLjA3NCAxNDYuMjA0IDE1Mi40MDggMTQ3LjY5MSAxNTEuMzMxIDE0OC43NjhDMTUwLjI1NCAxNDkuODQ0IDE0OC43NjcgMTUwLjUxMSAxNDcuMTAxIDE1MC41MTFaIiBmaWxsPSIjRjA0NDM4Ii8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTE5Ljc0NSA5NS4xOTI0QzExOC41MjkgOTUuMTkyNCAxMTcuMzkxIDk1LjgyMDIgMTE2Ljc0NCA5Ni44NTk4TDExNi43NCA5Ni44NjU5TDg4LjI0OTUgMTQxLjk0OEM4Ny43NTQ2IDE0Mi43MTEgODcuNTAxMyAxNDMuNjA2IDg3LjUwMTMgMTQ0LjUzN0M4Ny41MDEzIDE0Ny4yNDQgODkuNjgxNSAxNDkuNDI0IDkyLjM4OTEgMTQ5LjQyNEgxNDcuMTAxQzE0OC40NyAxNDkuNDI0IDE0OS42ODMgMTQ4Ljg3OSAxNTAuNTYzIDE0Ny45OTlDMTUxLjQ0MyAxNDcuMTE5IDE1MS45ODkgMTQ1LjkwNSAxNTEuOTg5IDE0NC41MzdDMTUxLjk4OSAxNDMuNjA2IDE1MS43MzUgMTQyLjcxMSAxNTEuMjQgMTQxLjk0OEwxNTEuMjMzIDE0MS45MzhMMTIyLjc0NiA5Ni44NTk4QzEyMi4wOTggOTUuODIwMyAxMjAuOTYxIDk1LjE5MjQgMTE5Ljc0NSA5NS4xOTI0Wk0xMTQuOTAzIDk1LjcwODZDMTE1Ljk0OCA5NC4wMzI1IDExNy43ODMgOTMuMDIwOCAxMTkuNzQ1IDkzLjAyMDhDMTIxLjcwNyA5My4wMjA4IDEyMy41NDIgOTQuMDMyNSAxMjQuNTg3IDk1LjcwODZDMTI0LjU4OCA5NS43MDk3IDEyNC41ODkgOTUuNzEwOCAxMjQuNTg5IDk1LjcxMTlMMTUzLjA2NiAxNDAuNzcyQzE1My43OTkgMTQxLjkwNSAxNTQuMTYgMTQzLjIxMyAxNTQuMTYgMTQ0LjUzN0MxNTQuMTYgMTQ2LjUwMSAxNTMuMzcyIDE0OC4yNjEgMTUyLjA5OSAxNDkuNTM1QzE1MC44MjUgMTUwLjgwOCAxNDkuMDY1IDE1MS41OTYgMTQ3LjEwMSAxNTEuNTk2SDkyLjM4OTFDODguNDgyMSAxNTEuNTk2IDg1LjMyOTYgMTQ4LjQ0NCA4NS4zMjk2IDE0NC41MzdDODUuMzI5NiAxNDMuMjEzIDg1LjY5MDUgMTQxLjkwNSA4Ni40MjM4IDE0MC43NzJMMTE0LjkwMSA5NS43MTE5QzExNC45MDEgOTUuNzEwOCAxMTQuOTAyIDk1LjcwOTcgMTE0LjkwMyA5NS43MDg2WiIgZmlsbD0iIzAwMzc0MiIvPgo8cGF0aCBkPSJNMTE3LjE4MSAxMTQuNjE4QzExNy4xODEgMTEzLjIwMiAxMTguMzI5IDExMi4wNTQgMTE5Ljc0NSAxMTIuMDU0QzEyMS4xNjEgMTEyLjA1NCAxMjIuMzA5IDExMy4yMDIgMTIyLjMwOSAxMTQuNjE4VjEyNy40MzdDMTIyLjMwOSAxMjguODUzIDEyMS4xNjEgMTMwIDExOS43NDUgMTMwQzExOC4zMjkgMTMwIDExNy4xODEgMTI4Ljg1MyAxMTcuMTgxIDEyNy40MzdWMTE0LjYxOFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xMTkuNzQ1IDE0Mi44MTlDMTIxLjE2MSAxNDIuODE5IDEyMi4zMDkgMTQxLjY3MiAxMjIuMzA5IDE0MC4yNTZDMTIyLjMwOSAxMzguODQgMTIxLjE2MSAxMzcuNjkyIDExOS43NDUgMTM3LjY5MkMxMTguMzI5IDEzNy42OTIgMTE3LjE4MSAxMzguODQgMTE3LjE4MSAxNDAuMjU2QzExNy4xODEgMTQxLjY3MiAxMTguMzI5IDE0Mi44MTkgMTE5Ljc0NSAxNDIuODE5WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==" alt="" style="width:120px">
+    <h1>Your interview has ended</h1>
+    <p>You left the interview screen too many times, so the interview ended and our team was notified.</p>
+    <div class="done-next"><b>What happens next</b><ol><li>Our team reviews what happened.</li><li>We’ll email you about next steps.</li></ol></div>
+    <div class="done-acts"><button class="gbtn" type="button" id="btn-ended"><span id="btn-ended-t">Go to Home</span> <svg class="lci" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button></div>
+  </div>
+</div></div></div>
+
 <!-- dialogs -->
+<div class="dlg-bg" id="dlg-tab"><div class="dlg" role="alertdialog" aria-modal="true" aria-labelledby="dlg-tab-h">
+  <h3 id="dlg-tab-h"></h3>
+  <p id="dlg-tab-p"></p>
+  <div class="dlg-act"><button class="gbtn" type="button" id="tab-ok">OK, got it</button></div>
+</div></div>
+<div class="dlg-bg" id="dlg-tos"><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlg-tos-h">
+  <h3 id="dlg-tos-h">Hallo AI Terms of Service</h3>
+  <p>Prototype: in the live product, this link opens Hallo AI’s Terms of Service. We need the URL from Hallo.</p>
+  <div class="dlg-act"><button class="obtn" type="button" data-close>Close</button></div>
+</div></div>
 <div class="dlg-bg" id="dlg-skip"><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlg-skip-h">
   <h3 id="dlg-skip-h">Skip the interview for now?</h3>
   <p>You can take it later from Home. Your application is reviewed after you complete it.</p>
@@ -445,11 +487,19 @@ body.gate .gate-note{display:flex}
     <button type="button" role="menuitem" id="pv-manual"><svg class="lci" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Manual “Done answering” button<span class="tg"></span></button>
     <button type="button" role="menuitem" id="pv-voice" class="on"><svg class="lci" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg> Interviewer voice<span class="tg"></span></button>
     <hr>
+    <div class="h">Integrity (during the interview)</div>
+    <button type="button" role="menuitem" id="pv-tab"><svg class="lci" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></svg> Simulate tab switch</button>
+    <button type="button" role="menuitem" id="pv-shot"><svg class="lci" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Simulate screenshot</button>
+    <button type="button" role="menuitem" id="pv-fs"><svg class="lci" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg> Simulate leaving full screen</button>
+    <button type="button" role="menuitem" id="pv-camoff"><svg class="lci" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.248-3.062A.5.5 0 0 1 22 7.87v8.196"/><path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m2 2 20 20"/></svg> Camera turns off</button>
+    <button type="button" role="menuitem" id="pv-mobile"><svg class="lci" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg> Phone / tablet notice<span class="tg"></span></button>
+    <hr>
     <div class="h">Go to</div>
     <button type="button" role="menuitem" data-go="intro">Instructions<span class="k">1</span></button>
     <button type="button" role="menuitem" data-go="setup">Device setup<span class="k">2</span></button>
     <button type="button" role="menuitem" data-go="room">Interview<span class="k">3</span></button>
     <button type="button" role="menuitem" data-go="done">Interview done<span class="k">4</span></button>
+    <button type="button" role="menuitem" data-go="ended">Interview ended (integrity)<span class="k">5</span></button>
   </div>
   <button class="sm-proto-btn" type="button" id="proto-btn"><svg class="lci" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg> Prototype</button>
 </div>
@@ -963,7 +1013,16 @@ function buildQuestions(){const P=PROFILE,q=[],topics=['Your background'];
  for(const x of pool){if(q.length>=5)break;q.push(x)}
  q.push({topic:'Working on Marketplace',text:'Last question. Why do you want to work on Marketplace projects, and what kind of work suits you best?'});
  return q}
-const QS=buildQuestions();
+/* Generic questions (PO 13 Nov): same interview for every agent, not built from onboarding answers.
+   Sample prompts from Hallo's admin prototype; in the live product Hallo asks them and follows up dynamically. */
+const GENERIC_QS=[
+ {topic:'Warm-up',text:'Describe the music you like to listen to at home, and tell me what you do while you listen.'},
+ {topic:'A story',text:'Tell me about a time a song changed your mood or helped you through a hard day. Why did that song matter to you?'},
+ {topic:'Describing',text:'Describe a movie scene that changed how you understood a character. What made that change convincing?'},
+ {topic:'Problem solving',text:'Tell me about a time you made a mistake on an assignment or project and then fixed it. How did you notice, what did you do, and what did you learn?'},
+ {topic:'Misunderstanding',text:'Tell me about a moment when you misunderstood something in English. What happened, and how did you fix it?'},
+ {topic:'Read aloud',text:'Please read this out loud: Last Sunday, my family took a slow walk through the neighborhood and ended up at my aunt’s small garden.'}];
+const QS=GENERIC_QS;
 
 /* ---------------- visuals: one per stage, switchable in the prototype panel ---------------- */
 let VIS_KIND=(()=>{try{return localStorage.getItem('aoInterviewVisual')||'marble'}catch(e){return'marble'}})();
@@ -1036,7 +1095,7 @@ function initNav(){const n=((PROFILE['First name']||'')+' '+(PROFILE['Last name'
  $('av').onclick=e=>{e.stopPropagation();$('av-wrap').classList.toggle('open')};$('av').onkeydown=e=>{if(e.key==='Enter')$('av').click()};
  document.addEventListener('click',e=>{if(!$('av-wrap').contains(e.target))$('av-wrap').classList.remove('open')})}
 function initIntro(){const mins=QS.length*2;
- $('f-len').textContent='About '+mins+' mins';$('f-q').textContent=QS.length;
+ 
  $('ps-initials').textContent=$('self-initials').textContent=initials()[0];
  /* the button always follows the checkbox — including when the browser restores a ticked box on reload or Back */
  const syncConsent=()=>{$('btn-start').disabled=!$('consent').checked};
@@ -1046,7 +1105,7 @@ function initIntro(){const mins=QS.length*2;
  $('btn-exit').onclick=()=>openDlg('dlg-skip');$('skip-yes').onclick=()=>{location.href=HOME_URL}}
 
 /* ---------------- 2 · device setup (same checks UI as the proctoring setup, minus screen share) ---------------- */
-const CHECKS=[{k:'mic',label:'Working mic',req:true},{k:'speaker',label:'Working speakers',req:true},{k:'face',label:'Face in frame'},{k:'light',label:'Good lighting'},{k:'camera',label:'Working camera'},{k:'steady',label:'Steady camera'}];
+const CHECKS=[{k:'mic',label:'Working mic',req:true},{k:'speaker',label:'Working speakers',req:true},{k:'face',label:'Face in frame',req:true},{k:'light',label:'Good lighting'},{k:'camera',label:'Working camera',req:true},{k:'steady',label:'Steady camera'}];
 const IDLE_TXT={mic:'Read the phrase out loud',speaker:'Play the sample to check',face:'Your whole face is in frame',light:'Your room is bright enough',camera:'Picture is sharp',steady:'Set your device on a desk or table'};
 const NEEDED=['mic','speaker','face','camera'];
 const MIC_PHRASE='I am ready to begin my interview';
@@ -1172,7 +1231,7 @@ async function startInterview(){const tok=++IV.tok;IV.i=-1;IV.ended=false;IV.pau
  if(!DC.stream&&!DC.demo)DC.useDemo();show('room');updateTop();$('self').classList.toggle('demo',DC.demo);
  setState('thinking');renderCaption('',0);bottom('');addEventListener('beforeunload',beforeUnload);
  await sleep(1400);if(tok!==IV.tok)return;const n=firstName();
- if(!await speak(`Hi${n==='there'?'':' '+n}, I’m the Marketplace AI interviewer. I’ll ask you ${QS.length} questions about your experience. Answer out loud, and take your time. Let’s start.`,tok))return;
+ if(!await speak(`Hi${n==='there'?'':' '+n}, I’m the Marketplace AI interviewer. I’ll ask you some questions to check your English. Answer out loud, and take your time. Let’s start.`,tok))return;
  for(let i=0;i<QS.length;i++){IV.i=i;IV.prompted=false;updateTop();setState('thinking');await sleep(i?900:500);if(tok!==IV.tok)return;
   if(!await speak(QS[i].text,tok))return;const r=await listen(tok);if(tok!==IV.tok||r==='cancel')return;
   setState('thinking');renderCaption('',0);await sleep(1300+Math.random()*700);if(tok!==IV.tok)return}
@@ -1251,6 +1310,79 @@ function markInterviewDone(){try{localStorage.setItem('aoAiInterview','done')}ca
  $('btn-home-t').textContent='Continue to '+GATE.name;
  $('btn-home').onclick=()=>{location.href=HOME_URL+'#test='+encodeURIComponent(GATE.id)};
  const li=document.querySelector('.done-next ol li:last-child');if(li)li.textContent='Meanwhile, you can carry on with your skills tests.';
+})();
+
+
+/* ===== Hallo alignment (PO, 13 Nov) =====
+   · Intro follows Hallo's content: parts + times, requirements, Terms of Service checkbox. No question count.
+   · Camera required (face + camera checks required; camera turning off pauses the interview).
+   · Integrity, like Hallo: runs in full screen; switching tabs, taking screenshots or leaving full screen
+     shows a warning and is reported; repeated attempts end the interview (prototype: 3rd time).
+   · Desktop only: phones/tablets get a "use a computer" notice instead of Start. */
+const INTEG={limit:3,count:0,log:[],fsWanted:false,hiddenAt:0,open:null};
+LC.maximize='<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>';
+const isMobile=()=>document.body.classList.contains('mobile');
+(function(){
+ /* ---- desktop only ---- */
+ try{if((matchMedia('(pointer: coarse)').matches&&!matchMedia('(pointer: fine)').matches))document.body.classList.add('mobile')}catch(e){}
+ /* ---- Terms of Service link (prototype placeholder) ---- */
+ $('tos-link').onclick=e=>{e.preventDefault();openDlg('dlg-tos')};
+ /* ---- room label: parts, not question counts (Hallo's interview is dynamic) ---- */
+ updateTop=function(){const done=IV.i>=QS.length;$('rm-prog-l').innerHTML=done?'<b>All done</b>':'Part I: English (US) language assessment'};
+ /* ---- full screen ---- */
+ window.enterFS=function(){INTEG.fsWanted=true;const el=document.documentElement;try{const p=el.requestFullscreen?el.requestFullscreen():(el.webkitRequestFullscreen&&el.webkitRequestFullscreen());if(p&&p.catch)p.catch(()=>{INTEG.fsWanted=false})}catch(e){INTEG.fsWanted=false}};
+ window.exitFS=function(){INTEG.fsWanted=false;try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}};
+ $('ps-main').onclick=()=>{enterFS();INTEG.count=0;INTEG.log=[];startInterview()};
+ document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&INTEG.fsWanted&&live())violation('fullscreen')});
+ /* ---- tab switch ---- */
+ document.addEventListener('visibilitychange',()=>{if(!live())return;
+  if(document.hidden){INTEG.hiddenAt=Date.now();IV.paused=true;if(SAY_ABORT)SAY_ABORT();setState('idle')}
+  else if(INTEG.hiddenAt){INTEG.hiddenAt=0;violation('tab')}});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&INTEG.open==='tab')setTimeout(resume,0)});
+ /* ---- screenshots (best effort: Print Screen, ⌘⇧3/4/5, Win+Shift+S) ---- */
+ document.addEventListener('keydown',e=>{if(!live())return;const k=(e.key||'').toLowerCase();
+  if(k==='printscreen'||(e.shiftKey&&(e.metaKey||e.ctrlKey)&&['3','4','5','#','$','%','s'].includes(k))){violation('shot')}});
+ function live(){return CUR==='room'&&!IV.ended}
+ /* ---- warnings ---- */
+ const COPY={
+  tab:{h:'You can’t switch tabs during the interview',btn:'OK, got it'},
+  shot:{h:'Screenshots aren’t allowed',btn:'OK, got it'},
+  fullscreen:{h:'The interview must be taken in full screen',btn:'Return to full screen'}};
+ window.violation=function(kind){if(!live())return;INTEG.count++;INTEG.log.push(kind);
+  IV.paused=true;if(SAY_ABORT)SAY_ABORT();setState('idle');closeWarn();
+  if(INTEG.count>=INTEG.limit){endForIntegrity();return}
+  const c=COPY[kind],p='This action has been reported. Repeated attempts will automatically end the interview and notify our team.';
+  INTEG.open=kind;
+  if(kind==='tab'){$('dlg-tab-h').textContent=c.h;$('dlg-tab-p').textContent=p;openDlg('dlg-tab');return}
+  $('ov-warn').innerHTML=`<img src="${IMG.warn}" alt="" class="ov-img"><h3>${c.h}</h3><p>${p}</p><button class="gbtn" type="button" id="warn-ok">${kind==='fullscreen'?lc('maximize',16)+' ':''}${c.btn}</button>`;
+  $('ov-warn').classList.add('on');$('warn-ok').onclick=()=>{if(kind==='fullscreen')enterFS();resume()}};
+ function closeWarn(){$('ov-warn').classList.remove('on');closeDlg('dlg-tab')}
+ function resume(){closeWarn();INTEG.open=null;IV.paused=false}
+ $('tab-ok').onclick=resume;
+ /* the tab dialog must be acknowledged with its button (no click-outside / Escape) */
+ $('dlg-tab').addEventListener('click',e=>{if(e.target===$('dlg-tab'))e.stopImmediatePropagation()},true);
+ /* ---- ended for integrity ---- */
+ window.endForIntegrity=function(){IV.tok++;IV.ended=true;if(SAY_ABORT)SAY_ABORT();try{speechSynthesis.cancel()}catch(e){}removeEventListener('beforeunload',beforeUnload);
+  closeWarn();exitFS();DC.stopTracks();DC.dev='idle';setState('idle');show('ended')};
+ /* ---- camera required: camera turning off pauses the interview ---- */
+ window.cameraOff=function(){if(!live())return;IV.paused=true;if(SAY_ABORT)SAY_ABORT();setState('idle');$('ov-cam').classList.add('on')};
+ $('cam-retry').onclick=async()=>{if(!DC.demo){await DC.start();if(DC.dev!=='live')return}$('ov-cam').classList.remove('on');IV.paused=false};
+ const _use=DC.useStream.bind(DC);DC.useStream=function(s){_use(s);s.getVideoTracks().forEach(t=>t.addEventListener('ended',()=>cameraOff()))};
+ /* ---- screens: add "ended", leave full screen whenever the room closes ---- */
+ const _show=show;show=function(id){if(CUR==='room'&&id!=='room'){closeWarn();$('ov-cam').classList.remove('on');exitFS()}
+  _show(id);$('scr-ended').classList.toggle('active',id==='ended');if(id==='ended')CUR='ended'};
+ const _fin=finishInterview;finishInterview=function(){exitFS();_fin.apply(this,arguments)};
+ $('btn-ended').onclick=()=>{location.href=(typeof GATE!=='undefined'&&GATE)?SKILLS_URL:HOME_URL};
+ if(typeof GATE!=='undefined'&&GATE)$('btn-ended-t').textContent='Back to Skills Center';
+ /* ---- prototype controls ---- */
+ $('pv-tab').onclick=()=>{$('proto').classList.remove('open');violation('tab')};
+ $('pv-shot').onclick=()=>{$('proto').classList.remove('open');violation('shot')};
+ $('pv-fs').onclick=()=>{$('proto').classList.remove('open');violation('fullscreen')};
+ $('pv-camoff').onclick=()=>{$('proto').classList.remove('open');cameraOff()};
+ $('pv-mobile').onclick=()=>{document.body.classList.toggle('mobile');$('pv-mobile').classList.toggle('on',isMobile());if(CUR!=='intro')show('intro')};
+ $('pv-mobile').classList.toggle('on',isMobile());
+ const goEnded=document.querySelector('#proto [data-go="ended"]');if(goEnded)goEnded.onclick=()=>{IV.tok++;if(SAY_ABORT)SAY_ABORT();$('proto').classList.remove('open');show('ended')};
+ const goRoom=document.querySelector('#proto [data-go="room"]');if(goRoom){const o=goRoom.onclick;goRoom.onclick=()=>{enterFS();INTEG.count=0;o()}}
 })();
 
 </script>

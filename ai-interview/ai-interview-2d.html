@@ -314,9 +314,11 @@ function RibbonBall(c){const C=PAL_RIB;const G=C2(c),rip=Ripples();let t=0,rot=0
 const ED2={
  pond:{pal:PAL_POND,places:[['BG','Inside','the window behind the water'],['W1','Back wave','the palest wave at the back'],['W2','Middle wave','the wave in between'],['W3','Front water','the main body of water'],['RIM','Rim','the window\'s outline'],['RIP','Ripples','rings while speaking and listening'],['ARC','Thinking arc','the arc that orbits while thinking']],
   presets:{aomint:['AO Mint',{BG:'#E9F7F8',W1:'#FFD98B',W2:'#C7FFF1',W3:'#00FFC8',RIM:'#9AAEFB',RIP:'#DCEAFF',ARC:'#8C9FF7'}],
+   mp:['Marketplace',{BG:'#F0FDF9',W1:'#FEDF89',W2:'#A6F0DC',W3:'#00D0A3',RIM:'#FDB022',RIP:'#FEDF89',ARC:'#F79009'}],
    soft:['Soft',{BG:'#F5F7FF',W1:'#DDF8F0',W2:'#A9EED9',W3:'#6FE0C2',RIM:'#C7D2FE',RIP:'#C7D2FE',ARC:'#FEE48E'}]}},
  globe:{pal:PAL_RIB,places:[['BG','Inside','the ball behind the ribbons'],['R1','Wide ribbon','the broad ribbon'],['R2','Middle ribbon','the medium ribbon, on top of the wide one'],['R3','Thin ribbon','the thin ribbon, on top'],['RIM','Rim','the outline'],['RIP','Ripples','rings while speaking and listening'],['ARC','Thinking arc','the arc that orbits while thinking']],
   presets:{aomint:['AO Mint',{BG:'#E9F7F8',R1:'#00FFC8',R2:'#B9DDFF',R3:'#FFE0A7',RIM:'#9AAEFB',RIP:'#DCEAFF',ARC:'#8C9FF7'}],
+   mp:['Marketplace',{BG:'#F0FDF9',R1:'#00D0A3',R2:'#FEC84B',R3:'#F79009',RIM:'#52E5B9',RIP:'#FEDF89',ARC:'#F79009'}],
    soft:['Soft',{BG:'#F5F7FF',R1:'#9FFFE6',R2:'#FFEA8E',R3:'#44D9B9',RIM:'#C2D4FF',RIP:'#C7D2FE',ARC:'#818CF8'}]}}};
 const STORE2='aoFlat2dColours.v1';
 function st2Load(){try{return JSON.parse(localStorage.getItem(STORE2))||{}}catch(e){return{}}}

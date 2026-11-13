@@ -122,7 +122,7 @@ main{grid-template-columns:1fr!important}
     <p class="math">A thin curved sheet inside frosted glass, like a cat's-eye marble. Its motion is fitted to the Artem marble frame by frame: one full turn per loop, with tilt, roll and wave shape following smooth looping Fourier curves (12 s loop). Speaking: the same surface morphs into a twisting ribbon.</p>
     <div class="ced">
       <div class="ced-h"><b>Colours</b><span>Start from a preset, then change any part.</span></div>
-      <div class="seg" id="mpal" style="flex-wrap:wrap"><button data-p="artem" class="on">Artem</button><button data-p="aoindigo">AO Indigo</button><button data-p="aomint">AO Mint</button><button data-p="aomint2">AO Mint 2</button></div>
+      <div class="seg" id="mpal" style="flex-wrap:wrap"><button data-p="artem" class="on">Artem</button><button data-p="aoindigo">AO Indigo</button><button data-p="aomint">AO Mint</button><button data-p="aomint2">AO Mint 2</button><button data-p="mp">Marketplace</button></div>
       <div class="ced-rows" id="ced-rows"></div>
       <div class="ced-act"><button class="btn" id="ced-swap" title="Swap the front-face colours with the back-face colours">Swap front ⇄ back</button><button class="btn" data-save="a">Save as preset</button></div>
       <div class="ced-save" id="asave"><input type="text" maxlength="28" placeholder="Name this preset"><button class="btn" data-ok>Save</button><button class="btn" data-cancel>Cancel</button></div>
@@ -135,7 +135,7 @@ main{grid-template-columns:1fr!important}
     <p class="math">Colour measured on a polar grid (25 rings × 48 directions) in every frame of the video, turned into smooth looping curves (10 s loop) and re-coloured live. Speaking: outline vibrates, colours deepen, ripples leave the edge. Listening: draws in, lighter, rings travel inward. Thinking: slow turn with a blue arc orbiting the rim.</p>
     <div class="ced">
       <div class="ced-h"><b>Colours</b><span>Start from a preset, then change any part. Each colour replaces one hue from the original video.</span></div>
-      <div class="seg" id="bpal" style="flex-wrap:wrap"><button data-b="agi" class="on">Green · Indigo · Blue</button><button data-b="aomint2">AO Mint 2</button><button data-b="orig">Original</button></div>
+      <div class="seg" id="bpal" style="flex-wrap:wrap"><button data-b="agi" class="on">Green · Indigo · Blue</button><button data-b="aomint2">AO Mint 2</button><button data-b="mp">Marketplace</button><button data-b="orig">Original</button></div>
       <div class="ced-rows" id="bced-rows"></div>
       <div class="ced-act"><button class="btn" data-save="b">Save as preset</button></div>
       <div class="ced-save" id="bsave"><input type="text" maxlength="28" placeholder="Name this preset"><button class="btn" data-ok>Save</button><button class="btn" data-cancel>Cancel</button></div>
@@ -148,7 +148,7 @@ main{grid-template-columns:1fr!important}
     <p class="math">Light measured on a polar grid (42 radii × 48 directions) in all 90 frames of the GIF, turned into smooth looping curves (8 s loop). Cyan light becomes mint, deep-blue light becomes indigo, brightness becomes opacity. Speaking: outline vibrates, ripples leave the ring. Listening: lighter, rings travel inward. Thinking: an arc orbits the ring.</p>
     <div class="ced">
       <div class="ced-h"><b>Colours</b><span>Start from a preset, then change any part.</span></div>
-      <div class="seg" id="cpal" style="flex-wrap:wrap"><button data-c="aomint" class="on">AO Mint + Indigo</button><button data-c="aomint2">Mint + Pale indigo</button><button data-c="orig">Original blue</button></div>
+      <div class="seg" id="cpal" style="flex-wrap:wrap"><button data-c="aomint" class="on">AO Mint + Indigo</button><button data-c="aomint2">Mint + Pale indigo</button><button data-c="mp">Marketplace</button><button data-c="orig">Original blue</button></div>
       <div class="ced-rows" id="cced-rows"></div>
       <div class="ced-act"><button class="btn" data-save="c">Save as preset</button></div>
       <div class="ced-save" id="csave"><input type="text" maxlength="28" placeholder="Name this preset"><button class="btn" data-ok>Save</button><button class="btn" data-cancel>Cancel</button></div>
@@ -346,6 +346,7 @@ const BPLACES=BROLES.map(r=>[r[0],r[1],r[3]]).concat([['ARC','Thinking arc','the
 const BPAL={
  agi:{WARM:'#6776F2',CORAL:'#6C55F2',YEL:'#7EF2D2',GRN:'#9AE8C6',MINT:'#7FE0C2',CYAN:'#7FDFEE',BLUE:'#7FF5CC',VIOL:'#8BF2EF',ARC:'#5C61F2'},
  orig:Object.assign(Object.fromEntries(BROLES.map(r=>[r[0],r[2]])),{ARC:'#6C8DF0'}),
+ mp:{WARM:'#F79009',CORAL:'#FDB022',YEL:'#FEC84B',GRN:'#52E5B9',MINT:'#7FE8C9',CYAN:'#A6F0DC',BLUE:'#00C79A',VIOL:'#FDB022',ARC:'#009170'},
  aomint2:{WARM:'#6B6BF0',CORAL:'#5A55E8',YEL:'#37BE9C',GRN:'#6BE6C5',MINT:'#6BE6C5',CYAN:'#7FD8EE',BLUE:'#6B80FF',VIOL:'#4D47E6',ARC:'#4D47E6'}};
 let BCUST={};
 const hsv=(r,g,b)=>{const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;let h=0;if(d>1e-6){h=mx===r?((g-b)/d+6)%6:mx===g?(b-r)/d+2:(r-g)/d+4;h*=60}return[h,mx>0?d/mx:0,mx]};
@@ -456,7 +457,7 @@ function ringDecode(){if(RINGC)return RINGC;const b=atob(RINGD.d),n=b.length,H=2
  for(let k=0;k<H;k++){const s=RINGD.s[k];for(let m=0;m<M;m++)c[k*M+m]=(b.charCodeAt(k*M+m)-128)*s}
  RINGC={c,H,M};return RINGC}
 const CPLACES=[['MINT','Bright light','the cyan light in the original: crisp core and bright crescents'],['IND','Deep light','the deep-blue light in the original: inner band, dim crescents, glow'],['ARC','Thinking arc','the arc that orbits the ring while thinking']];
-const CPAL={aomint:{MINT:'#59FFDB',IND:'#5766FF',ARC:'#6366F1'},aomint2:{MINT:'#1EC79A',IND:'#A5B4FC',ARC:'#4F46E5'},orig:{MINT:'#22C3E6',IND:'#2B47E0',ARC:'#2B47E0'}};
+const CPAL={aomint:{MINT:'#59FFDB',IND:'#5766FF',ARC:'#6366F1'},mp:{MINT:'#2EE6B5',IND:'#F79009',ARC:'#009170'},aomint2:{MINT:'#1EC79A',IND:'#A5B4FC',ARC:'#4F46E5'},orig:{MINT:'#22C3E6',IND:'#2B47E0',ARC:'#2B47E0'}};
 let CCUST={};
 const RING_FS=`precision highp float;
 uniform vec2 res;uniform sampler2D F;uniform float RG[42];uniform float sc,w2,w3,w5,p2,p3,p5,dk,spk,vv;uniform float RR[4],RA[4],RD[4];uniform float lis,thk,oa,rot;uniform vec3 ARCC;
@@ -557,6 +558,7 @@ const MPAL={
  artem:{CORE:[.21,.41,.92],LITE:[.29,.60,1.],FADE:[.62,.72,1.],VIO:[.55,.44,.94],RIM:[.84,.63,.97],BACK:[.93,.80,.97],LAV:[.82,.82,.96],SPGL:[.62,.68,1.]},
  aoindigo:{CORE:[.30,.28,.90],LITE:[.42,.50,1.],FADE:[.70,.74,1.],VIO:[.14,.70,.56],RIM:[.42,.86,.74],BACK:[.78,.96,.90],LAV:[.82,.82,.96],SPGL:[.62,.68,1.]},
  aomint:{LITE:[0.4196,0.4588,1.0],CORE:[0.4588,0.5686,1.0],FADE:[0.702,0.7412,1.0],VIO:[0.1176,0.902,0.7451],RIM:[0.3608,0.8392,0.7137],BACK:[0.7804,0.9608,0.902],LAV:[0.6588,1.0,0.902],SPGL:[0.6196,0.6784,1.0],ARC:[0.4235,0.5216,0.9216]},
+ mp:{LITE:[0.0000,0.8157,0.6392],CORE:[0.0000,0.5686,0.4392],FADE:[0.6510,0.9412,0.8627],VIO:[0.9686,0.5647,0.0353],RIM:[0.9922,0.6902,0.1333],BACK:[0.9961,0.9412,0.7804],LAV:[0.7804,0.9686,0.9176],SPGL:[1.0000,0.8157,0.5412],ARC:[0.0000,0.5686,0.4392]},
  aomint2:{LITE:[0.4196,0.502,1.0],CORE:[0.302,0.2784,0.902],FADE:[0.702,0.7412,1.0],VIO:[0.2157,0.7451,0.6118],RIM:[0.4196,0.902,0.7725],BACK:[0.7804,0.9608,0.902],LAV:[0.7608,1.0,0.9412],SPGL:[0.6196,0.6784,1.0]}};
 /* ---------- colour editor for A ---------- */
 const PLACES=[['LITE','Crisp edge','where the sheet meets the front of the glass'],['CORE','Front core','the deep colour of the sheet\'s front face'],['FADE','Front fade','the front face as it sinks deeper into the glass'],['VIO','Back face','the back of the sheet where it curls toward you'],['RIM','Back face, mid','the back face a little deeper'],['BACK','Back face, deep','haze deep in the glass'],['LAV','Glass tint & pulse glow','frosted rim and the listening/thinking glow'],['SPGL','Speaking glow','soft glow behind the ribbon while speaking'],['ARC','Thinking arc','the arc that orbits the rim while thinking']];
