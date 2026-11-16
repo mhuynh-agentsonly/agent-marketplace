@@ -11,7 +11,6 @@ Clickable prototypes for the agent side of Marketplace. Every page runs in the b
 | AI interview (our design) | The Speaking & Writing assessment rebuilt in Marketplace style, with our improvements to Hallo's flow | https://mhuynh-agentsonly.github.io/agent-marketplace/ai-interview.html |
 | AI interview (Hallo embedded) | Hallo's own pages as they are today, embedded in Marketplace. Only the button colour changes to Marketplace green | https://mhuynh-agentsonly.github.io/agent-marketplace/ai-interview-hallo.html |
 | Skills Center | Skills tests for agents | https://mhuynh-agentsonly.github.io/agent-marketplace/skills-center-agent-v2.html |
-| Skills Center + ID verification | Skills tests with the ID check | https://mhuynh-agentsonly.github.io/agent-marketplace/skills-center-agent-idv.html |
 
 ## The two AI interview prototypes
 
