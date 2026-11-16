@@ -5183,8 +5183,8 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
   const PEND=function(){ return '<b>Complete your AI interview</b> to tell us about your experience and the work you&rsquo;re looking for <span class="ns-arrow">'+lc('arrow-right',16)+'</span>'; };
   window.AII={
     done: isDone,
-    fromHome: function(){ if(!isDone()) location.href='ai-interview.html'; },
-    forTest: function(t){ location.href='ai-interview.html?from=test&test='+encodeURIComponent(t.id)+'&tn='+encodeURIComponent(t.name); },
+    fromHome: function(){ if(!isDone()) location.href='ai-interview-hallo.html'; },
+    forTest: function(t){ location.href='ai-interview-hallo.html?from=test&test='+encodeURIComponent(t.id)+'&tn='+encodeURIComponent(t.name); },
     render: function(){
       const r=document.getElementById('ns-aii'), tx=document.getElementById('ns-aii-t'); if(!r||!tx) return;
       r.style.display = isDone() ? 'none' : '';   // completed → item disappears from next steps

@@ -375,7 +375,7 @@ function render(){
 }
 // Where Submit goes after the last step. Flow: Onboarding -> AI interview (skippable) -> Skills Center.
 // Answers are kept for this browser tab (sessionStorage 'aoOnboarding') so the interview can ask about them.
-const NEXT_URL = 'ai-interview.html';
+const NEXT_URL = 'ai-interview-hallo.html'; /* Hallo embedded (16 Nov); our own design: 'ai-interview.html' */
 function captureStep(){ try{
   const store=JSON.parse(sessionStorage.getItem('aoOnboarding')||'{}');
   document.querySelectorAll('#card .f').forEach(f=>{ const lab=f.querySelector('label'); if(!lab) return;
