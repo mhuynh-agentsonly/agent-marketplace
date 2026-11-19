@@ -36,7 +36,7 @@ button{font-family:inherit}
 .avatar{width:36px;height:36px;border-radius:999px;background:#f3f4f6;color:#6b7280;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;cursor:default}
 body.in-test .topnav{display:none}
 @media(max-width:760px){.topnav-in{padding:0 20px}}
-.hero .lang{position:absolute;top:16px;right:40px;z-index:2}
+/* Pia 19 Nov: no UI-language option (EN ▾) — agents always see English */ .lang{display:none !important} .hero .lang{position:absolute;top:16px;right:40px;z-index:2}
 .prefill{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;color:#6B6B6B}
 /* ---------- 1 · Welcome (Hallo B2B page) ---------- */
 .w-head{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;padding:18px 40px;height:76px}
@@ -280,7 +280,7 @@ body.in-test .topnav{display:none}
       <div class="w-card"><div class="hd"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAABACAYAAAC3F09FAAAD8UlEQVR4Ae2bzVITQRDHu2fVohDLXEBOVlA8izc9ubEE4QQ+AfAE4BMQ3sA8gfAExgsFQcnc9OZ68yDleqAK4mWpko8qkh27Nx+EkK/N7iTZFL+qwO4wbPKv6enp7pkgaGL29bipXHdRKVig2xi9LESU6GJqWx7aoAGEEGEBruu+BAWrUBTQ4E1RuuhuGq4hwxQWWMyCGY+dibMlEjCvQJngE0TYQCE2tz8fSghIx2I8MyqoNRIwBU1GwQc2CSMzFOudjpYvMcV5oOaVUksQjoBGWApVyq8ZthTDZnQqTldQodmJGQWFnEaahG1mvuTSLfvWa2QB57fOp0pmZEJ/4JmhYdxObe0eWPU6XBHTRTMKSl0z9MR4HgnPPvbRKLQPQjKzl1vnS4N/PJy485V+PYdoYk4+Gjne/33yDadfjS7R5P4A0cYZVsMTxmR8hIWMQ7QZyov8kaCLKRgI1FMBA8SNmH5FqxgK9W2BYlkokaCFOAWauQUaIZef2M5WVmhJywC3rYAmdI6MXRvxUvjRMlgMgk4xMQ6TqhsKohAHjWgVQxnoWvlm1hyPk4mtgUZwJjGmQC8OvWzQvDhz+t0N18ym1pUo42ad6VduxPjEolAgzdEAaEZvBEAeZmcvt8zX7Jopb/8OGmsLemMzqlSWr0vRwCfQyMDNGQcGAjweGDFUJnMGSYzNYn7AAGAIg8SgFwRGHpE3HMHDA9HH2ZIHluDiM0Qcii68XQFRWsyi7QSwOO/Li6bWlVk3KNCrLXhiKGaSEF2c8uauJ+bCvWBlkTQ1CmYrFR9PjJSOQ3YnIYJUB7OVQFO4QnvFMWw4R6o+P1ARQ16NGy2IEFS6Wq++v5ICUE04MqNTylxlddsVMTQ6G2Gmt5gXsZpPcB9Cgs8G1JZ/ryVntUMXhALm1zhd5mvelofiCafAeLsLrti43l6HN4kH2X7eRqfpsMxWdK29XucwRydsPA9WRwhTVwx7Nj4BAX0I7/k0+lvDggZFBclu1Lp8gdD0+FbTU03T5ugUImahP87RWJls7lmzDk1LTbvyr0WT7R30GM97KfG2VT+jVYdf9j/rcfwuPQ9M6A2UDosX7RyiaymG2bdPZI8EObRLncjI3M92OrclhumBIE8Im3q7/9C2GKZbgniOkJA5P0IYX2IYFvQkfu8PrUMm3Q5B+LDTmWvXtKrp/ChwcYuCw544hAQtA6mdvaNV6JDAh7RnzLEkPSXQljibFa3sy6WcKsBzQoBHyUU3SZeL4A+HIukUmVQSQiDc7wK0L8oTMQzD79PSDq2QEqqYMt58Emq19P2A+OWboSRz2hyCoXSYIi6frxmO7wwwYiTA0iGgmv/WzpvrRZ9F4AAAAABJRU5ErkJggg==" alt=""><h2>Requirements</h2></div>
         <ul><li>A quiet room</li><li>A stable internet connection</li><li style="font-weight:600">A keyboard set to English (US) language</li><li>A camera (non-virtual) &amp; microphone</li><li>No AI, translators, other tools, or recording</li></ul></div>
     </div>
-    <div class="w-consent"><span class="cb" id="tos-cb" role="checkbox" aria-checked="false" tabindex="0"><i class="cbox"></i></span><span class="l">By checking this box, I agree to the <a href="https://hallo.ai/terms-of-service-ao/" target="_blank" rel="noopener">Terms of Service</a> and Requirements.</span></div>
+    <div class="w-consent"><span class="cb" id="tos-cb" role="checkbox" aria-checked="false" tabindex="0"><i class="cbox"></i></span><span class="l">By checking this box, I agree to the <a href="https://hallo.ai/terms-of-service-ao/" target="_blank" rel="noopener">Hallo Terms of Service</a> and Requirements.</span></div>
     <div class="w-go"><button class="hbtn" id="b-begin" type="button"><span>Begin Assessment</span> <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button></div>
   </div>
 </section>
@@ -681,7 +681,7 @@ const FIL={
 "Repeated attempts will automatically end the assessment and notify the administrator.":"Ang paulit-ulit na paglabag ay awtomatikong tatapos sa assessment at aabisuhan ang administrator.",
 "<b>Reminder:</b> Please keep your face visible and your attention on the screen during the assessment. Extended periods of looking away or blocking the camera may be flagged for review.":"<b>Paalala:</b> Panatilihing nakikita ang iyong mukha at nakatuon ang atensyon sa screen habang ginagawa ang assessment. Ang matagal na pagtingin sa ibang direksyon o pagharang sa camera ay maaaring markahan para suriin."};
 const FIL_RX=[
- [/^By checking this box, I agree to the (<a[^>]*>)Terms of Service<\/a> and Requirements\.$/,'Sa pag-check sa kahong ito, sumasang-ayon ako sa $1Mga Tuntunin ng Serbisyo</a> at Mga Kinakailangan.'],
+ [/^By checking this box, I agree to the (<a[^>]*>)Hallo Terms of Service<\/a> and Requirements\.$/,'Sa pag-check sa kahong ito, sumasang-ayon ako sa $1Mga Tuntunin ng Serbisyo ng Hallo</a> at Mga Kinakailangan.'],
  [/^Question (\d+) of (\d+)$/,'Tanong $1 sa $2'],[/^Answering time: (\d+) seconds$/,'Oras ng pagsagot: $1 segundo'],[/^Answering time: (\d+) minutes$/,'Oras ng pagsagot: $1 minuto'],
  [/^Start Part (\d+)$/,'Simulan ang Bahagi $1'],[/^Start question (\d+)$/,'Simulan ang tanong $1'],[/^Recommended Words: ([\d-]+)$/,'Inirerekomendang Bilang ng Salita: $1'],
  [/^Respond to the following prompt in writing within (\d+) minutes$/,'Sagutin nang pasulat ang sumusunod na prompt sa loob ng $1 minuto'],
