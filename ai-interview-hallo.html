@@ -6,12 +6,12 @@
   ai-interview-hallo.html — Hallo's Speaking & Writing assessment EMBEDDED in Marketplace (16 Nov).
   Assumption: we can't change Hallo's pages, so every screen copies Hallo as it is today
   (Mai's recording "3 tests - Hallo.mov" + the saved Hallo page). Only change: buttons use
-  Marketplace green #00B081 instead of Hallo's pink #E6007A. Name/email come prefilled and
-  disabled. Exit returns to Marketplace (Home, or Login if signed out).
+  Hallo exactly as it is today (20 Nov: nothing inside Hallo can be customised — Michinobu / Yuki AOP-9583):
+  raspberry buttons, empty name/email, TP wording. Only our Marketplace banner is ours. Exit returns to Marketplace (Home, or Login if signed out).
   Built by AI Interview/_orb-fitting/interview/nov16/build_hallo.py
 -->
 <style>
-:root{--btn:#00B081;--btn-d:#009B71;--pink:#E6007A;--red:#E31B54;--rec:#EF4056;--ink:#111;--txt:#222;--mut:#6B6B6B;--line:#E6E6E6;--bg:#F8F9FA;--ok:#4CAF50}
+:root{--btn:#B1005B;--btn-d:#93004C;--pink:#E6007A;--red:#E31B54;--rec:#EF4056;--ink:#111;--txt:#222;--mut:#6B6B6B;--line:#E6E6E6;--bg:#F8F9FA;--ok:#4CAF50}
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
 body{font-family:Lato,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:rgba(0,0,0,.87);background:var(--bg);font-size:14px;line-height:1.43}
@@ -36,7 +36,7 @@ button{font-family:inherit}
 .avatar{width:36px;height:36px;border-radius:999px;background:#f3f4f6;color:#6b7280;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;cursor:default}
 body.in-test .topnav{display:none}
 @media(max-width:760px){.topnav-in{padding:0 20px}}
-/* Pia 19 Nov: no UI-language option (EN ▾) — agents always see English */ .lang{display:none !important} .hero .lang{position:absolute;top:16px;right:40px;z-index:2}
+.hero .lang{position:absolute;top:16px;right:40px;z-index:2}
 .prefill{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;color:#6B6B6B}
 /* ---------- 1 · Welcome (Hallo B2B page) ---------- */
 .w-head{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;padding:18px 40px;height:76px}
@@ -268,9 +268,8 @@ body.in-test .topnav{display:none}
     <div class="hero-in"><div class="hero-txt">
       <h1>Welcome to your assessment!</h1>
       <p class="sub">Let's confirm a few details to start your assessment.</p>
-      <div class="f-row"><div class="mfld dis"><input id="in-fn" type="text" aria-label="First Name"><fieldset aria-hidden="true"><legend><span>First Name</span></legend></fieldset><label for="in-fn">First Name</label></div><div class="mfld dis"><input id="in-ln" type="text" aria-label="Last Name"><fieldset aria-hidden="true"><legend><span>Last Name</span></legend></fieldset><label for="in-ln">Last Name</label></div></div>
-      <div class="mfld dis"><input id="in-em" type="text" aria-label="Email Address"><fieldset aria-hidden="true"><legend><span>Email Address</span></legend></fieldset><label for="in-em">Email Address</label></div>
-      <div class="prefill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> <span>Filled in from your Marketplace account, so it can't be edited here.</span></div>
+      <div class="f-row"><div class="mfld"><input id="in-fn" type="text" aria-label="First Name"><fieldset aria-hidden="true"><legend><span>First Name</span></legend></fieldset><label for="in-fn">First Name</label></div><div class="mfld"><input id="in-ln" type="text" aria-label="Last Name"><fieldset aria-hidden="true"><legend><span>Last Name</span></legend></fieldset><label for="in-ln">Last Name</label></div></div>
+      <div class="mfld"><input id="in-em" type="text" aria-label="Email Address"><fieldset aria-hidden="true"><legend><span>Email Address</span></legend></fieldset><label for="in-em">Email Address</label></div>
     </div></div></div>
   <div class="w-body">
     <div class="w-cards">
@@ -280,7 +279,7 @@ body.in-test .topnav{display:none}
       <div class="w-card"><div class="hd"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAABACAYAAAC3F09FAAAD8UlEQVR4Ae2bzVITQRDHu2fVohDLXEBOVlA8izc9ubEE4QQ+AfAE4BMQ3sA8gfAExgsFQcnc9OZ68yDleqAK4mWpko8qkh27Nx+EkK/N7iTZFL+qwO4wbPKv6enp7pkgaGL29bipXHdRKVig2xi9LESU6GJqWx7aoAGEEGEBruu+BAWrUBTQ4E1RuuhuGq4hwxQWWMyCGY+dibMlEjCvQJngE0TYQCE2tz8fSghIx2I8MyqoNRIwBU1GwQc2CSMzFOudjpYvMcV5oOaVUksQjoBGWApVyq8ZthTDZnQqTldQodmJGQWFnEaahG1mvuTSLfvWa2QB57fOp0pmZEJ/4JmhYdxObe0eWPU6XBHTRTMKSl0z9MR4HgnPPvbRKLQPQjKzl1vnS4N/PJy485V+PYdoYk4+Gjne/33yDadfjS7R5P4A0cYZVsMTxmR8hIWMQ7QZyov8kaCLKRgI1FMBA8SNmH5FqxgK9W2BYlkokaCFOAWauQUaIZef2M5WVmhJywC3rYAmdI6MXRvxUvjRMlgMgk4xMQ6TqhsKohAHjWgVQxnoWvlm1hyPk4mtgUZwJjGmQC8OvWzQvDhz+t0N18ym1pUo42ad6VduxPjEolAgzdEAaEZvBEAeZmcvt8zX7Jopb/8OGmsLemMzqlSWr0vRwCfQyMDNGQcGAjweGDFUJnMGSYzNYn7AAGAIg8SgFwRGHpE3HMHDA9HH2ZIHluDiM0Qcii68XQFRWsyi7QSwOO/Li6bWlVk3KNCrLXhiKGaSEF2c8uauJ+bCvWBlkTQ1CmYrFR9PjJSOQ3YnIYJUB7OVQFO4QnvFMWw4R6o+P1ARQ16NGy2IEFS6Wq++v5ICUE04MqNTylxlddsVMTQ6G2Gmt5gXsZpPcB9Cgs8G1JZ/ryVntUMXhALm1zhd5mvelofiCafAeLsLrti43l6HN4kH2X7eRqfpsMxWdK29XucwRydsPA9WRwhTVwx7Nj4BAX0I7/k0+lvDggZFBclu1Lp8gdD0+FbTU03T5ugUImahP87RWJls7lmzDk1LTbvyr0WT7R30GM97KfG2VT+jVYdf9j/rcfwuPQ9M6A2UDosX7RyiaymG2bdPZI8EObRLncjI3M92OrclhumBIE8Im3q7/9C2GKZbgniOkJA5P0IYX2IYFvQkfu8PrUMm3Q5B+LDTmWvXtKrp/ChwcYuCw544hAQtA6mdvaNV6JDAh7RnzLEkPSXQljibFa3sy6WcKsBzQoBHyUU3SZeL4A+HIukUmVQSQiDc7wK0L8oTMQzD79PSDq2QEqqYMt58Emq19P2A+OWboSRz2hyCoXSYIi6frxmO7wwwYiTA0iGgmv/WzpvrRZ9F4AAAAABJRU5ErkJggg==" alt=""><h2>Requirements</h2></div>
         <ul><li>A quiet room</li><li>A stable internet connection</li><li style="font-weight:600">A keyboard set to English (US) language</li><li>A camera (non-virtual) &amp; microphone</li><li>No AI, translators, other tools, or recording</li></ul></div>
     </div>
-    <div class="w-consent"><span class="cb" id="tos-cb" role="checkbox" aria-checked="false" tabindex="0"><i class="cbox"></i></span><span class="l">By checking this box, I agree to the <a href="https://hallo.ai/terms-of-service-ao/" target="_blank" rel="noopener">Hallo Terms of Service</a> and Requirements.</span></div>
+    <div class="w-consent"><span class="cb" id="tos-cb" role="checkbox" aria-checked="false" tabindex="0"><i class="cbox"></i></span><span class="l">By checking this box, I agree to the <a href="https://hallo.ai/terms-of-service-ao/" target="_blank" rel="noopener">Terms of Service</a> and Requirements.</span></div>
     <div class="w-go"><button class="hbtn" id="b-begin" type="button"><span>Begin Assessment</span> <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button></div>
   </div>
 </section>
@@ -304,7 +303,7 @@ body.in-test .topnav{display:none}
       <h4 style="margin-top:22px">Camera</h4>
       <div class="camrow"><div class="msel"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M9 2 7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg><span>MacBook Pro Camera (0000:0001)</span><span class="car"></span><select aria-label="Camera"><option>MacBook Pro Camera (0000:0001)</option></select></div><span class="okc on" id="ok-cam"></span>
         <div class="cam"><video id="cam-v" autoplay muted playsinline></video><div class="ph" id="cam-ph"><svg viewBox="0 0 100 80" width="100%" height="100%" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><circle cx="50" cy="32" r="15" fill="#8E949B"/><path d="M20 80c3-18 15-27 30-27s27 9 30 27z" fill="#8E949B"/></svg></div><svg class="guide" viewBox="0 0 120 90" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="1.6" opacity=".9"><path d="M22 14v-6h8M98 14v-6h-8M22 76v6h8M98 76v6h-8"/><circle cx="60" cy="42" r="17"/></g></svg></div></div>
-      <div class="under"><b>I understand that:</b><label id="rec-lab"><i class="cbox" id="rec-cb"></i><span>AO Marketplace may use my recordings and AI for evaluation and proctoring.</span></label></div>
+      <div class="under"><b>I understand that:</b><label id="rec-lab"><i class="cbox" id="rec-cb"></i><span>TP may use my recordings and AI for evaluation and proctoring.</span></label></div>
       <p class="warnred" id="loud">Talk a little louder and make sure your microphone is working</p>
       <p class="chk nt" id="pls">Please complete the recording test and play back your sample before continuing.</p>
       <p class="chk nt">Note: Make sure your microphone and camera work, or you won't be able to proceed.</p>
@@ -450,8 +449,12 @@ function initLangs(){document.querySelectorAll('.lang').forEach(l=>{const b=l.qu
 let TOS=false;
 function syncTos(){$('tos-cb').querySelector('.cbox').classList.toggle('on',TOS);$('tos-cb').setAttribute('aria-checked',TOS)}
 $('tos-cb').onclick=()=>{TOS=!TOS;syncTos()};$('tos-cb').onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();TOS=!TOS;syncTos()}};
-['fn','ln','em'].forEach(k=>{const i=$('in-'+k);i.value=AGENT[k];i.disabled=true});
-$('b-begin').onclick=async()=>{if(!TOS){$('tos-cb').querySelector('.cbox').style.borderColor='#E31B54';setTimeout(()=>$('tos-cb').querySelector('.cbox').style.borderColor='',900);return}
+/* Hallo can't prefill name/email — fields start empty (Yuki, AOP-9583 #11) */
+/* Hallo's own validation when a field is empty (Hallo can't prefill: we only send the agent ID — Yuki, AOP-9583 #11) */
+function fillAllModal(){let m=document.getElementById('fill-all');if(!m){m=document.createElement('div');m.id='fill-all';m.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:90';
+ m.innerHTML='<div role="alertdialog" aria-modal="true" style="background:#fff;border-radius:8px;padding:28px 32px;min-width:320px;text-align:center;font-family:Lato,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.2)"><div style="font-size:44px;line-height:1;color:#F8BB86">&#9888;</div><p style="font-size:18px;margin:14px 0 20px;color:#545454">Please fill all fields!</p><button type="button" class="hbtn" style="min-width:90px;height:40px">OK</button></div>';
+ m.querySelector('button').onclick=()=>m.remove();document.body.appendChild(m)}}
+$('b-begin').onclick=async()=>{if(['fn','ln','em'].some(k=>!$('in-'+k).value.trim())){fillAllModal();return}if(!TOS){$('tos-cb').querySelector('.cbox').style.borderColor='#E31B54';setTimeout(()=>$('tos-cb').querySelector('.cbox').style.borderColor='',900);return}
  $('b-begin').classList.add('busy');await sleep(T(900));$('b-begin').classList.remove('busy');show('perm')};
 
 /* ---------- devices ---------- */
@@ -642,7 +645,7 @@ const FIL={
 "Read these two sentences out loud to check your microphone.":"Basahin nang malakas ang dalawang pangungusap na ito para masuri ang iyong mikropono.",
 "Press Start and read both sentences. Then play the recording back to confirm your voice is clear.":"Pindutin ang Simulan at basahin ang dalawang pangungusap. Pagkatapos, i-play ang recording para matiyak na malinaw ang iyong boses.",
 "Start":"Simulan","Recording...":"Nagre-record...","Retry":"Ulitin","I understand that:":"Nauunawaan ko na:",
-"AO Marketplace may use my recordings and AI for evaluation and proctoring.":"Maaaring gamitin ng AO Marketplace ang aking mga recording at AI para sa ebalwasyon at proctoring.",
+"TP may use my recordings and AI for evaluation and proctoring.":"Maaaring gamitin ng TP ang aking mga recording at AI para sa ebalwasyon at proctoring.",
 "Talk a little louder and make sure your microphone is working":"Lakasan nang kaunti ang boses at tiyaking gumagana ang iyong mikropono",
 "Please complete the recording test and play back your sample before continuing.":"Kumpletuhin muna ang recording test at i-play ang iyong sample bago magpatuloy.",
 "Note: Make sure your microphone and camera work, or you won't be able to proceed.":"Paalala: Tiyaking gumagana ang iyong mikropono at camera, kung hindi ay hindi ka makakapagpatuloy.",
@@ -681,7 +684,7 @@ const FIL={
 "Repeated attempts will automatically end the assessment and notify the administrator.":"Ang paulit-ulit na paglabag ay awtomatikong tatapos sa assessment at aabisuhan ang administrator.",
 "<b>Reminder:</b> Please keep your face visible and your attention on the screen during the assessment. Extended periods of looking away or blocking the camera may be flagged for review.":"<b>Paalala:</b> Panatilihing nakikita ang iyong mukha at nakatuon ang atensyon sa screen habang ginagawa ang assessment. Ang matagal na pagtingin sa ibang direksyon o pagharang sa camera ay maaaring markahan para suriin."};
 const FIL_RX=[
- [/^By checking this box, I agree to the (<a[^>]*>)Hallo Terms of Service<\/a> and Requirements\.$/,'Sa pag-check sa kahong ito, sumasang-ayon ako sa $1Mga Tuntunin ng Serbisyo ng Hallo</a> at Mga Kinakailangan.'],
+ [/^By checking this box, I agree to the (<a[^>]*>)Terms of Service<\/a> and Requirements\.$/,'Sa pag-check sa kahong ito, sumasang-ayon ako sa $1Mga Tuntunin ng Serbisyo</a> at Mga Kinakailangan.'],
  [/^Question (\d+) of (\d+)$/,'Tanong $1 sa $2'],[/^Answering time: (\d+) seconds$/,'Oras ng pagsagot: $1 segundo'],[/^Answering time: (\d+) minutes$/,'Oras ng pagsagot: $1 minuto'],
  [/^Start Part (\d+)$/,'Simulan ang Bahagi $1'],[/^Start question (\d+)$/,'Simulan ang tanong $1'],[/^Recommended Words: ([\d-]+)$/,'Inirerekomendang Bilang ng Salita: $1'],
  [/^Respond to the following prompt in writing within (\d+) minutes$/,'Sagutin nang pasulat ang sumusunod na prompt sa loob ng $1 minuto'],
