@@ -5197,7 +5197,7 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
 .sc-fmt-opt:hover{background:#f3f4f6}
 .sc-fmt-opt.sel{background:#ecfdf5;color:#007460;font-weight:500}
 .sc-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.sc-tabs{display:flex;gap:4px;border-bottom:1px solid #e5e7eb;margin:28px 0 0}
+.sc-tabs{display:flex;gap:4px;border-bottom:1px solid #e5e7eb;margin:0 0 24px}
 .sc-tab{background:none;border:none;font-family:inherit;font-size:16px;font-weight:500;color:#6b7280;padding:12px 16px;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
 .sc-tab .n{font-size:12px;font-weight:600;background:#f3f4f6;color:#4b5563;border-radius:999px;padding:1px 8px}
 .sc-tab.active{color:#007460;border-bottom-color:#007460}
@@ -5220,6 +5220,8 @@ body.iv-on #iv-proto{display:block}
 </style>
 <div class="sm-proto iv-proto" id="iv-proto">
   <div class="sm-proto-menu" role="menu">
+    <div class="h">Layout</div>
+    <button type="button" role="menuitem" id="iv-tabs-btn" onclick="IV.setMode(IV.mode==='tabs'?'mixed':'tabs')"><i class="lc" data-lc="panels-top-left" data-s="15"></i> Separate tab for AI interviews<span class="tg"></span></button>
     <div class="h">AI interviews</div>
     <button type="button" role="menuitem" onclick="IV.demoDone()"><i class="lc" data-lc="circle-check" data-s="15"></i> Complete an available interview</button>
     <button type="button" role="menuitem" onclick="IV.reset()"><i class="lc" data-lc="rotate-ccw" data-s="15"></i> Reset interviews</button>
@@ -5273,7 +5275,7 @@ body.iv-on #iv-proto{display:block}
     setTab:function(t){ IV.tab=t; S.filter='all'; S.page=1; App.renderSkills(); },
     setFmt:function(f,e){ if(e) e.stopPropagation(); IV.fmt=f; S.page=1; if(f==='interviews' && S.filter==='notpassed') S.filter='all';  App.renderSkills(); },
     toggleFmt:function(e){ if(e) e.stopPropagation(); const c=document.getElementById('sc-cat-dd'); if(c) c.classList.remove('open'); const d=document.getElementById('sc-fmt-dd'); if(d) d.classList.toggle('open'); },   /* only one filter menu open at a time */
-    syncProto:function(){ document.querySelectorAll('#iv-proto [data-ivm]').forEach(function(b){ b.classList.toggle('sel', b.getAttribute('data-ivm')===IV.mode); }); },
+    syncProto:function(){ const b=document.getElementById('iv-tabs-btn'); if(b) b.classList.toggle('on', IV.mode==='tabs'); },
     cardHTML:function(iv){
       const b=best(iv.id);
       const top = b ? '<span class="tc-stat" title="Completed">'+lc('circle-check',16)+'</span>' : '<span class="badge-av">Available</span>';
@@ -5317,7 +5319,8 @@ body.iv-on #iv-proto{display:block}
   const fmtLabel={ all:'All formats', tests:'Skills tests', interviews:'AI interviews' };
   App.renderSkills=function(keepOpen){
     const body=$('sc-body'); if(!body) return;
-    renderItems(body, keepOpen, IV.fmt);   /* Mai 26 Nov: mixed layout only (separate-tab option removed) */
+    /* Mai 27 Nov: both layouts again, switched in the Prototype menu — mixed (Format filter) or tabs (Skills tests | AI interviews, below the stats) */
+    renderItems(body, keepOpen, IV.mode==='tabs' ? (IV.tab==='interviews'?'interviews':'tests') : IV.fmt);
     lcHydrate && lcHydrate(body);
   };
   function renderItems(body, keepOpen, fmt){
@@ -5333,14 +5336,14 @@ body.iv-on #iv-proto{display:block}
     const chip=function(k,l){ return '<button type="button" class="sc-chip'+(S.filter===k?' active':'')+'" onclick="App.setFilter(\''+k+'\')">'+l+'</button>'; };
     const ivOnly = fmt==='interviews', both = fmt==='all';
     /* Mai 26 Nov: no extra "Completed" chip/stat — completed interviews count as Passed. Not passed hidden when Format = AI interviews. */
-    const chips = chip('all','All')+chip('available','Available')+chip('passed','Passed')+(ivOnly?'':chip('notpassed','Not passed'));
+    const chips = chip('all','All')+chip('available','Available')+chip('passed', (ivOnly && IV.mode==='tabs') ? 'Completed' : 'Passed')+(ivOnly?'':chip('notpassed','Not passed'));   /* AI interviews tab: “Completed” (Mai 27 Nov) */
     let catVals;
     if (!S.cats.length) catVals='<span>All categories</span>';
     else { const vis=S.cats.slice(0,2); catVals=vis.map(function(c){ return '<span class="sc-tag">'+esc(c)+'<button type="button" aria-label="Remove '+esc(c)+'" onclick="App.toggleCat(\''+c+'\',event)">'+lc('x',12)+'</button></span>'; }).join('') + (S.cats.length>2?'<span class="sc-tag more">+'+(S.cats.length-2)+' more</span>':''); }
     const catOpts=CATEGORIES.map(function(c){ const on=S.cats.indexOf(c)>-1; return '<div class="sc-cat-opt'+(on?' sel':'')+'" role="option" aria-selected="'+on+'" onclick="App.toggleCat(\''+c+'\',event)"><span class="cb">'+(on?lc('check',12):'')+'</span>'+esc(c)+'</div>'; }).join('');
     const catDD='<div class="sc-cat"><div class="sc-cat-dd'+(keepOpen?' open':'')+'" id="sc-cat-dd"><div class="sc-cat-trig" role="button" tabindex="0" aria-haspopup="listbox" onclick="App.toggleCatDD(event)"><span class="sc-cat-vals">'+catVals+'</span>'+lc('chevron-down',18)+'</div>'+
       '<div class="sc-cat-pan" role="listbox" aria-multiselectable="true" onclick="event.stopPropagation()">'+catOpts+(S.cats.length?'<div class="sc-cat-foot"><button type="button" onclick="App.clearCats(event)">Clear selection</button></div>':'')+'</div></div></div>';
-    const fmtDD = '<div class="sc-fmt"><div class="sc-fmt-dd" id="sc-fmt-dd"><div class="sc-fmt-trig" role="button" tabindex="0" aria-haspopup="listbox" onclick="IV.toggleFmt(event)"><span>'+fmtLabel[IV.fmt]+'</span>'+lc('chevron-down',18)+'</div>'+
+    const fmtDD = IV.mode==='tabs' ? '' : '<div class="sc-fmt"><div class="sc-fmt-dd" id="sc-fmt-dd"><div class="sc-fmt-trig" role="button" tabindex="0" aria-haspopup="listbox" onclick="IV.toggleFmt(event)"><span>'+fmtLabel[IV.fmt]+'</span>'+lc('chevron-down',18)+'</div>'+
       '<div class="sc-fmt-pan" role="listbox">'+['all','tests','interviews'].map(function(k){ return '<div class="sc-fmt-opt'+(IV.fmt===k?' sel':'')+'" role="option" aria-selected="'+(IV.fmt===k)+'" onclick="IV.setFmt(\''+k+'\',event)">'+fmtLabel[k]+(IV.fmt===k?lc('check',14):'')+'</div>'; }).join('')+'</div></div></div>';
     const all=TESTS.map(function(t){ return App.statusOf(t); }).concat(INTERVIEWS.map(ivStatus));
     const stats = '<div class="sc-stats"><div class="sc-stat"><span>Passed</span><b>'+all.filter(function(x){ return x==='passed'; }).length+'</b></div><div class="sc-stat"><span>Available</span><b>'+all.filter(function(x){ return x==='available'; }).length+'</b></div></div>';
@@ -5355,7 +5358,8 @@ body.iv-on #iv-proto{display:block}
       b+='<button type="button" class="nav" '+(S.page===pages?'disabled':'')+' onclick="App.goPage('+(S.page+1)+')" aria-label="Next page">'+lc('chevron-right',16)+'</button>';
       pager='<div class="sc-pager">'+b+'</div>';
     }
-    body.innerHTML = stats+'<div class="sc-filters"><div class="sc-chips" role="tablist">'+chips+'</div><div class="sc-right">'+fmtDD+catDD+'</div></div>'+grid+pager;
+    const tabs = IV.mode==='tabs' ? '<div class="sc-tabs" role="tablist"><button type="button" role="tab" class="sc-tab'+(IV.tab!=='interviews'?' active':'')+'" aria-selected="'+(IV.tab!=='interviews')+'" onclick="IV.setTab(\'tests\')">Skills tests</button><button type="button" role="tab" class="sc-tab'+(IV.tab==='interviews'?' active':'')+'" aria-selected="'+(IV.tab==='interviews')+'" onclick="IV.setTab(\'interviews\')">AI interviews</button></div>' : '';
+    body.innerHTML = stats+tabs+'<div class="sc-filters"><div class="sc-chips" role="tablist">'+chips+'</div><div class="sc-right">'+fmtDD+catDD+'</div></div>'+grid+pager;
   }
   document.addEventListener('click', function(e){
     if(!e.target.closest('#sc-fmt-dd')){ const d=document.getElementById('sc-fmt-dd'); if(d) d.classList.remove('open'); }
