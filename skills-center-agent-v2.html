@@ -5280,7 +5280,7 @@ body.iv-on #iv-proto{display:block}
       const b=best(iv.id);
       const top = b ? '<span class="tc-stat" title="Completed">'+lc('circle-check',16)+'</span>' : '<span class="badge-av">Available</span>';
       const first = b
-        ? (b.ended ? '<div>'+lc('octagon-x',16)+' Result: <b>Ended</b></div>' : '<div>'+lc('chart-no-axes-column',16)+' Score: <b>'+scoreLine(iv,b)+'</b></div>')
+        ? (b.ended ? '<div>'+lc('chart-no-axes-column',16)+' Score: <b>Ended</b></div>' : '<div>'+lc('chart-no-axes-column',16)+' Score: <b>'+scoreLine(iv,b)+'</b></div>')
         : '<div>'+lc('alarm-clock',16)+' Estimated time: <b>'+iv.duration+' mins</b></div>';
       const act = b ? 'IV.view(\''+iv.id+'\')' : 'IV.start(\''+iv.id+'\')';
       const cta = '<span class="tc-cta">'+(b?'View results':'Start interview')+' '+lc('arrow-right',16)+'</span>';
