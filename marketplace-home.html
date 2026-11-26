@@ -251,9 +251,35 @@
   .sc-art svg{height:120px;width:auto;display:block}
 </style>
 
+<style id="nav-sync">
+/* 27 Nov: top nav = agent Skills Center prototype (skills-center-agent-v2.html) — same sizes, tabs, avatar menu; scrolls with the page */
+.topnav{position:relative !important;height:80px;border-bottom:1px solid #e5e7eb}
+.topnav-in{max-width:none !important;padding:0 64px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .mp{color:#05ac86;font-size:24px;font-weight:700;letter-spacing:-.5px;line-height:1}
+.topnav-right{display:flex;align-items:center;gap:16px}
+.nl{height:36px;padding:0 16px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;font-size:16px;line-height:1.4;font-weight:500;color:#4b5563;text-decoration:none;cursor:pointer;user-select:none;white-space:nowrap;transition:background .15s,color .15s}
+.nl:hover:not(.active){background:#f9fafb;color:#374151}
+.nl.active{background:#e9fef9;color:#007460;font-weight:500}
+.av-wrap{position:relative;margin-left:8px}
+.avatar{width:36px;height:36px;border-radius:999px;background:#f3f4f6;color:#6b7280;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;line-height:22px;cursor:pointer;border:2px solid transparent;transition:border-color .12s}
+.avatar:hover,.av-wrap.open .avatar{border-color:#c5fbed}
+.av-menu{display:none;position:absolute;right:0;top:calc(100% + 8px);width:232px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 12px 32px rgba(16,24,40,.14);padding:6px;z-index:60}
+.av-wrap.open .av-menu{display:block}
+.av-head{padding:10px 10px 12px;border-bottom:1px solid #f3f4f6;margin-bottom:4px}
+.av-head b{display:block;font-size:14px;font-weight:400;line-height:20px;color:#030712}
+.av-sub{display:flex;align-items:center;gap:6px;font-size:12px;color:#6b7280}
+.av-sep{width:3px;height:3px;border-radius:50%;background:#d1d5db;display:inline-block}
+.av-item{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:none;background:none;border-radius:8px;font-family:inherit;font-size:14px;color:#374151;cursor:pointer;text-align:left;text-decoration:none;box-sizing:border-box}
+.av-item:hover{background:#f9fafb}
+.av-item svg{color:#6b7280;flex:none}
+.av-item.muted{color:#9ca3af;cursor:default}.av-item.muted:hover{background:none}
+@media(max-width:760px){.topnav-in{padding:0 16px}}
+</style>
+<script>document.addEventListener('click',function(e){var w=document.getElementById('av-wrap');if(w&&!w.contains(e.target))w.classList.remove('open')});</script>
 <div class="topnav">
   <div class="topnav-in">
-    <div class="brand">
+    <div class="brand" style="cursor:pointer" onclick="location.href='marketplace-home.html'">
       <svg width="58" height="19" viewBox="0 0 58 19" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9892 2.80743C11.9891 4.07256 10.9469 5.09818 9.66134 5.09822C8.37572 5.09824 7.33359 4.07269 7.33363 2.80756C7.33367 1.54243 8.37588 0.51682 9.66148 0.516769C10.9471 0.516725 11.9892 1.54231 11.9892 2.80743Z" fill="#00D0A3"/>
       <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9908 9.50044C11.9908 10.7655 10.9486 11.7911 9.66298 11.7911C8.37735 11.7911 7.33516 10.7655 7.33516 9.50042C7.33513 8.23532 8.37735 7.20975 9.66298 7.20974C10.9486 7.20976 11.9908 8.23533 11.9908 9.50044Z" fill="#00D0A3"/>
@@ -278,8 +304,8 @@
       <span class="mp">Marketplace</span>
     </div>
     <div class="topnav-right">
-      <a class="nl active">Home</a><a class="nl">Skills Center</a>
-      <div class="avatar">OR</div>
+      <a class="nl active" href="marketplace-home.html">Home</a><a class="nl" href="skills-center-agent-v2.html#skills">Skills Center</a>
+      <div class="av-wrap" id="av-wrap"><div class="avatar" role="button" tabindex="0" aria-haspopup="menu" aria-label="Account menu" onclick="event.stopPropagation();document.getElementById('av-wrap').classList.toggle('open')" onkeydown="if(event.key==='Enter')this.click()">OR</div><div class="av-menu" role="menu"><div class="av-head"><b>Olivia Rhye</b><div class="av-sub"><span>Agent</span><i class="av-sep"></i><span>example@gmail.com</span></div></div><a class="av-item" role="menuitem" href="skills-center-agent-v2.html#settings"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Account settings</a><button class="av-item muted" role="menuitem" type="button" disabled><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>Log out</button></div></div>
     </div>
   </div>
 </div>

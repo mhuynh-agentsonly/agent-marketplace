@@ -852,7 +852,7 @@ document.addEventListener('DOMContentLoaded', function(){ lcHydrate(document); }
 
 <div class="topnav">
   <div class="topnav-in">
-    <div class="brand" style="cursor:pointer" onclick="App.nav('home')">
+    <div class="brand" style="cursor:pointer" onclick="location.href='marketplace-home.html'">
       <svg width="58" height="19" viewBox="0 0 58 19" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9892 2.80743C11.9891 4.07256 10.9469 5.09818 9.66134 5.09822C8.37572 5.09824 7.33359 4.07269 7.33363 2.80756C7.33367 1.54243 8.37588 0.51682 9.66148 0.516769C10.9471 0.516725 11.9892 1.54231 11.9892 2.80743Z" fill="#00D0A3"/>
       <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9908 9.50044C11.9908 10.7655 10.9486 11.7911 9.66298 11.7911C8.37735 11.7911 7.33516 10.7655 7.33516 9.50042C7.33513 8.23532 8.37735 7.20975 9.66298 7.20974C10.9486 7.20976 11.9908 8.23533 11.9908 9.50044Z" fill="#00D0A3"/>
@@ -877,7 +877,7 @@ document.addEventListener('DOMContentLoaded', function(){ lcHydrate(document); }
       <span class="mp">Marketplace</span>
     </div>
     <div class="topnav-right">
-      <a class="nl active" data-nav="home" onclick="App.nav('home')">Home</a><a class="nl" data-nav="skills" onclick="App.nav('skills')">Skills Center</a>
+      <a class="nl" data-nav="home" href="marketplace-home.html">Home</a><a class="nl" data-nav="skills" onclick="App.nav('skills')">Skills Center</a>
       <div class="av-wrap" id="av-wrap"><div class="avatar" role="button" tabindex="0" aria-haspopup="menu" aria-label="Account menu" onclick="App.toggleAv(event)" onkeydown="if(event.key==='Enter')App.toggleAv(event)">OR</div><div class="av-menu" role="menu"><div class="av-head"><b>Olivia Rhye</b><div class="av-sub"><span>Agent</span><i class="av-sep"></i><span>example@gmail.com</span></div></div><button class="av-item" role="menuitem" type="button" onclick="App.nav('settings')"><i class="lc" data-lc="settings" data-s="16"></i>Account settings</button><button class="av-item muted" role="menuitem" type="button" disabled><i class="lc" data-lc="log-out" data-s="16"></i>Log out</button></div></div>
     </div>
   </div>
@@ -5173,7 +5173,7 @@ LUCIDE['image-off']='<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a
 })();
 </script>
 <script>/* deep link from the AI interview top nav: #skills opens Skills Center, #settings opens Account settings */
-(function(){ const go=function(){ const h=(location.hash||'').slice(1); if(h==='skills'||h==='settings'){ try{ App.nav(h); }catch(e){} } }; if(document.readyState==='complete') go(); else addEventListener('load', go); addEventListener('hashchange', go); })();
+(function(){ const go=function(){ const h=(location.hash||'').slice(1); if(h==='skills'||h==='settings'){ try{ App.nav(h); }catch(e){} } else if(!h || h==='home'){ try{ App.nav('skills'); }catch(e){} } }; /* 27 Nov: Home lives in marketplace-home.html; this file opens on Skills Center */ if(document.readyState==='complete') go(); else addEventListener('load', go); addEventListener('hashchange', go); })();
 </script>
 <!-- aii-gate removed 26 Nov: AI interview is no longer required before skills tests -->
 

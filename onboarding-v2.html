@@ -375,7 +375,7 @@ function render(){
 }
 // Where Submit goes after the last step. Flow (26 Nov): Onboarding -> Marketplace Home.
 // Answers are kept for this browser tab (sessionStorage 'aoOnboarding').
-const NEXT_URL = 'skills-center-agent-v2.html'; /* 26 Nov: no AI interview after onboarding any more (interviews live in Skills Center) → Marketplace Home */
+const NEXT_URL = 'marketplace-home.html'; /* 26 Nov: no AI interview after onboarding any more (interviews live in Skills Center) → Marketplace Home */
 function captureStep(){ try{
   const store=JSON.parse(sessionStorage.getItem('aoOnboarding')||'{}');
   document.querySelectorAll('#card .f').forEach(f=>{ const lab=f.querySelector('label'); if(!lab) return;
