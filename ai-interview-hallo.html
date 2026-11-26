@@ -220,6 +220,8 @@ body.in-test .topnav{display:none}
 /* warning pages — one style: solid white page */
 .warn{position:fixed;inset:0;background:#fff;z-index:60;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:4px}
 .warn.on{display:flex}
+.warn .wfs-x{position:absolute;top:0;left:0;right:0;margin:0 auto;text-align:left} /* Exit test shows while the agent is out of full screen (D3/D4) */
+.warn .wfs-x .xbtn{margin:0}
 .warn h3{margin:0 0 8px;display:flex;align-items:center;gap:6px;font-size:17px;color:#111}.warn h3 svg{color:#E53935}
 .warn p{margin:0;font-size:15px;color:#555;line-height:1.5}
 .warn .sm{font-size:12.5px;color:#222;margin-top:14px}
@@ -242,7 +244,7 @@ body.in-test .topnav{display:none}
 /* 26 Nov (Mai): same layout as other Skills Center tests — no Marketplace top bar, an "Exit test" button above the content */
 .topnav{display:none !important}
 .xbar{max-width:1100px;margin:0 auto;padding:24px 40px 16px;font-family:'DM Sans',sans-serif}
-body.in-test .xbar,body.no-x .xbar{display:none}
+body.in-test .xbar:not(.wfs-x),body.no-x .xbar:not(.wfs-x){display:none}
 .xbtn{display:inline-flex;align-items:center;gap:8px;height:36px;border:1px solid #e5e7eb;border-radius:8px;padding:0 14px;background:#fff;font-family:inherit;font-size:14px;font-weight:500;color:#111827;cursor:pointer}
 .xbtn:hover{background:#f9fafb}
 .xm-bd{position:fixed;inset:0;background:rgba(16,24,40,.45);display:none;align-items:center;justify-content:center;z-index:200;font-family:'DM Sans',sans-serif}
@@ -407,7 +409,7 @@ body.in-test .xbar,body.no-x .xbar{display:none}
 <!-- warning pages (one solid style) -->
 <div class="warn" id="w-shot"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5.99 19.53 19H4.47L12 5.99M12 2 1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z"/></svg> <span>Warning</span></h3><p>This action has been reported.<br>Screenshots should not be taken.</p><button class="tlink" data-ok>Ok, got it!</button><p class="sm">Repeated attempts will automatically end the assessment and notify the administrator.</p></div>
 <div class="warn" id="w-tab"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5.99 19.53 19H4.47L12 5.99M12 2 1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z"/></svg> <span>Warning</span></h3><p>You can't switch tabs while taking the assessment.<br>This action has been reported.</p><button class="tlink" data-ok>Ok, got it!</button><p class="sm">Repeated attempts will automatically end the assessment and notify the administrator.</p></div>
-<div class="warn" id="w-fs"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5.99 19.53 19H4.47L12 5.99M12 2 1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z"/></svg> <span>Warning</span></h3><p>The assessment must be taken full screen.<br>This action has been reported.</p><button class="sqbtn" data-ok>Return to full screen</button><p class="sm">Repeated attempts will automatically end the assessment and notify the administrator.</p></div>
+<div class="warn" id="w-fs"><div class="xbar wfs-x"><button class="xbtn" type="button" onclick="xAsk('fs')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Exit test</button></div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5.99 19.53 19H4.47L12 5.99M12 2 1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z"/></svg> <span>Warning</span></h3><p>The assessment must be taken full screen.<br>This action has been reported.</p><button class="sqbtn" data-ok>Return to full screen</button><p class="sm">Repeated attempts will automatically end the assessment and notify the administrator.</p></div>
 
 <!-- prototype controls (not part of the design) -->
 <div class="proto" id="proto"><div class="proto-menu">
@@ -742,7 +744,7 @@ let I18N_RAF=0;new MutationObserver(()=>{if(I18N_ON||I18N_RAF)return;I18N_RAF=re
 initLangs();syncTos();show('welcome');applyLang();
 </script>
 <script>/* Exit test (26 Nov): only before the test starts; evaluating/done screens have Hallo's own Exit */
-function xAsk(){document.getElementById('xm').classList.add('on')}
+function xAsk(ctx){var p=document.querySelector('#xm p');if(p)p.textContent=ctx==='fs'?'You can come back from Skills Center and continue where you left off, as long as your interview link is still open.':'Your answers won\'t be saved and you\'ll need to start again from the beginning.';document.getElementById('xm').classList.add('on')}
 function xClose(){document.getElementById('xm').classList.remove('on')}
 function xLeave(){location.href='skills-center-agent-v2.html#skills'}
 addEventListener('keydown',e=>{if(e.key==='Escape')xClose()});
