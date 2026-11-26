@@ -373,9 +373,9 @@ function render(){
   document.getElementById("nextBtn").textContent = (cur===STEPS.length-1) ? "Submit" : "Next";
   window.scrollTo({top:0,behavior:'smooth'});
 }
-// Where Submit goes after the last step. Flow: Onboarding -> AI interview (skippable) -> Skills Center.
-// Answers are kept for this browser tab (sessionStorage 'aoOnboarding') so the interview can ask about them.
-const NEXT_URL = 'ai-interview-hallo.html'; /* Hallo embedded (16 Nov); our own design: 'ai-interview.html' */
+// Where Submit goes after the last step. Flow (26 Nov): Onboarding -> Marketplace Home.
+// Answers are kept for this browser tab (sessionStorage 'aoOnboarding').
+const NEXT_URL = 'skills-center-agent-v2.html'; /* 26 Nov: no AI interview after onboarding any more (interviews live in Skills Center) → Marketplace Home */
 function captureStep(){ try{
   const store=JSON.parse(sessionStorage.getItem('aoOnboarding')||'{}');
   document.querySelectorAll('#card .f').forEach(f=>{ const lab=f.querySelector('label'); if(!lab) return;
