@@ -5264,7 +5264,7 @@ body.iv-on #iv-proto{display:block}
   const ivById=function(id){ return INTERVIEWS.find(function(x){ return x.id===id; }); };
   const att=function(id){ return D[id]||[]; };
   const best=function(id){ const a=att(id); return a.length ? a[0] : null; };   /* one result per interview */
-  const ivStatus=function(iv){ return att(iv.id).length ? 'passed' : 'available'; };   /* Mai 26 Nov: a completed interview counts as Passed (no fail for interviews) */
+  const ivStatus=function(iv){ const a=att(iv.id); return a.length ? (a[0].ended ? 'notpassed' : 'passed') : 'available'; };   /* ended after repeated proctoring warnings = terminal (Mai 27 Nov) */   /* Mai 26 Nov: a completed interview counts as Passed (no fail for interviews) */
   const sc=function(n){ return (Math.round(n*10)/10).toFixed(1); };
 
   window.IV={
@@ -5280,7 +5280,7 @@ body.iv-on #iv-proto{display:block}
       const b=best(iv.id);
       const top = b ? '<span class="tc-stat" title="Completed">'+lc('circle-check',16)+'</span>' : '<span class="badge-av">Available</span>';
       const first = b
-        ? '<div>'+lc('chart-no-axes-column',16)+' Score: <b>'+scoreLine(iv,b)+'</b></div>'
+        ? (b.ended ? '<div>'+lc('octagon-x',16)+' Result: <b>Ended</b></div>' : '<div>'+lc('chart-no-axes-column',16)+' Score: <b>'+scoreLine(iv,b)+'</b></div>')
         : '<div>'+lc('alarm-clock',16)+' Estimated time: <b>'+iv.duration+' mins</b></div>';
       const act = b ? 'IV.view(\''+iv.id+'\')' : 'IV.start(\''+iv.id+'\')';
       const cta = '<span class="tc-cta">'+(b?'View results':'Start interview')+' '+lc('arrow-right',16)+'</span>';
@@ -5294,10 +5294,12 @@ body.iv-on #iv-proto{display:block}
     /* result page = same layout as other skills tests (illustration, Completion Time + Overall Score tiles, meta), no Passed badge, no pass mark (Mai 27 Nov) */
     view:function(id){ const iv=ivById(id); if(!iv) return; const b=best(id); if(!b){ IV.start(id); return; }
       const crumb='<div class="crumb" style="margin-top:20px"><a onclick="App.nav(\'skills\')">Skills Center</a>'+lc('chevron-right',14)+'<span>'+esc(iv.name)+'</span></div>';
-      const tiles='<div class="gl-tiles">'+tilesOf(iv,b).map(x=>'<div class="gl-tile"><small>'+x[0]+'</small><b>'+esc(x[1])+'</b></div>').join('')+'</div>';
+      const tl=b.ended ? [['Completion Time',b.time||'—']] : tilesOf(iv,b);
+      const tiles='<div class="gl-tiles">'+tl.map(x=>'<div class="gl-tile"><small>'+x[0]+'</small><b>'+esc(x[1])+'</b></div>').join('')+'</div>'+(b.ended?'<span class="rd-status term">'+lc('octagon-x',16)+'Ended</span>':'');
+      const endNote=b.ended ? '<p class="iv-end-note">This interview ended automatically after repeated proctoring warnings, and the administrator was notified. There’s no score, and the interview can’t be retaken.</p>' : '';
       $('rd-body').innerHTML = crumb+'<div class="wcard rd rd-sim"><div class="rd-ill"><img src="'+IMG.balloon+'" alt=""></div><div>'+
         '<h2 class="rd-h">'+esc(iv.name)+'</h2><p>'+esc(iv.desc)+'</p>'+
-        '<div class="rd-tiles">'+tiles+'</div>'+
+        '<div class="rd-tiles">'+tiles+'</div>'+endNote+
         '<div class="tc-meta">'+
           '<div>'+lc('alarm-clock',16)+' Estimated time: <b>'+iv.duration+' mins</b></div>'+
           '<div>'+lc(icOf(iv),16)+' Format: <b>'+fmtOf(iv)+'</b></div>'+
@@ -5413,4 +5415,7 @@ body.iv-on #iv-proto{display:block}
 #mdl-exit .mdl-foot{justify-content:stretch;gap:12px;margin-top:0}
 #mdl-exit .mdl-foot button{flex:1;height:48px;padding:0 16px;border-radius:999px;font-size:16px;color:#111827}
 #mdl-exit .mdl-foot .gbtn{color:#fff}
+</style>
+<style id="iv-ended">
+.rd .iv-end-note,.iv-end-note{margin:16px 0 0;font-size:14px;line-height:20px;color:#4b5563}
 </style>

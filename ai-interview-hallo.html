@@ -92,6 +92,9 @@ body.in-test .topnav{display:none}
 .lrow{height:56px;display:flex;align-items:center}
 .lrow .lang button{font-size:15px}
 .dots{display:flex;gap:10px;height:56px;align-items:flex-start;padding-top:12px}
+/* No Exit bar during the test: keep the card at the same height as the language test (progress bar + 56px language row) */
+#t-top:empty{height:96px}
+#t-top>.tabbar:only-child{margin-bottom:56px}
 .dots span{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:11px;font-weight:700;color:#111}
 .dots span.f{color:#BDBDBD}
 .dots i{width:18px;height:18px;border-radius:50%;border:2px solid #111;display:flex;align-items:center;justify-content:center}
@@ -440,10 +443,10 @@ try{const o=JSON.parse(sessionStorage.getItem('aoOnboarding')||'{}');const g=k=>
  const fn=o[g('first name')],ln=o[g('last name')],em=o[g('email')]||o[g('email address')];if(fn&&String(fn).trim())AGENT.fn=String(fn).trim();if(ln&&String(ln).trim())AGENT.ln=String(ln).trim();if(em&&/@/.test(em))AGENT.em=String(em).trim()}catch(e){}
 /* 26 Nov: started from an interview card in Skills Center (skills-center-agent-v2.html › IV.start) → ?iv=ID&ivn=NAME&cefr=1 */
 const IVQ=(()=>{try{const u=new URLSearchParams(location.search);return u.get('iv')?{id:u.get('iv'),name:u.get('ivn')||'',cefr:u.get('cefr')!=='0'}:null}catch(e){return null}})();
-function recordIv(){if(!IVQ)return;try{const d=JSON.parse(localStorage.getItem('aoIv')||'null')||{'iv-cs':[{date:'11/20/2026',score:8.1,rating:'Good',kind:'ai',time:'13:42'}]};
+function recordIv(o){if(!IVQ)return;try{const d=JSON.parse(localStorage.getItem('aoIv')||'null')||{'iv-cs':[{date:'11/20/2026',score:8.1,rating:'Good',kind:'ai',time:'13:42'}]};
  const s=Math.round((6+Math.random()*3.2)*10)/10,n=new Date(),dt=String(n.getMonth()+1).padStart(2,'0')+'/'+String(n.getDate()).padStart(2,'0')+'/'+n.getFullYear();
  if((d[IVQ.id]||[]).length)return; /* one result per interview, no retake (26 Nov) */
- const tm=Math.max(1,Math.round((Date.now()-(window.IV_T0||Date.now()))/1000));d[IVQ.id]=([{date:dt,time:Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0'),score:s,cefr:(window.HALLO_KIND||'lang')==='lang'?(s>=8.5?'C1':s>=7?'B2':s>=5.5?'B1':'A2'):null,kind:window.HALLO_KIND||'lang',rating:(window.HALLO_KIND==='ai')?(s<=2.9?'Bad':s<=4.3?'Poor':s<=6.9?'Okay':s<=8.7?'Good':'Excellent'):null}]);if(window.HALLO_KIND==='quiz'){const a=window.QZ_ANS||[];const pts=a.reduce((x,y)=>x+y,0)||48,mx=(a.length||12)*5;Object.assign(d[IVQ.id][0],{score:Math.round(pts/(mx/5)*10)/10,pts:pts,max:mx})}localStorage.setItem('aoIv',JSON.stringify(d))}catch(e){}}
+ const tm=Math.max(1,Math.round((Date.now()-(window.IV_T0||Date.now()))/1000));d[IVQ.id]=([{date:dt,time:Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0'),score:s,cefr:(window.HALLO_KIND||'lang')==='lang'?(s>=8.5?'C1':s>=7?'B2':s>=5.5?'B1':'A2'):null,kind:window.HALLO_KIND||'lang',rating:(window.HALLO_KIND==='ai')?(s<=2.9?'Bad':s<=4.3?'Poor':s<=6.9?'Okay':s<=8.7?'Good':'Excellent'):null}]);if(window.HALLO_KIND==='quiz'){const a=window.QZ_ANS||[];const pts=a.reduce((x,y)=>x+y,0)||48,mx=(a.length||12)*5;Object.assign(d[IVQ.id][0],{score:Math.round(pts/(mx/5)*10)/10,pts:pts,max:mx})}if(o&&o.ended){const e=d[IVQ.id][0];d[IVQ.id]=[{date:e.date,time:e.time,kind:e.kind,ended:true}]} /* ended after repeated violations: terminal, no score (Mai 27 Nov) */localStorage.setItem('aoIv',JSON.stringify(d))}catch(e){}}
 const ST={voice:true,demo:false,out:false,fast:false,paused:false,tok:0,wait:null,strikes:0,live:false,fsWanted:false,stream:null,an:null,words:[]};
 const fmt=s=>{s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
 const fmt2=s=>{s=Math.max(0,Math.ceil(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
@@ -748,7 +751,7 @@ function xAsk(ctx){var p=document.querySelector('#xm p');if(p)p.textContent=ctx=
 function xClose(){document.getElementById('xm').classList.remove('on')}
 function xLeave(){location.href='skills-center-agent-v2.html#skills'}
 addEventListener('keydown',e=>{if(e.key==='Escape')xClose()});
-(function(){const sh=window.show;if(typeof sh!=='function')return;window.show=function(id){/* Exit test only before the test starts (Mai 27 Nov): Hallo goes full screen during the test, so no Exit during test, Evaluating or Congratulations */document.body.classList.toggle('no-x',['welcome','perm','check','lang'].indexOf(id)<0);return sh.apply(this,arguments)}})();
+(function(){const sh=window.show;if(typeof sh!=='function')return;window.show=function(id){if(id==='ended')recordIv({ended:true});/* Exit test only before the test starts (Mai 27 Nov): Hallo goes full screen during the test, so no Exit during test, Evaluating or Congratulations */document.body.classList.toggle('no-x',['welcome','perm','check','lang'].indexOf(id)<0);return sh.apply(this,arguments)}})();
 </script>
 <style id="kinds-css">
 /* ===== 27 Nov: three Hallo test types from Skills Center — ?kind=lang (Speaking & Writing, default) | ai (AI interview) | quiz (Likert) ===== */
