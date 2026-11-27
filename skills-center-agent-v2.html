@@ -1977,7 +1977,7 @@ const App = {
       ? '<span class="tc-stat" title="Completed">'+lc('circle-check',16)+'</span>'
       : '<span class="badge-av">Available</span>';
     const first = r
-      ? '<div>'+lc(r.passed?'badge-check':'badge-x',16)+' You scored <b>'+r.score+'%</b></div>'
+      ? '<div>'+lc(r.passed?'badge-check':'badge-x',16)+' Score: <b>'+r.score+'%</b></div>'
       : '<div>'+lc('alarm-clock',16)+' Estimated time: <b>'+t.duration+' mins</b></div>';
     const cta = '<span class="tc-cta">'+(r?'View results':'Take test')+' '+lc('arrow-right',16)+'</span>';
     const act = r ? 'App.viewResult(\''+t.id+'\')' : 'App.takeTest(\''+t.id+'\')';
