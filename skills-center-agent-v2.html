@@ -5222,6 +5222,7 @@ body.iv-on #iv-proto{display:block}
 <div class="sm-proto iv-proto" id="iv-proto">
   <div class="sm-proto-menu" role="menu">
     <div class="h">AI interviews</div>
+    <button type="button" role="menuitem" id="iv-cat-btn" onclick="IV.setShowCat(!IV.showCat)"><i class="lc" data-lc="clipboard-list" data-s="15"></i> Show Category (option for PO)<span class="tg"></span></button>
     <button type="button" role="menuitem" onclick="IV.demoDone()"><i class="lc" data-lc="circle-check" data-s="15"></i> Complete an available interview</button>
     <button type="button" role="menuitem" onclick="IV.scoreNow()"><i class="lc" data-lc="hourglass" data-s="15"></i> Finish pending scoring now</button>
     <button type="button" role="menuitem" onclick="IV.reset()"><i class="lc" data-lc="rotate-ccw" data-s="15"></i> Reset interviews</button>
@@ -5247,19 +5248,22 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
       desc:'Talk through real customer situations with an AI interviewer: empathy, problem solving and clear communication.' },
     { id:'iv-en', name:'English Speaking & Writing Interview', category:'Language', duration:20, kind:'lang', type:'Speaking, Writing', lang:'English (US)',
       desc:'Answer spoken and written questions so we can understand your English level for client projects.' },
-    { id:'iv-dl', name:'Data Labeling Interview', category:'Data labeling', duration:20, kind:'ai', type:'Moderation', lang:'English (US)',
+    { id:'iv-dl', name:'Data Labeling Interview', category:'Data labeling', duration:20, kind:'ai', type:'Moderation', lang:'English (UK)',
       desc:'Explain how you would label tricky examples and follow annotation guidelines with an AI interviewer.' },
-    { id:'iv-code', name:'Coding Interview', category:'Coding', duration:30, kind:'ai', type:'Coding', lang:'English (US)',
+    { id:'iv-code', name:'Coding Interview', category:'Coding', duration:30, kind:'ai', type:'Coding', lang:'English (India)',
       desc:'Walk an AI interviewer through how you would solve short coding problems and explain your thinking.' },
-    { id:'iv-safety', name:'Work Safety Quiz', category:'General', duration:10, kind:'quiz', type:'Personality', lang:'English (US)',
+    { id:'iv-safety', name:'Work Safety Quiz', category:'General', duration:10, kind:'quiz', type:'Personality', lang:'Filipino',
       desc:'Answer short statements about how you work safely, from “Strongly disagree” to “Strongly agree”.' }
   ];
+  const LANGS=[['English (US)','English (US)','🇺🇸'],['English (UK)','English (UK)','🇬🇧'],['English (India)','English (India)','🇮🇳'],['Filipino','Filipino','🇵🇭'],['Spanish (Mexico)','Spanish (Mexico)','🇲🇽'],['Spanish (Spain)','Spanish (Spain)','🇪🇸']];
+  const TYPES=[];   /* filled from the interviews below: only types that exist */   /* Hallo Assessment Types used by our interviews */
+  INTERVIEWS.forEach(function(iv){ String(iv.type).split(', ').forEach(function(t){ if(TYPES.indexOf(t)<0) TYPES.push(t); }); }); TYPES.sort();
   const SEED={ 'iv-cs':[ {date:'11/20/2026', score:8.1, rating:'Good', kind:'ai', time:'13:42'} ] };
   const FORMAT='AI voice roleplay';
   const fmtOf=iv=>iv.kind==='quiz'?'Questionnaire':FORMAT;
   const icOf=iv=>iv.kind==='quiz'?'circle-help':'mic';
   /* PO 27 Nov: tile/result meta = Estimated time, Type (Hallo Assessment Type), Language, Category — data Hallo can give us */
-  const metaOf=iv=>'<div>'+lc('tag',16)+' Type: <b>'+esc(iv.type)+'</b></div><div>'+lc('languages',16)+' Language: <b>'+esc(iv.lang)+'</b></div><div>'+lc('clipboard-list',16)+' Category: <b>'+esc(iv.category)+'</b></div>';
+  const metaOf=iv=>'<div>'+lc('circle-help',16)+' Type: <b>'+esc(iv.type)+'</b></div><div>'+lc('languages',16)+' Language: <b>'+esc(iv.lang)+'</b></div>'+(IV.showCat?'<div>'+lc('clipboard-list',16)+' Category: <b>'+esc(iv.category)+'</b></div>':'');   /* Category only with the PO option on (Mai 27 Nov) */
   const rateOf=s=>s<=2.9?'Bad':s<=4.3?'Poor':s<=6.9?'Okay':s<=8.7?'Good':'Excellent';
   const scoreLine=(iv,b)=>iv.kind==='quiz'?(sc(b.score)+'/5 · '+(b.pts||Math.round(b.score*12))+'/'+(b.max||60)):iv.kind==='ai'?(sc(b.score)+'/10 · '+(b.rating||rateOf(b.score))):(sc(b.score)+'/10'+(b.cefr?' · '+b.cefr:''));
   const tilesOf=(iv,b)=>[['Completion Time',b.time||(iv.duration-2)+':14'],['Overall Score',iv.kind==='quiz'?sc(b.score)+'/5':sc(b.score)+'/10'],iv.kind==='quiz'?['Points',(b.pts||Math.round(b.score*12))+'/'+(b.max||60)]:iv.kind==='ai'?['Rating',b.rating||rateOf(b.score)]:['CEFR Level',b.cefr||'B2']];
@@ -5276,18 +5280,34 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
 
   window.IV={
     mode:'tabs',   /* PO (Pia) 27 Nov: separate tab for AI interviews; mixed layout dropped */
-    tab:'tests', fmt:'all',
+    tab:'tests', fmt:'all', lang:'', langQ:'', types:[], typeQ:'',
+    /* Prototype option for the PO (27 Nov): Category on AI interview cards + Category filter instead of Type */
+    showCat:(function(){ try{ return localStorage.getItem('aoIvCat')==='1'; }catch(e){ return false; } })(),
+    setShowCat:function(v){ IV.showCat=!!v; try{ localStorage.setItem('aoIvCat', v?'1':'0'); }catch(e){} S.cats=[]; IV.types=[]; S.page=1; IV.syncProto(); document.getElementById('iv-proto').classList.remove('open'); App.renderSkills(); App.toast(v?'Category shown on AI interviews':'Category hidden on AI interviews'); },   /* Type filter (AI interviews tab): multi-select with search, replaces Category */
+    toggleTypeDD:function(e){ if(e) e.stopPropagation(); const l=document.getElementById('sc-lang-dd'); if(l) l.classList.remove('open'); const d=document.getElementById('sc-type-dd'); if(!d) return; const open=!d.classList.contains('open'); d.classList.toggle('open',open); if(open){ IV.typeQ=''; const i=d.querySelector('input'); if(i){ i.value=''; i.focus(); } IV.drawTypes(); } },
+    toggleType:function(t,e){ if(e) e.stopPropagation(); const i=IV.types.indexOf(t); if(i>-1) IV.types.splice(i,1); else IV.types.push(t); S.page=1; App.renderSkills(true); },
+    clearTypes:function(e){ if(e) e.stopPropagation(); IV.types=[]; S.page=1; App.renderSkills(true); },
+    searchType:function(q){ IV.typeQ=q; IV.drawTypes(); },
+    drawTypes:function(){ const box=document.getElementById('sc-type-list'); if(!box) return; const q=IV.typeQ.trim().toLowerCase(); const list=TYPES.filter(function(t){ return !q || t.toLowerCase().indexOf(q)>-1; });
+      const allT=q?'':'<div class="sc-cat-opt'+(IV.types.length?'':' sel')+'" role="option" onclick="IV.clearTypes(event)"><span class="cb">'+(IV.types.length?'':lc('check',16))+'</span>All types</div>';
+      box.innerHTML = list.length ? allT+list.map(function(t){ const on=IV.types.indexOf(t)>-1; return '<div class="sc-cat-opt'+(on?' sel':'')+'" role="option" aria-selected="'+on+'" onclick="IV.toggleType(\''+t+'\',event)"><span class="cb">'+(on?lc('check',12):'')+'</span>'+esc(t)+'</div>'; }).join('') : '<div class="sc-lang-none">No types found</div>'; },   /* Language filter (AI interviews tab): single-select with search (Mai 27 Nov) */
+    toggleLang:function(e){ if(e) e.stopPropagation(); const c=document.getElementById('sc-cat-dd'); if(c) c.classList.remove('open'); const ty=document.getElementById('sc-type-dd'); if(ty) ty.classList.remove('open'); const d=document.getElementById('sc-lang-dd'); if(!d) return; const open=!d.classList.contains('open'); d.classList.toggle('open',open); if(open){ IV.langQ=''; IV.drawLang(); const i=d.querySelector('input'); if(i){ i.value=''; i.focus(); } } },
+    setLang:function(v,e){ if(e) e.stopPropagation(); IV.lang=v; S.page=1; App.renderSkills(); },
+    searchLang:function(q){ IV.langQ=q; IV.drawLang(); },
+    drawLang:function(){ const box=document.getElementById('sc-lang-list'); if(!box) return; const q=IV.langQ.trim().toLowerCase(); const avail=LANGS.filter(function(l){ return INTERVIEWS.some(function(iv){ return iv.lang===l[0]; }); });   /* only languages that have AI interviews (Mai 27 Nov) */
+      const list=(q?[]:[['','All languages','']]).concat(avail.filter(function(l){ return !q || l[1].toLowerCase().indexOf(q)>-1; }));
+      box.innerHTML = list.length ? list.map(function(l){ const on=IV.lang===l[0]; return '<div class="sc-lang-opt'+(on?' sel':'')+'" role="option" aria-selected="'+on+'" onclick="IV.setLang(\''+l[0]+'\',event)"><span class="fl">'+l[2]+'</span>'+esc(l[1])+(on?lc('check',16):'')+'</div>'; }).join('') : '<div class="sc-lang-none">No languages found</div>'; },
     list:INTERVIEWS, best:best,
     setMode:function(m){ IV.mode=m; try{ localStorage.setItem(MODE_KEY,m); }catch(e){} S.filter='all'; S.page=1; IV.tab='tests'; IV.fmt='all'; App.renderSkills(); IV.syncProto(); document.getElementById('iv-proto').classList.remove('open'); },
     setTab:function(t){ IV.tab=t; S.filter='all'; S.page=1; App.renderSkills(); },
     setFmt:function(f,e){ if(e) e.stopPropagation(); IV.fmt=f; S.page=1; if(f==='interviews' && S.filter==='notpassed') S.filter='all';  App.renderSkills(); },
     toggleFmt:function(e){ if(e) e.stopPropagation(); const c=document.getElementById('sc-cat-dd'); if(c) c.classList.remove('open'); const d=document.getElementById('sc-fmt-dd'); if(d) d.classList.toggle('open'); },   /* only one filter menu open at a time */
-    syncProto:function(){ const b=document.getElementById('iv-tabs-btn'); if(b) b.classList.toggle('on', IV.mode==='tabs'); },
+    syncProto:function(){ const b=document.getElementById('iv-tabs-btn'); if(b) b.classList.toggle('on', IV.mode==='tabs'); const c=document.getElementById('iv-cat-btn'); if(c) c.classList.toggle('on', !!IV.showCat); },
     cardHTML:function(iv){
       const b=best(iv.id);
       const top = b ? '<span class="tc-stat" title="Completed">'+lc('circle-check',16)+'</span>' : '<span class="badge-av">Available</span>';
       const first = b
-        ? (b.ended ? '<div>'+lc('chart-no-axes-column',16)+' Score: <b>Ended</b></div>' : isPend(b) ? '<div>'+lc('hourglass',16)+' Score: <b>Pending</b></div>' : '<div>'+lc('chart-no-axes-column',16)+' Score: <b>'+scoreLine(iv,b)+'</b></div>')
+        ? (b.ended ? '<div>'+lc('badge-check',16)+' Score: <b>Ended</b></div>' : isPend(b) ? '<div>'+lc('hourglass',16)+' Score: <b>Pending</b></div>' : '<div>'+lc('badge-check',16)+' Score: <b>'+scoreLine(iv,b)+'</b></div>')
         : '<div>'+lc('alarm-clock',16)+' Estimated time: <b>'+iv.duration+' mins</b></div>';
       const act = b ? 'IV.view(\''+iv.id+'\')' : 'IV.start(\''+iv.id+'\')';
       const cta = '<span class="tc-cta">'+(b?'View results':'Start interview')+' '+lc('arrow-right',16)+'</span>';
@@ -5331,7 +5351,7 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
     const body=$('sc-body'); if(!body) return;
     /* Mai 27 Nov: both layouts again, switched in the Prototype menu — mixed (Format filter) or tabs (Skills tests | AI interviews, below the stats) */
     renderItems(body, keepOpen, IV.mode==='tabs' ? (IV.tab==='interviews'?'interviews':'tests') : IV.fmt);
-    lcHydrate && lcHydrate(body);
+    lcHydrate && lcHydrate(body); IV.drawTypes && IV.drawTypes();
   };
   function renderItems(body, keepOpen, fmt){
     const items=[];
@@ -5340,7 +5360,9 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
     if (fmt!=='tests') INTERVIEWS.forEach(function(iv,i){ const x={k:'i', o:iv, st:ivStatus(iv), cat:iv.category}; if (fmt==='all') items.splice(Math.min(items.length, 1+i*3), 0, x); else items.push(x); });
     const cnt=function(st){ return items.filter(function(x){ return x.st===st; }).length; };
     let list=items.filter(function(x){ return S.filter==='all' || x.st===S.filter; });
-    if (S.cats.length) list=list.filter(function(x){ return S.cats.indexOf(x.cat)>-1; });
+    if ((fmt!=='interviews' || IV.showCat) && S.cats.length) list=list.filter(function(x){ return S.cats.indexOf(x.cat)>-1; });
+    if (fmt==='interviews' && !IV.showCat && IV.types.length) list=list.filter(function(x){ const ts=String(x.o.type||'').split(', '); return IV.types.some(function(t){ return ts.indexOf(t)>-1; }); });
+    if (fmt==='interviews' && IV.lang) list=list.filter(function(x){ return x.k!=='i' || x.o.lang===IV.lang; });
     const pages=Math.max(1,Math.ceil(list.length/PER_PAGE)); if(S.page>pages) S.page=pages;
     const shown=list.slice((S.page-1)*PER_PAGE, S.page*PER_PAGE);
     const chip=function(k,l){ return '<button type="button" class="sc-chip'+(S.filter===k?' active':'')+'" onclick="App.setFilter(\''+k+'\')">'+l+'</button>'; };
@@ -5350,7 +5372,7 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
     let catVals;
     if (!S.cats.length) catVals='<span>All categories</span>';
     else { const vis=S.cats.slice(0,2); catVals=vis.map(function(c){ return '<span class="sc-tag">'+esc(c)+'<button type="button" aria-label="Remove '+esc(c)+'" onclick="App.toggleCat(\''+c+'\',event)">'+lc('x',12)+'</button></span>'; }).join('') + (S.cats.length>2?'<span class="sc-tag more">+'+(S.cats.length-2)+' more</span>':''); }
-    const catOpts=CATEGORIES.map(function(c){ const on=S.cats.indexOf(c)>-1; return '<div class="sc-cat-opt'+(on?' sel':'')+'" role="option" aria-selected="'+on+'" onclick="App.toggleCat(\''+c+'\',event)"><span class="cb">'+(on?lc('check',12):'')+'</span>'+esc(c)+'</div>'; }).join('');
+    const catOpts='<div class="sc-cat-opt'+(S.cats.length?'':' sel')+'" role="option" aria-selected="'+!S.cats.length+'" onclick="App.clearCats(event)"><span class="cb">'+(S.cats.length?'':lc('check',16))+'</span>All categories</div>'+CATEGORIES.map(function(c){ const on=S.cats.indexOf(c)>-1; return '<div class="sc-cat-opt'+(on?' sel':'')+'" role="option" aria-selected="'+on+'" onclick="App.toggleCat(\''+c+'\',event)"><span class="cb">'+(on?lc('check',12):'')+'</span>'+esc(c)+'</div>'; }).join('');
     const catDD='<div class="sc-cat"><div class="sc-cat-dd'+(keepOpen?' open':'')+'" id="sc-cat-dd"><div class="sc-cat-trig" role="button" tabindex="0" aria-haspopup="listbox" onclick="App.toggleCatDD(event)"><span class="sc-cat-vals">'+catVals+'</span>'+lc('chevron-down',18)+'</div>'+
       '<div class="sc-cat-pan" role="listbox" aria-multiselectable="true" onclick="event.stopPropagation()">'+catOpts+(S.cats.length?'<div class="sc-cat-foot"><button type="button" onclick="App.clearCats(event)">Clear selection</button></div>':'')+'</div></div></div>';
     const fmtDD = IV.mode==='tabs' ? '' : '<div class="sc-fmt"><div class="sc-fmt-dd" id="sc-fmt-dd"><div class="sc-fmt-trig" role="button" tabindex="0" aria-haspopup="listbox" onclick="IV.toggleFmt(event)"><span>'+fmtLabel[IV.fmt]+'</span>'+lc('chevron-down',18)+'</div>'+
@@ -5359,7 +5381,7 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
     const stats = '<div class="sc-stats"><div class="sc-stat"><span>'+(ivOnly?'Completed':'Passed')+'</span><b>'+all.filter(function(x){ return x==='passed'; }).length+'</b></div><div class="sc-stat"><span>Available</span><b>'+all.filter(function(x){ return x==='available'; }).length+'</b></div></div>';
     let grid;
     if (!shown.length){
-      grid='<div class="sc-empty"><img src="'+IMG.emptysm+'" alt=""><h4>Nothing here yet</h4><p>'+(S.cats.length?'Try another category, or clear your selection.':'Try another filter.')+'</p>'+(S.cats.length?'<p style="margin-top:12px"><button class="tbtn" type="button" onclick="App.clearCats()">Clear category selection</button></p>':'')+'</div>';
+      grid='<div class="sc-empty"><img src="'+IMG.emptysm+'" alt=""><h4>'+(ivOnly&&IV.lang?'No AI interviews in '+esc(IV.lang)+' yet':'Nothing here yet')+'</h4><p>'+(ivOnly&&IV.lang?'Try another language, or <a href="#" onclick="event.preventDefault();IV.setLang(\'\')">show all languages</a>.':'')+(ivOnly&&IV.lang?'':(S.cats.length?'Try another category, or clear your selection.':'Try another filter.'))+'</p>'+(S.cats.length?'<p style="margin-top:12px"><button class="tbtn" type="button" onclick="App.clearCats()">Clear category selection</button></p>':'')+'</div>';
     } else grid='<div class="sc-grid">'+shown.map(function(x){ return x.k==='t' ? App.cardHTML(x.o) : IV.cardHTML(x.o); }).join('')+'</div>';
     let pager='';
     if (pages>1){
@@ -5369,15 +5391,21 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
       pager='<div class="sc-pager">'+b+'</div>';
     }
     const tabs = IV.mode==='tabs' ? '<div class="sc-tabs" role="tablist"><button type="button" role="tab" class="sc-tab'+(IV.tab!=='interviews'?' active':'')+'" aria-selected="'+(IV.tab!=='interviews')+'" onclick="IV.setTab(\'tests\')">Skills tests</button><button type="button" role="tab" class="sc-tab'+(IV.tab==='interviews'?' active':'')+'" aria-selected="'+(IV.tab==='interviews')+'" onclick="IV.setTab(\'interviews\')">AI interviews</button></div>' : '';
+    let typeVals; if(!IV.types.length) typeVals='<span>All types</span>'; else { const vis=IV.types.slice(0,2); typeVals=vis.map(function(t){ return '<span class="sc-tag">'+esc(t)+'<button type="button" aria-label="Remove '+esc(t)+'" onclick="IV.toggleType(\''+t+'\',event)">'+lc('x',12)+'</button></span>'; }).join('')+(IV.types.length>2?'<span class="sc-tag more">+'+(IV.types.length-2)+' more</span>':''); }
+    const typeDD='<div class="sc-cat"><div class="sc-cat-dd'+(keepOpen&&ivOnly?' open':'')+'" id="sc-type-dd"><div class="sc-cat-trig" role="button" tabindex="0" aria-haspopup="listbox" onclick="IV.toggleTypeDD(event)"><span class="sc-cat-vals">'+typeVals+'</span>'+lc('chevron-down',18)+'</div><div class="sc-cat-pan sc-type-pan" role="listbox" aria-multiselectable="true" onclick="event.stopPropagation()"><div class="sc-lang-s">'+lc('search',16)+'<input type="text" placeholder="Search types..." oninput="IV.searchType(this.value)" aria-label="Search types"></div><div id="sc-type-list"></div>'+(IV.types.length?'<div class="sc-cat-foot"><button type="button" onclick="IV.clearTypes(event)">Clear selection</button></div>':'')+'</div></div></div>';
+    const LF=LANGS.find(function(l){ return l[0]===IV.lang; });
+    const langDD = ivOnly ? '<div class="sc-lang"><div class="sc-lang-dd" id="sc-lang-dd"><div class="sc-lang-trig" role="button" tabindex="0" aria-haspopup="listbox" onclick="IV.toggleLang(event)"><span>'+(LF?'<span class="fl">'+LF[2]+'</span>'+esc(LF[1]):'All languages')+'</span>'+lc('chevron-down',18)+'</div><div class="sc-lang-pan" onclick="event.stopPropagation()"><div class="sc-lang-s">'+lc('search',16)+'<input type="text" placeholder="Search languages..." oninput="IV.searchLang(this.value)" aria-label="Search languages"></div><div class="sc-lang-list" id="sc-lang-list" role="listbox"></div></div></div></div>' : '';
     const note = ivOnly ? '<div class="iv-note" role="note">'+lc('info',20)+'<p><b>Important</b>Use your Marketplace account email address when starting an AI interview so your results can be linked to your profile.</p></div>' : '';   /* PO 27 Nov: Hallo asks for name + email every time */
-    body.innerHTML = stats+tabs+note+'<div class="sc-filters"><div class="sc-chips" role="tablist">'+chips+'</div><div class="sc-right">'+catDD+'</div></div>'+grid+pager;
+    body.innerHTML = stats+tabs+note+'<div class="sc-filters"><div class="sc-chips" role="tablist">'+chips+'</div><div class="sc-right">'+langDD+(ivOnly&&!IV.showCat?typeDD:catDD)+'</div></div>'+grid+pager;
   }
   document.addEventListener('click', function(e){
+    if(!e.target.closest('#sc-type-dd')){ const t=document.getElementById('sc-type-dd'); if(t) t.classList.remove('open'); }
+    if(!e.target.closest('#sc-lang-dd')){ const l=document.getElementById('sc-lang-dd'); if(l) l.classList.remove('open'); }
     if(!e.target.closest('#sc-fmt-dd')){ const d=document.getElementById('sc-fmt-dd'); if(d) d.classList.remove('open'); }
     if(!e.target.closest('#iv-proto')){ const p=document.getElementById('iv-proto'); if(p) p.classList.remove('open'); }
   });
   const nav=App.nav; App.nav=function(n){ const r=nav.apply(this, arguments); document.body.classList.toggle('iv-on', n==='skills'); return r; };
-  const catDD=App.toggleCatDD; App.toggleCatDD=function(e){ const f=document.getElementById('sc-fmt-dd'); if(f) f.classList.remove('open'); return catDD.apply(this, arguments); };
+  const catDD=App.toggleCatDD; App.toggleCatDD=function(e){ const f=document.getElementById('sc-fmt-dd'); if(f) f.classList.remove('open'); const lg=document.getElementById('sc-lang-dd'); if(lg) lg.classList.remove('open'); return catDD.apply(this, arguments); };
   const reset=App.resetDemo; App.resetDemo=function(){ D=JSON.parse(JSON.stringify(SEED)); save(D); return reset.apply(this, arguments); };
   /* back from Hallo: #iv=ID → Skills Center + that interview's result */
   const back=function(){ const h=(location.hash||'').slice(1); if(h.indexOf('iv=')!==0) return; const id=decodeURIComponent(h.slice(3));
@@ -5445,4 +5473,32 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
 .gl-tile.pend small{color:#98A2B3!important}
 .gl-tile.pend .lci{color:#98A2B3;margin-top:6px;animation:ivspin 1.2s linear infinite}
 @keyframes ivspin{to{transform:rotate(360deg)}}
+</style>
+<style id="iv-lang-css">
+.sc-lang{display:flex;align-items:center}
+.sc-lang-dd{position:relative}
+.sc-lang-trig{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:218px;min-height:40px;padding:5px 10px 5px 14px;border:1px solid #d1d5db;border-radius:8px;background:#fff;cursor:pointer;font-size:15px;color:#374151}
+.sc-lang-trig>span{display:flex;align-items:center;gap:8px}
+.sc-lang-dd.open .sc-lang-trig{border-color:#5fceb1;box-shadow:0 0 0 3px #c5fbed}
+.sc-lang-dd.open .sc-lang-trig .lci{transform:rotate(180deg)}
+.sc-lang-pan{display:none;position:absolute;left:0;top:calc(100% + 6px);width:260px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 12px 28px rgba(16,24,40,.14);z-index:31;overflow:hidden}
+.sc-lang-dd.open .sc-lang-pan{display:block}
+.sc-lang-s{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #e5e7eb;color:#6b7280}
+.sc-lang-s input{border:0;outline:0;flex:1;font:inherit;font-size:14px;color:#111827;background:none}
+.sc-lang-list{padding:6px;max-height:260px;overflow:auto}
+.sc-lang-opt{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;color:#374151;cursor:pointer}
+.sc-lang-opt:hover{background:#f3f4f6}
+.sc-lang-opt .lci{margin-left:auto;color:#007460}
+.sc-lang-none{padding:12px 10px;font-size:14px;color:#6b7280}
+.fl{font-size:15px;line-height:1}
+</style>
+<style id="iv-type-css">.sc-type-pan{width:300px;padding:0}.sc-type-pan #sc-type-list{padding:6px;max-height:280px;overflow:auto}.sc-type-pan .sc-cat-foot{margin:0 6px 6px}</style>
+<style id="filter-figma-ui">
+/* Filters match Figma (Mai 27 Nov): no checkboxes — the selected option gets a teal check on the right; "All …" first */
+.sc-cat-opt{justify-content:flex-start}
+.sc-cat-opt .cb{order:2;margin-left:auto;width:auto;height:auto;border:0!important;background:none!important;color:#007460;border-radius:0}
+.sc-cat-opt.sel .cb{background:none!important}
+.sc-cat-opt .cb .lci{width:16px;height:16px;color:#007460}
+.sc-cat-opt:hover{background:#f3f4f6}
+.sc-cat-foot button{width:100%;text-align:center;color:#007460;font-weight:500}
 </style>
