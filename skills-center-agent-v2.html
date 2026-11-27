@@ -1909,7 +1909,7 @@ const App = {
   toggleAv: function(e){ if(e) e.stopPropagation(); $('av-wrap').classList.toggle('open'); App.syncDemoItem(); },
   closeAv: function(){ const w=$('av-wrap'); if(w) w.classList.remove('open'); },
   syncDemoItem: function(){},
-  resetDemo: function(){ S.results={}; S.filter='all'; S.cats=[]; S.page=1; App.renderProfileTests(); App.closeAv(); if(S.screen==='result'||S.screen==='result-detail') App.nav('skills'); else if(S.screen==='skills') App.renderSkills(); App.toast('Demo data reset — all tests are available again','rotate-ccw'); },
+  resetDemo: function(){ S.results={}; S.filter='all'; S.cats=[]; S.page=1; App.renderProfileTests(); App.closeAv(); if(S.screen==='result'||S.screen==='result-detail') App.nav('skills'); else if(S.screen==='skills') App.renderSkills(); },
   toast: function(msg, icon, warn){
     const t=$('toast'); $('toast-t').textContent=msg; $('toast-ic').innerHTML=lc(icon||'circle-check',18);
     t.classList.toggle('warn', !!warn); t.classList.add('show');
@@ -2385,7 +2385,6 @@ const PQ = {
     PQ.renderChecks(); PQ.startDevices(); },
   setDemo: function(on){
     PQ.demo=!!on; document.body.classList.toggle('demo', PQ.demo); App.syncDemoItem(); App.closeAv();
-    App.toast(PQ.demo?'Demo mode on — camera, mic and screen share are simulated':'Demo mode off — using your real devices', PQ.demo?'circle-dot':'video');
     if (PQ.mode==='setup') PQ.init();
   },
 
@@ -3117,7 +3116,7 @@ const SIM = {
     const tr = PQ.cam && PQ.cam.getAudioTracks && PQ.cam.getAudioTracks()[0];
     if (tr && tr.readyState==='live'){ SIM.micTrack=tr; cb(); return; }
     if (SIM.ownMic){ SIM.micTrack=SIM.ownMic.getAudioTracks()[0]; cb(); return; }
-    SIM.openMic(function(){ SIM.micTrack=SIM.ownMic.getAudioTracks()[0]; cb(); }, function(){ SIM.micTrack=null; App.toast('We can’t reach your microphone, so this prototype will simulate your responses','mic',true); cb(); });
+    SIM.openMic(function(){ SIM.micTrack=SIM.ownMic.getAudioTracks()[0]; cb(); }, function(){ SIM.micTrack=null; cb(); });
   },
   hasMeter: function(){ return !PQ.demo && !!SIM.micTrack && !!(SIM.an || PQ.an); },
   level: function(turn){
@@ -3363,13 +3362,12 @@ const SIM = {
   protoTimeout: function(){
     SIM.protoClose();
     const st=SIM.st;
-    if (!st || st.phase!=='call'){ App.toast('Start the call first, then trigger the timeout','info',true); return; }
+    if (!st || st.phase!=='call')return;
     SIM.timeout();
   },
   protoToggleFail: function(){
     SIM.proto.fail=!SIM.proto.fail;
     $('sm-proto-fail').classList.toggle('on', SIM.proto.fail);
-    App.toast(SIM.proto.fail?'The automatic submit will fail to upload the recordings':'Upload failure turned off', SIM.proto.fail?'triangle-alert':'circle-check', SIM.proto.fail);
   }
 };
 document.addEventListener('click', function(e){ if(!e.target.closest('#sm-proto')) SIM.protoClose(); });
@@ -3902,7 +3900,7 @@ const RV = {
   };
   App.resetDemo=function(){ resetDemo(); RV.seed(); App.renderProfileTests(); if(S.screen==='skills') App.renderSkills(); };
   App.nav=function(name){ if(name!=='review') RV.stopAll(); nav(name); if(name==='review'){ document.querySelectorAll('.topnav .nl').forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-nav')==='skills'); }); } };
-  App.takeTest=function(id){ const t=testById(id); if(t && t.seeded && !S.results[id]){ App.toast(t.format+'s aren’t takeable in this prototype yet — review the sample result instead','info',true); return; } takeTest(id); };
+  App.takeTest=function(id){ const t=testById(id); if(t && t.seeded && !S.results[id]){ return; } takeTest(id); };
 })();
 RV.seed(); App.renderProfileTests();
 </script>
@@ -5222,7 +5220,7 @@ body.iv-on #iv-proto{display:block}
 <div class="sm-proto iv-proto" id="iv-proto">
   <div class="sm-proto-menu" role="menu">
     <div class="h">AI interviews</div>
-    <button type="button" role="menuitem" id="iv-cat-btn" onclick="IV.setShowCat(!IV.showCat)"><i class="lc" data-lc="clipboard-list" data-s="15"></i> Show Category (option for PO)<span class="tg"></span></button>
+    <button type="button" role="menuitem" id="iv-cat-btn" onclick="IV.setShowCat(!IV.showCat)"><i class="lc" data-lc="clipboard-list" data-s="15"></i> Show Category<span class="tg"></span></button>
     <button type="button" role="menuitem" onclick="IV.demoDone()"><i class="lc" data-lc="circle-check" data-s="15"></i> Complete an available interview</button>
     <button type="button" role="menuitem" onclick="IV.scoreNow()"><i class="lc" data-lc="hourglass" data-s="15"></i> Finish pending scoring now</button>
     <button type="button" role="menuitem" onclick="IV.reset()"><i class="lc" data-lc="rotate-ccw" data-s="15"></i> Reset interviews</button>
@@ -5282,8 +5280,8 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
     mode:'tabs',   /* PO (Pia) 27 Nov: separate tab for AI interviews; mixed layout dropped */
     tab:'tests', fmt:'all', lang:'', langQ:'', types:[], typeQ:'',
     /* Prototype option for the PO (27 Nov): Category on AI interview cards + Category filter instead of Type */
-    showCat:(function(){ try{ return localStorage.getItem('aoIvCat')==='1'; }catch(e){ return false; } })(),
-    setShowCat:function(v){ IV.showCat=!!v; try{ localStorage.setItem('aoIvCat', v?'1':'0'); }catch(e){} S.cats=[]; IV.types=[]; S.page=1; IV.syncProto(); document.getElementById('iv-proto').classList.remove('open'); App.renderSkills(); App.toast(v?'Category shown on AI interviews':'Category hidden on AI interviews'); },   /* Type filter (AI interviews tab): multi-select with search, replaces Category */
+    showCat:(function(){ try{ return localStorage.getItem('aoIvShowCat')==='1'; }catch(e){ return false; } })(),
+    setShowCat:function(v){ IV.showCat=!!v; try{ localStorage.setItem('aoIvShowCat', v?'1':'0'); }catch(e){} S.cats=[]; IV.types=[]; S.page=1; IV.syncProto(); document.getElementById('iv-proto').classList.remove('open'); App.renderSkills(); },   /* Type filter (AI interviews tab): multi-select with search, replaces Category */
     toggleTypeDD:function(e){ if(e) e.stopPropagation(); const l=document.getElementById('sc-lang-dd'); if(l) l.classList.remove('open'); const d=document.getElementById('sc-type-dd'); if(!d) return; const open=!d.classList.contains('open'); d.classList.toggle('open',open); if(open){ IV.typeQ=''; const i=d.querySelector('input'); if(i){ i.value=''; i.focus(); } IV.drawTypes(); } },
     toggleType:function(t,e){ if(e) e.stopPropagation(); const i=IV.types.indexOf(t); if(i>-1) IV.types.splice(i,1); else IV.types.push(t); S.page=1; App.renderSkills(true); },
     clearTypes:function(e){ if(e) e.stopPropagation(); IV.types=[]; S.page=1; App.renderSkills(true); },
@@ -5337,11 +5335,11 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
     },
     record:function(id, x){ if(!(D[id]||[]).length){ D[id]=[x]; save(D); } },
     demoDone:function(){ const iv=INTERVIEWS.find(function(x){ return !att(x.id).length; }); document.getElementById('iv-proto').classList.remove('open');
-      if(!iv){ App.toast('All interviews are completed'); return; }
-      IV.record(iv.id, IV.fake(iv)); App.renderSkills(); App.toast('“'+iv.name+'” completed'); },
+      if(!iv) return;
+      IV.record(iv.id, IV.fake(iv)); App.renderSkills(); },
     fake:function(iv){ const s=iv.kind==='quiz'?Math.round((3.4+Math.random()*1.4)*10)/10:Math.round((6+Math.random()*3.2)*10)/10; return { kind:iv.kind, rating:iv.kind==='ai'?rateOf(s):null, pts:iv.kind==='quiz'?Math.round(s*12):null, max:iv.kind==='quiz'?60:null, date:today(), time:(iv.duration-1-Math.floor(Math.random()*4))+':'+String(Math.floor(Math.random()*60)).padStart(2,'0'), score:s, cefr: iv.kind==='lang' ? (s>=8.5?'C1':s>=7?'B2':s>=5.5?'B1':'A2') : null }; },
-    scoreNow:function(){ let n=0; Object.keys(D).forEach(function(k){ const b=(D[k]||[])[0]; if(b && b.pending){ b.readyAt=Date.now()-1; n++; } }); save(D); document.getElementById('iv-proto').classList.remove('open'); if(!n) App.toast('No pending results'); },
-    reset:function(){ D=JSON.parse(JSON.stringify(SEED)); save(D); document.getElementById('iv-proto').classList.remove('open'); App.renderSkills(); App.toast('Interviews reset'); }
+    scoreNow:function(){ let n=0; Object.keys(D).forEach(function(k){ const b=(D[k]||[])[0]; if(b && b.pending){ b.readyAt=Date.now()-1; n++; } }); save(D); document.getElementById('iv-proto').classList.remove('open'); },
+    reset:function(){ D=JSON.parse(JSON.stringify(SEED)); save(D); document.getElementById('iv-proto').classList.remove('open'); App.renderSkills(); }
   };
 
   /* ---------- Skills Center render (both layouts) ---------- */
@@ -5361,7 +5359,7 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
     const cnt=function(st){ return items.filter(function(x){ return x.st===st; }).length; };
     let list=items.filter(function(x){ return S.filter==='all' || x.st===S.filter; });
     if ((fmt!=='interviews' || IV.showCat) && S.cats.length) list=list.filter(function(x){ return S.cats.indexOf(x.cat)>-1; });
-    if (fmt==='interviews' && !IV.showCat && IV.types.length) list=list.filter(function(x){ const ts=String(x.o.type||'').split(', '); return IV.types.some(function(t){ return ts.indexOf(t)>-1; }); });
+    if (fmt==='interviews' && IV.types.length) list=list.filter(function(x){ const ts=String(x.o.type||'').split(', '); return IV.types.some(function(t){ return ts.indexOf(t)>-1; }); });
     if (fmt==='interviews' && IV.lang) list=list.filter(function(x){ return x.k!=='i' || x.o.lang===IV.lang; });
     const pages=Math.max(1,Math.ceil(list.length/PER_PAGE)); if(S.page>pages) S.page=pages;
     const shown=list.slice((S.page-1)*PER_PAGE, S.page*PER_PAGE);
@@ -5396,7 +5394,7 @@ if(typeof LUCIDE!=='undefined' && !LUCIDE['tag']) LUCIDE['tag']='<path d="M12.58
     const LF=LANGS.find(function(l){ return l[0]===IV.lang; });
     const langDD = ivOnly ? '<div class="sc-lang"><div class="sc-lang-dd" id="sc-lang-dd"><div class="sc-lang-trig" role="button" tabindex="0" aria-haspopup="listbox" onclick="IV.toggleLang(event)"><span>'+(LF?'<span class="fl">'+LF[2]+'</span>'+esc(LF[1]):'All languages')+'</span>'+lc('chevron-down',18)+'</div><div class="sc-lang-pan" onclick="event.stopPropagation()"><div class="sc-lang-s">'+lc('search',16)+'<input type="text" placeholder="Search languages..." oninput="IV.searchLang(this.value)" aria-label="Search languages"></div><div class="sc-lang-list" id="sc-lang-list" role="listbox"></div></div></div></div>' : '';
     const note = ivOnly ? '<div class="iv-note" role="note">'+lc('info',20)+'<p><b>Important</b>Use your Marketplace account email address when starting an AI interview so your results can be linked to your profile.</p></div>' : '';   /* PO 27 Nov: Hallo asks for name + email every time */
-    body.innerHTML = stats+tabs+note+'<div class="sc-filters"><div class="sc-chips" role="tablist">'+chips+'</div><div class="sc-right">'+langDD+(ivOnly&&!IV.showCat?typeDD:catDD)+'</div></div>'+grid+pager;
+    body.innerHTML = stats+tabs+note+'<div class="sc-filters"><div class="sc-chips" role="tablist">'+chips+'</div><div class="sc-right">'+langDD+(ivOnly?typeDD+(IV.showCat?catDD:''):catDD)+'</div></div>'+grid+pager;
   }
   document.addEventListener('click', function(e){
     if(!e.target.closest('#sc-type-dd')){ const t=document.getElementById('sc-type-dd'); if(t) t.classList.remove('open'); }
