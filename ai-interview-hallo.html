@@ -437,7 +437,7 @@ body.in-test .xbar:not(.wfs-x),body.no-x .xbar:not(.wfs-x){display:none}
 const $=id=>document.getElementById(id);
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const VIDEO='GitHub upload/speaking-assessment-720p.mp4';
-const HOME='skills-center-agent-v2.html',LOGIN='ai-interview.html#login';
+const HOME='skills-center-agent-v2.html',LOGIN='skills-center-agent-v2.html#skills' /* ai-interview.html removed 27 Nov; no separate login page in the prototypes */;
 const AGENT={fn:'Olivia',ln:'Rhye',em:'olivia.rhye@example.com'};
 /* name/email from onboarding when the agent came from there (sessionStorage 'aoOnboarding') */
 try{const o=JSON.parse(sessionStorage.getItem('aoOnboarding')||'{}');const g=k=>Object.keys(o).find(x=>x.toLowerCase()===k);
